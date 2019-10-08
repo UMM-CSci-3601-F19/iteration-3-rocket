@@ -1,0 +1,28 @@
+language: java
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+jdk:
+- oraclejdk8
+
+sudo: required
+
+env:
+- MONGODB=3.4.7
+
+install:
+- wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGODB}.tgz
+- tar xzf mongodb-linux-x86_64-${MONGODB}.tgz
+- ${PWD}/mongodb-linux-x86_64-${MONGODB}/bin/mongod --version
+
+
+before_script:
+- mkdir ${PWD}/mongodb-linux-x86_64-${MONGODB}/data
+- ${PWD}/mongodb-linux-x86_64-${MONGODB}/bin/mongod --dbpath ${PWD}/mongodb-linux-x86_64-${MONGODB}/data --logpath ${PWD}/mongodb-linux-x86_64-${MONGODB}/mongodb.log --fork
+- npm install -g @angular/cli
+
+

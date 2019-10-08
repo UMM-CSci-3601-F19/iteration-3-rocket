@@ -1,0 +1,41 @@
+// Client side build.gradle
+
+plugins {
+  id 'com.moowork.node' version '1.2.0'
+}
+
+node {
+  version = '11.10.0'
+  download = true
+  workDir = file("${project.projectDir}/node")
+  yarnWorkDir = file("${project.projectDir}/yarn")
+  nodeModulesDir = file("${project.projectDir}/")
+}
+
+task runClient(type: Exec, dependsOn: yarn_install) {
+  group = 'application'
+  executable "ng"
+  args = ["serve"]
+}
+
+task runClientTestsAndWatch(type: NpmTask) {
+  group = 'application'
+  description = "Start client side tests, watching and updating when there are changes"
+  args = ['run', 'test-watch']
+}
+
+task runClientTestWithCoverage(type: Exec, dependsOn: yarn_install) {
+  group = 'application'
+  executable "ng"
+  args = ["test", "-sm=false", "--watch=false", "--code-coverage"]
+}
+
+task runE2ETests(type: Exec) {
+  group = 'application'
+  executable "ng"
+  args = ["e2e"]
+}
+
+task runClientTests(dependsOn: yarn_run_test) {
+  group = 'application'
+}

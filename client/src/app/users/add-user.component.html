@@ -1,0 +1,53 @@
+<!-- example from
+https://github.com/AngularTemplates/angular-forms-and-validations/blob/master/src/app/form-component/form.component.html
+is potentially helpful and contributed to the shaping of this example -->
+<div class="add-user">
+  <form [formGroup]="addUserForm">
+    <h2 mat-dialog-title>New User</h2>
+    <mat-dialog-content layout="column">
+      <mat-form-field flex>
+        <input matInput #input id="nameField" placeholder="Name" [(ngModel)]="data.user.name" formControlName="name"
+               required>
+        <mat-error *ngFor="let validation of add_user_validation_messages.name">
+          <mat-error class="error-message" id="name-error"
+                     *ngIf="addUserForm.get('name').hasError(validation.type) && (addUserForm.get('name').dirty || addUserForm.get('name').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input matInput #input id="ageField" type="number" placeholder="Age" [(ngModel)]="data.user.age"
+               formControlName="age">
+        <mat-error *ngFor="let validation of add_user_validation_messages.age">
+          <mat-error class="error-message" id="age-error"
+                     *ngIf="addUserForm.get('age').hasError(validation.type) && (addUserForm.get('age').dirty || addUserForm.get('age').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input matInput #input id="companyField" placeholder="Company" [(ngModel)]="data.user.company"
+               formControlName="company">
+      </mat-form-field>
+      <mat-form-field flex>
+        <input matInput #input id="emailField" placeholder="Email" [(ngModel)]="data.user.email"
+               formControlName="email">
+        <mat-error *ngFor="let validation of add_user_validation_messages.email">
+          <mat-error class="error-message" id='email-error'
+                     *ngIf="addUserForm.get('email').hasError(validation.type) && (addUserForm.get('email').dirty || addUserForm.get('email').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions layout="row">
+      <!-- [mat-dialog-close]="data.user" causes the data.user object to be returned when the dialog is closed. -->
+      <button mat-raised-button id="confirmAddUserButton" [mat-dialog-close]="data.user" type="button" color="primary"
+              [disabled]="!addUserForm.valid">Add User
+      </button>
+      <!-- [mat-dialog-close]="null" causes null to be returned when the dialog is closed. -->
+      <button mat-raised-button id="exitWithoutAddingButton" [mat-dialog-close]="null" type="button">Cancel</button>
+    </mat-dialog-actions>
+  </form>
+</div>
+

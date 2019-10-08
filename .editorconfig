@@ -1,0 +1,20 @@
+# https://editorconfig.org
+# This is based on the Angular `.editorconfig`:
+# https://github.com/angular/angular/blob/master/.editorconfig
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Whitespace changes in Markdown files can sometimes mess with
+# the Markdown formatting, so we need to avoid these kinds of
+# changes.
+[*.md]
+insert_final_newline = false
+trim_trailing_whitespace = false
