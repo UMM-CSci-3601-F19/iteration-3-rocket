@@ -1,0 +1,3 @@
+rootProject.name = 'production-template-f19'
+
+include 'client', 'server'

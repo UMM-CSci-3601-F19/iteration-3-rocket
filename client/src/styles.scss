@@ -1,0 +1,75 @@
+@import '../node_modules/@angular/material/theming';
+
+// General themes for across the app and those that need access to theming go here
+// Styles that affect only things in an individual component should go in that component's scss/css file.
+// For more information about Angular Material theming: https://material.angular.io/guide/theming
+
+
+// The theme.scss file contains variables for theme colors, this allows you to use them in other scss files across the project
+@import 'theme';
+
+
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once! (this means don't use this styles.scss in other scss files)
+@include mat-core();
+
+
+// This is to be able to theme parts of the app dynamically depending on theme (right now: light or dark)
+// You can put styles in this mixin and the theme variables will refer to the actual theme being used (light or dark)
+@mixin app-theming($theme) {
+  // Extract the palettes you need from the theme definition.
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  $is-dark: map-get($theme, is-dark);
+
+  // Define any styles affected by the theme.
+
+  @if $is-dark {
+    .mat-toolbar.mat-primary {
+      background: mat-color($background, app-bar);
+      color: mat-color($foreground, text);
+    }
+  }
+  .drawer-list-item-active {
+    background-color: mat-color($background, hover) !important;
+    color: mat-color($primary) !important;
+    .mat-list-icon {
+      color: mat-color($primary) !important;
+    }
+  }
+
+  .sidenav-list {
+    .mat-list-icon {
+      color: mat-color($foreground, icon);
+      margin-right: 16px;
+    }
+  }
+}
+
+
+// Sets up the theming for built in material components with the light theme
+@include angular-material-theme($light-theme);
+
+// Sets up theming for our custom components with the light theme
+@include app-theming($light-theme);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+// This media query detects if the user has dark-mode turned on on their OS or browser
+// If you don't want to apply dark theme automatically,
+// you can also make this a normal class and add it to body or html dynamically.
+@media (prefers-color-scheme: dark) {
+  // Sets up the theming for built in material components with the light theme
+  @include angular-material-theme($dark-theme);
+  // Sets up theming for our custom components with the light theme
+  @include app-theming($dark-theme);
+}

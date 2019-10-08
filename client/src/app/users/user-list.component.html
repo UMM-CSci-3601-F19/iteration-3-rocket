@@ -1,0 +1,63 @@
+<div>
+  <button id="addNewUser" mat-raised-button (click)="openDialog()">Add New User</button>
+</div>
+
+
+<div layout-gt-sm="row">
+  <div flex-gt-sm="80" flex-offset-gt-sm="10">
+    <mat-card>
+      <mat-card-title id="user-list-title">Users</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <mat-form-field>
+          <input
+            matInput
+            id="userName" #input
+            type="text"
+            placeholder="Filter by name"
+            (input)="updateName($event.target.value)">
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            id="userAge" #input
+            type="number"
+            placeholder="Filter by age"
+            (input)="updateAge($event.target.value)">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput id="userCompany" #input type="search" placeholder="Search for company"
+                 [(ngModel)]="userCompany"/>
+          <button mat-button id="companyClearSearch" type="button" *ngIf="userCompany" matSuffix mat-icon-button
+                  aria-label="clear" (click)="userCompany='';loadService()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">Submit
+        </button>
+
+        <mat-accordion *ngIf="users; else usersError">
+          <mat-expansion-panel #elem class="users" [id]="user.email" [expanded]="this.isHighlighted(user)"
+                               *ngFor="let user of this.filteredUsers">
+            <mat-expansion-panel-header>
+              <mat-panel-title matTooltip="email: {{user.email}}">{{user.name}}</mat-panel-title>
+
+            </mat-expansion-panel-header>
+            <mat-panel-description>Works for {{user.company}}</mat-panel-description>
+            <mat-panel-description>Age: {{user.age}} years old</mat-panel-description>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
+        <ng-template #usersError>
+          <mat-error>
+            There was a problem loading the users. Possibly the server is down or perhaps there are network
+            issues.
+          </mat-error>
+          <mat-error>
+            Please wait a bit and try again or start the server.
+          </mat-error>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

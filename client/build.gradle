@@ -1,0 +1,59 @@
+// Client side build.gradle
+
+plugins {
+  id 'com.moowork.node' version '1.3.1'
+}
+
+node {
+  version = '10.16.0'
+  download = true
+  workDir = file("${project.projectDir}/node")
+  yarnWorkDir = file("${project.projectDir}/yarn")
+  nodeModulesDir = file("${project.projectDir}/")
+}
+
+task runClient(type: Exec, dependsOn: yarn_install) {
+  group = 'application'
+  executable "ng"
+  args = ["serve"]
+}
+
+task runClientTestsAndWatch(type: NpmTask, dependsOn: yarn_install) {
+  group = 'application'
+  description = "Start client side tests, watching and updating when there are changes"
+  args = ['run', 'test-watch']
+}
+
+task runClientTestWithCoverage(type: Exec, dependsOn: yarn_install) {
+  group = 'application'
+  executable "ng"
+  args = ["test", "--watch=false", "--code-coverage"]
+}
+
+task runE2ETests(type: Exec, dependsOn: yarn_install) {
+  group = 'application'
+  executable "ng"
+  args = ["e2e"]
+}
+
+task runClientTests(type: Exec, dependsOn: yarn_install) {
+  group = 'application'
+  executable = "ng"
+  args = ["test", "--watch=false"]
+}
+
+task build(type: NodeTask, dependsOn: yarn_install) {
+  group = 'application'
+  description = 'Builds the client side of the application using ng build'
+
+  // Delete the old build directory (if there is one) to ensure we
+  // rebuild the client
+  delete 'build'
+  def build = file("build")
+  outputs.dir(build)
+
+  // We need this on the droplet because we haven't installed `ng` as a standalone
+  // tool there.
+  script = file("node_modules/@angular/cli/bin/ng")
+  args = ["build", "--output-path=build", "--configuration=production"]
+}

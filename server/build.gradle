@@ -1,0 +1,65 @@
+// Server side build.gradle
+// Builds the server-side of the project
+
+repositories {
+  mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'umm3601.Server'
+
+dependencies {
+  compile 'com.sparkjava:spark-core:2.9.1'
+
+  compile 'org.slf4j:slf4j-simple:1.7.26'
+  compile 'com.google.code.gson:gson:2.8.5'
+  compile 'org.mongodb:mongodb-driver:3.10.1'
+
+  testCompile 'junit:junit:4.12'
+}
+
+distributions {
+  main {
+    contents {
+      // Put the client artifacts (HTML, CSS, and JS generated
+      // by Angular) in the `lib/client/public` directory. This
+      // plus putting `client` in the classpath (next in this
+      // file) and setting `public` as the place where static files
+      // will be served from by Spark (in `Server.java`) allows
+      // the generated static files to be successfully served from
+      // Spark when run from the gradle generated startup script
+      // in the gradle generated tarball.
+      into('lib/client/public') {
+        from { project(':client').build.outputs.files }
+        fileMode = 0755
+      }
+    }
+  }
+}
+
+startScripts {
+  classpath += files('client')
+}
+
+//Only server tests
+task runServerTests {
+  group = "application"
+}
+runServerTests.dependsOn test
+
+//Both karma and junit tests
+task runAllTests {
+  group = "application"
+  description = "Runs the server as a JVM application after testing both it and the client"
+}
+
+task buildExecutable {
+  group = "application"
+}
+buildExecutable.dependsOn(build)
+
+runAllTests.dependsOn check
+
+check.dependsOn(":client:runClientTests")
