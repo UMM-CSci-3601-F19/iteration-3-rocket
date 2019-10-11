@@ -1,0 +1,16 @@
+[
+  {
+    "id": "0cf96bfc-c9c3-4692-ad35-cb5549c72fc2",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "9291458d-dbad-418e-8d42-b6090570272c",
+    "type": "dryer",
+    "status": "normal",
+    "running": false,
+    "room_id": "independance_hall"
+  }
+]
