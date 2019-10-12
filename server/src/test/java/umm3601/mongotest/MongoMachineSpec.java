@@ -23,36 +23,36 @@ public class MongoMachineSpec {
     MongoDatabase db = mongoClient.getDatabase("test");
     machineDocuments = db.getCollection("rooms");
     machineDocuments.drop();
-    List<Document> testRooms = new ArrayList<>();
-    testRooms.add(Document.parse("{\n" +
+    List<Document> testMachines = new ArrayList<>();
+    testMachines.add(Document.parse("{\n" +
       "    \"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
       "    \"type\": \"washer\",\n" +
       "    \"running\": true,\n" +
       "    \"status\": \"normal\",\n" +
       "    \"room_id\": \"gay_hall\"\n" +
       "  }"));
-    testRooms.add(Document.parse("{\n" +
+    testMachines.add(Document.parse("{\n" +
       "    \"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
       "    \"type\": \"dryer\",\n" +
       "    \"running\": false,\n" +
       "    \"status\": \"normal\",\n" +
       "    \"room_id\": \"independence_hall\"\n" +
       "  }"));
-    testRooms.add(Document.parse("{\n" +
+    testMachines.add(Document.parse("{\n" +
       "    \"id\": \"cd840548-7fd2-4a59-87a0-0afabeee0f85\",\n" +
       "    \"type\": \"dryer\",\n" +
       "    \"running\": true,\n" +
       "    \"status\": \"broken\",\n" +
       "    \"room_id\": \"pine_hall\"\n" +
       "  }"));
-    testRooms.add(Document.parse("{\n" +
+    testMachines.add(Document.parse("{\n" +
       "    \"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
       "    \"type\": \"washer\",\n" +
       "    \"running\": false,\n" +
       "    \"status\": \"invisible\",\n" +
       "    \"room_id\": \"gay_hall\"\n" +
       "  }"));
-    machineDocuments.insertMany(testRooms);
+    machineDocuments.insertMany(testMachines);
   }
 
   private List<Document> intoList(MongoIterable<Document> documents) {
