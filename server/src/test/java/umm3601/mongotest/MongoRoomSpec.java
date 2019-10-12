@@ -51,7 +51,7 @@ public class MongoRoomSpec {
   }
 
   @Test
-  public void shouldBeThreeUsers() {
+  public void shouldBeThreeRooms() {
     FindIterable<Document> documents = roomDocuments.find();
     int numberOfRooms = countRooms(documents);
     assertEquals("Should be 2 total rooms", 2, numberOfRooms);
