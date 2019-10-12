@@ -18,13 +18,29 @@ public class LaundryRequestHandler {
 
   public Object getMachines(Request request, Response response) {
     response.type("application/json");
-    String room = request.params("room");
-    if (room == null || room.equals("")) {
+    String room_id = request.params("room");
+    String machines;
+    if (room_id == null || room_id.equals("")) {
       return laundryController.getMachines();
     } else {
-      return laundryController.getMachinesAtRoom(room);
-
-
+//    try {
+      machines = laundryController.getMachinesAtRoom(room_id);
+//    } catch (IllegalArgumentException e) {
+      // This is thrown if the ID doesn't have the appropriate
+      // form for a Mongo Object ID.
+      // https://docs.mongodb.com/manual/reference/method/ObjectId/
+//      response.status(400);
+//      response.body("The requested machine id " + id + " wasn't a legal Mongo Object ID.\n" +
+//        "See 'https://docs.mongodb.com/manual/reference/method/ObjectId/' for more info.");
+//      return "";
+//    }
+      if (machines != null) {
+        return new JsonParser().parse(machines);
+      } else {
+        response.status(404);
+        response.body("The requested room with id " + room_id + " was not found");
+        return "";
+      }
     }
   }
 
