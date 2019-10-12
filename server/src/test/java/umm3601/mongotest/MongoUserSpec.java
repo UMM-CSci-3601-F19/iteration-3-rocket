@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
  * <p>
  * Created by mcphee on 20/2/17.
  */
-public class MongoSpec {
+public class MongoUserSpec {
 
   private MongoCollection<Document> userDocuments;
 
