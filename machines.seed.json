@@ -1,0 +1,702 @@
+[
+  {
+    "id": "208c3ced-c361-414b-863d-6a61fc1d987b",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "8761b8c6-2548-43c9-9d31-ce0b84bcd160",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "ba9111e9-113f-4bdb-9580-fb098540afa3",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "83d1f4db-496c-44c1-bf9b-fffbac67077f",
+    "type": "dryer",
+    "running": true,
+    "status": "broken",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "f714b475-5db7-4eeb-a6e0-b17921f0c477",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "56865cd3-c854-448d-9456-59f7cb13ec65",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "36e93b88-82af-41fe-8fd0-639544eddaa3",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "8f4b1900-a128-4ed5-8da1-8f4f463e775e",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "57b77b09-d9f1-4418-860e-8a24b259b491",
+    "type": "dryer",
+    "running": false,
+    "status": "broken",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "d4c2ca97-5387-4f43-9cf7-a8a307473467",
+    "type": "washer",
+    "running": true,
+    "status": "broken",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "1cf254d6-12c4-480e-9550-10b99ac08793",
+    "type": "dryer",
+    "running": true,
+    "status": "invisible",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "fff847cc-d44f-41be-ad83-1ac7fc6427a7",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "bee93873-85c5-48a8-9bba-f0f27ffea3d5",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "04e659fb-eb36-496c-84ee-b0534b633993",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "22e5916b-4eef-44de-b8ee-b786cd066e34",
+    "type": "washer",
+    "running": true,
+    "status": "broken",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "5182f1f3-606e-4f0a-9485-fd821dc79f3c",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "f86922ca-6428-4c99-9798-7a59c7117d0c",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "95e2221c-2b04-4e48-b685-593bb7d42e14",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "1391b505-9f51-4754-a60f-30e1adb5ea20",
+    "type": "washer",
+    "running": true,
+    "status": "broken",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "9d86f6c5-f146-446a-bccb-f05f0e627bd2",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "61382fd7-8444-4956-b951-51052f20c0e3",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "cd840548-7fd2-4a59-87a0-0afabeee0f85",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "8fe96a9e-f847-43a4-a2a8-e5e59a52d4d4",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "98754201-fc3d-4313-ac68-aeb85e60c901",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "e9e2bd2e-21cd-411e-ae76-e19b70928103",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "fe1d12e1-7c29-43a2-b2e2-f0cf626607f4",
+    "type": "washer",
+    "running": true,
+    "status": "invisible",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "f4c1e67c-db43-482f-9b17-cfb1ba1eb436",
+    "type": "dryer",
+    "running": true,
+    "status": "broken",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "9e5f2e92-019b-4041-9430-d9af368b5598",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "da22bdf0-bcec-4a0b-a568-536495e07741",
+    "type": "dryer",
+    "running": false,
+    "status": "broken",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "59eb5d14-a27a-4608-b0d7-25c4f8970e14",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "6e42f4f5-e409-439e-a843-9b0088523b81",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "7ace9ea3-abe8-4e97-a644-ac030ba8946a",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "13632e5e-a670-4964-9ee9-9dc795aca477",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "2d1abd7a-0763-4d8e-9ad7-b5367afa5268",
+    "type": "dryer",
+    "running": false,
+    "status": "broken",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "ae3931fb-4049-4eb5-a310-bb9ab11672fe",
+    "type": "washer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "cee9ba33-8c10-4b40-8307-c0a8ea9f68f5",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "fb814f1d-daf4-4d44-97a4-384476a40e71",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "bc8b9794-70c1-44a9-b41a-8eb9c55a750e",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "d8725699-d580-40b2-bc04-d0ddd55a5957",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "550d891c-c2c8-40e2-927e-69de4877b6a1",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "c8f790bd-e3fe-4448-bafe-d5f001312537",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "54c3e6d3-de4f-4752-a8f6-0b26928eadcf",
+    "type": "washer",
+    "running": false,
+    "status": "broken",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "f59fab45-e618-462b-84cb-3f62f7000970",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "68db428b-c8c5-49ae-a2b5-0810dc40332c",
+    "type": "dryer",
+    "running": true,
+    "status": "broken",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "87779a60-7553-48dc-88f0-a8af801f65c9",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "da694641-9954-40e8-9de8-cdec551af817",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "dff6eabc-4a63-4ed1-8e75-5ad0078ba930",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "58f89dda-bc8b-48d5-bc2e-058c72562919",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "ee684383-149a-4035-a6d9-c8fe60d6596c",
+    "type": "washer",
+    "running": true,
+    "status": "invisible",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "736002ed-3494-46ee-9483-0839cf9c3506",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "3b98fd50-8266-43b7-a000-e617e8c9e7aa",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "4522725f-dba3-4ee9-aecb-d4480fa2528b",
+    "type": "washer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "ccd0ab38-4d70-46ed-b803-54889e803bc4",
+    "type": "dryer",
+    "running": true,
+    "status": "broken",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "7ad1c8de-5e32-4657-8170-270e02084a3b",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "69385e13-65b2-4f60-829a-1fc9f0d85f9e",
+    "type": "washer",
+    "running": false,
+    "status": "broken",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "443d7330-b4bf-4f43-9b02-9eb6cb75f4c3",
+    "type": "dryer",
+    "running": true,
+    "status": "broken",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "c90fdf9f-c4e2-4945-adb6-d5cb023dca79",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "97e917d4-298c-43bd-a77a-4a449ca7e7a5",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "60fa3941-c590-4436-98be-e84be25920da",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "9ac9a317-39a7-4683-ab3b-2304f5dd4b3b",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "e6d7264e-6c70-432b-aa6d-f40aa686f748",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "06ccecae-c4eb-4d28-8cc8-afb82b0c40ef",
+    "type": "washer",
+    "running": true,
+    "status": "invisible",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "8b8e7636-b95f-47a0-ab4b-ce46a84529a4",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "1b080b36-0cae-41c6-975c-b652b61772c7",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "4c887e3c-650d-4cfc-b5af-9b37a39e0312",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "b8a37a96-be42-4c03-958b-bbf5b8375e9b",
+    "type": "washer",
+    "running": true,
+    "status": "invisible",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "913470ec-9bab-4455-9f9b-e05a129a7c13",
+    "type": "washer",
+    "running": true,
+    "status": "broken",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "4524f9c5-a40d-435c-bde7-d657e6a16fb0",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "212d4742-1453-4d40-b02a-49e6ccdb514b",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "4e233b9d-070b-437d-a5c5-04c5ed949383",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "46388f5e-a44c-46ee-a0a5-f370b33ae0a4",
+    "type": "dryer",
+    "running": true,
+    "status": "broken",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "a1414bb7-1915-4450-9a66-219037a1d222",
+    "type": "washer",
+    "running": false,
+    "status": "broken",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "dcf295b7-2aa8-4bde-9ff4-5eba19f3a0c7",
+    "type": "washer",
+    "running": false,
+    "status": "broken",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "09055c3c-18de-411a-9f88-3ced7a27bd8b",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "9131fcb9-21c4-4a68-9833-e2ef67b0f8a7",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "3a251e23-3e8e-4449-a91f-f6491132035e",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "fdbdb4bd-45c9-430d-932e-baa839fbb4b8",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "1e6734ad-aba4-4808-99b4-532f8dbdf555",
+    "type": "washer",
+    "running": false,
+    "status": "broken",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "94c6553f-396c-4401-8b05-606cac40a849",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "52539c66-fe2e-4e69-b15f-a66812dc391b",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "3ed1f3ca-4314-45a9-8383-fd16f1070f59",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "2f4fcc49-6393-459a-ac3b-64da3545fbf0",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "86964e39-bd66-4f15-8cd5-89ae79069dc8",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "879fc84b-df43-4807-8d90-f628cc736b0c",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "82d55b92-6fd7-4c92-8f79-185810a3e013",
+    "type": "washer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "9ed07062-2e64-4354-973a-5551a1b9a902",
+    "type": "washer",
+    "running": true,
+    "status": "broken",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "80f6eced-621e-448b-a106-0cc3d1f7fb47",
+    "type": "dryer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "779824cf-2029-4c68-adf3-bf2a9ffd283b",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "c82f284c-e7f1-4750-b883-59fce1e04db0",
+    "type": "washer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "3f3109dc-ba8d-4b3d-a8d4-6cf8b84aa610",
+    "type": "dryer",
+    "running": false,
+    "status": "normal",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "31281417-0459-4457-be7a-b314d8718300",
+    "type": "dryer",
+    "running": true,
+    "status": "normal",
+    "room_id": "independence_hall"
+  },
+  {
+    "id": "3b085d95-5ee4-4cca-978b-2c146df279c5",
+    "type": "washer",
+    "running": false,
+    "status": "normal",
+    "room_id": "blakely_hall"
+  },
+  {
+    "id": "7fcf2131-93f2-4ace-9b8b-72389c76b34c",
+    "type": "washer",
+    "running": false,
+    "status": "invisible",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "a6c0a087-1da4-4940-aa02-73e6c0b79d8a",
+    "type": "washer",
+    "running": true,
+    "status": "broken",
+    "room_id": "green_prarie"
+  },
+  {
+    "id": "b5320370-a74d-421c-a38c-51dec57f969d",
+    "type": "washer",
+    "running": false,
+    "status": "broken",
+    "room_id": "gay_hall"
+  },
+  {
+    "id": "f975bb77-894b-4c53-85aa-1894f527b0bd",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  },
+  {
+    "id": "b00d7dab-5bf1-470d-ae23-3402256dc398",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "203a7e32-a411-4e56-9eae-5e989692b9e3",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "c3b316f0-b700-4ae3-bf1c-3c13a85cb2d3",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "spooner_hall"
+  },
+  {
+    "id": "a5a4e44f-278d-47d8-895b-808329913a31",
+    "type": "washer",
+    "running": true,
+    "status": "normal",
+    "room_id": "pine_hall"
+  }
+]
