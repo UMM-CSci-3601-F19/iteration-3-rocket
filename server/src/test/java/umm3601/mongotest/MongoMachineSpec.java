@@ -25,33 +25,33 @@ public class MongoMachineSpec {
     machineDocuments.drop();
     List<Document> testRooms = new ArrayList<>();
     testRooms.add(Document.parse("{\n" +
-      "\t\"id\": \"0cf96bfc-c9c3-4692-ad35-cb5549c72fc2\",\n" +
-      "\t\"type\": \"washer\",\n" +
-      "      “running”: true,\n" +
-      "      “status:” “normal”,\n" +
-      "\t\"room_id\": \"gay_hall\"  \n" +
-      "  }\n"));
-    testRooms.add(Document.parse("{{\n" +
-      "\t\"id\": \"9291458d-dbad-418e-8d42-b6090570272c\",\n" +
-      "\t\"type\": \"dryer\",\n" +
-      "      “status”: “normal”,\n" +
-      "      “running”: false,\n" +
-      "\t\"room_id\": \"independence_hall\"\n" +
-      "  }\n"));
-    testRooms.add(Document.parse("{{\n" +
-      "\t\"id\": \"9291458d-dbad-418e-8d42-b6090570272c\",\n" +
-      "\t\"type\": \"dryer\",\n" +
-      "      “status”: “broken”,\n" +
-      "      “running”: true,\n" +
-      "\t\"room_id\": \"pine_hall\"\n" +
-      "  }\n"));
-    testRooms.add(Document.parse("{{\n" +
-      "\t\"id\": \"9291458d-dbad-418e-8d42-b6090570272c\",\n" +
-      "\t\"type\": \"washer\",\n" +
-      "      “status”: “invisible”,\n" +
-      "      “running”: false,\n" +
-      "\t\"room_id\": \"gay_hall\"\n" +
-      "  }\n"));
+      "    \"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
+      "    \"type\": \"washer\",\n" +
+      "    \"running\": true,\n" +
+      "    \"status\": \"normal\",\n" +
+      "    \"room_id\": \"gay_hall\"\n" +
+      "  }"));
+    testRooms.add(Document.parse("{\n" +
+      "    \"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
+      "    \"type\": \"dryer\",\n" +
+      "    \"running\": false,\n" +
+      "    \"status\": \"normal\",\n" +
+      "    \"room_id\": \"independence_hall\"\n" +
+      "  }"));
+    testRooms.add(Document.parse("{\n" +
+      "    \"id\": \"cd840548-7fd2-4a59-87a0-0afabeee0f85\",\n" +
+      "    \"type\": \"dryer\",\n" +
+      "    \"running\": true,\n" +
+      "    \"status\": \"broken\",\n" +
+      "    \"room_id\": \"pine_hall\"\n" +
+      "  }"));
+    testRooms.add(Document.parse("{\n" +
+      "    \"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
+      "    \"type\": \"washer\",\n" +
+      "    \"running\": false,\n" +
+      "    \"status\": \"invisible\",\n" +
+      "    \"room_id\": \"gay_hall\"\n" +
+      "  }"));
     machineDocuments.insertMany(testRooms);
   }
 
@@ -146,10 +146,10 @@ public class MongoMachineSpec {
   @Test
   public void justIdAndType() {
     FindIterable<Document> documents
-      = machineDocuments.find().projection(fields(include("name", "type")));
+      = machineDocuments.find().projection(fields(include("id", "type")));
     List<Document> docs = intoList(documents);
     assertEquals("Should be 4", 4, docs.size());
-    assertEquals("First id should match", "0cf96bfc-c9c3-4692-ad35-cb5549c72fc2", docs.get(0).get("id"));
+    assertEquals("First id should match", "ba9111e9-113f-4bdb-9580-fb098540afa3", docs.get(0).get("id"));
     assertEquals("First should be Washer", "washer", docs.get(0).get("type"));
     assertNull("First shouldn't have running", docs.get(0).get("running"));
     assertNull("First shouldn't have status", docs.get(0).get("status"));
