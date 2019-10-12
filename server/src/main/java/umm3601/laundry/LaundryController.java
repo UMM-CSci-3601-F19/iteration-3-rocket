@@ -4,6 +4,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.Iterator;
 import java.util.stream.Collectors;
@@ -21,17 +22,15 @@ public class LaundryController {
   }
 
 
-  public Object getRooms() {
-    return serializeIterable(roomCollection.find());
-  }
+  public String getRooms() { return serializeIterable(roomCollection.find()); }
 
-  public Object getMachines() {
+  public String getMachines() {
     return serializeIterable(machineCollection.find());
   }
 
   public String getMachinesAtRoom(String room) {
     Document filterDoc = new Document();
-    filterDoc = filterDoc.append("room_id", room);
+    filterDoc = filterDoc.append("room_id", room);      // TODO use hex string representation of id: new Object("id")
     return serializeIterable(machineCollection.find(filterDoc));
   }
 
@@ -43,7 +42,7 @@ public class LaundryController {
 
   public String getMachine(String id) {
     FindIterable<Document> jsonMachines
-      = machineCollection.find(eq("id", id));
+      = machineCollection.find(eq("id", new ObjectId(id)));
 
     Iterator<Document> iterator = jsonMachines.iterator();
     if (iterator.hasNext()) {
