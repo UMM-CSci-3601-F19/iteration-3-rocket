@@ -11,6 +11,7 @@ import {APP_BASE_HREF} from '@angular/common';
 
 import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {AddUserComponent} from './users/add-user.component';
     HttpClientModule,
     Routing,
     CustomModule,
+    MatGridListModule,
   ],
   declarations: [
     AppComponent,
