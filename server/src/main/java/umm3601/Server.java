@@ -6,6 +6,8 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.utils.IOUtils;
+import umm3601.laundry.LaundryController;
+import umm3601.laundry.LaundryRequestHandler;
 import umm3601.user.UserController;
 import umm3601.user.UserRequestHandler;
 
@@ -14,15 +16,21 @@ import java.io.InputStream;
 
 public class Server {
   private static final String userDatabaseName = "dev";
+  private static final String machineDatabaseName = "dev";
+  private static final String roomDatabaseName = "dev";
   private static final int serverPort = 4567;
 
   public static void main(String[] args) {
 
     MongoClient mongoClient = new MongoClient();
     MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
+    MongoDatabase machineDatabase = mongoClient.getDatabase(machineDatabaseName);
+    MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
 
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
+    LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase);
+    LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
 
     //Configure Spark
     port(serverPort);
@@ -57,10 +65,18 @@ public class Server {
 
     get("/", clientRoute);
 
-    /// User Endpoints ///////////////////////////
+    /// Endpoints ///////////////////////////////
     /////////////////////////////////////////////
 
-    //List users, filtered using query parameters
+    // List machines
+
+    get("api/rooms", laundryRequestHandler::getRooms);
+    get("api/get_machines/all", laundryRequestHandler::getMachines);
+    get("api/get_machines/:room", laundryRequestHandler::getMachines);
+    get("api/get_machine_state/:machine_id", laundryRequestHandler::getMachineStatus);
+//  get("api/change_machine_status/:machine_id/:status", laundryRequestHandler::changeMachineStatus);
+
+    // List users, filtered using query parameters
 
     get("api/users", userRequestHandler::getUsers);
     get("api/users/:id", userRequestHandler::getUserJSON);

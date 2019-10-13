@@ -1,5 +1,5 @@
 # CSCI 3601 Production Template, F19
-[![Build Status](https://travis-ci.org/UMM-CSci-3601/production-template-f19.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601/production-template-f19)
+[![Build Status](https://travis-ci.org/UMM-CSci-3601-F19/iteration-1-rambunctious-racoons.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-F19/iteration-1-rambunctious-racoons)
 
 This is your starter code for Iteration 1.
 
