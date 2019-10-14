@@ -39,7 +39,7 @@
     <div flex-gt-sm="80" flex-offset-gt-sm="10">
       <mat-card>
         <mat-card-title id="home-machines-card">{{this.machineListTitle}}</mat-card-title>
-        <mat-accordion #machineList *ngIf="machines; else machinesError">
+        <mat-accordion *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
             <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal'">
                 <mat-expansion-panel-header>
