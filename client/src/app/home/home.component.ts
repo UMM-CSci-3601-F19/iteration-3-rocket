@@ -12,23 +12,29 @@ import {HomeService} from './home.service';
 })
 
 export class HomeComponent implements OnInit{
-  public text: string;
+  public machineListTitle: string;
   public rooms: Room[];
   public machines: Machine[];
   public filteredMachines: Machine[];
 
   public roomId: string;
   public roomName: string;
+  public selectorState: number;
 
   constructor(public roomService: HomeService) {
-    this.text = "All the machines on the campus:";
+    this.machineListTitle = "All Machines";
+  }
+
+  setSelect(state: number) {
+    this.selectorState = state;
   }
 
   public updateRoom(newId: string, newName: string): void {
     this.roomId = newId;
     this.roomName = newName;
-    this.text = "Machines available at: " + this.roomName;
+    this.machineListTitle = "Machines Available at " + this.roomName;
     this.updateMachines();
+    this.setSelect(1);
   }
 
   updateMachines(): Observable<Machine[]> {
@@ -70,6 +76,7 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.setSelect(0);
     this.loadAllRooms();
     this.loadAllMachines();
   }

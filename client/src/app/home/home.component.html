@@ -1,17 +1,24 @@
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
-    <mat-card id="home-rooms-card">Rooms!</mat-card>
-    <div layout-gt-sm="row">
-      <div flex-gt-sm="80" flex-offset-gt-sm="10">
+    <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelect(0)">
+
+      <mat-expansion-panel-header>
+        <mat-panel-title id="home-rooms-card">Choose Your Laundry Room</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-panel-description style="font-weight: 600;">
         <mat-card style="margin-left: auto; margin-right: auto">
           <mat-accordion *ngIf="rooms; else roomsError">
-<!--            <mat-card #elem class="rooms" *ngFor="let room of this.rooms">-->
-
-              <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms" *ngFor="let room of this.rooms" (click)="updateRoom(room.id, room.name)">
-                <mat-icon>store_mall_directory</mat-icon><br>
-                <a [id]="room.id">{{room.name}}</a>
-              </button>
-<!--            </mat-card>-->
+            <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
+                     *ngFor="let room of this.rooms" (click)="updateRoom(room.id, room.name)">
+              <mat-icon>store_mall_directory</mat-icon><br>
+              <a [id]="room.id">{{room.name}}</a>
+            </button>
+            <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
+                    (click)="updateRoom('', 'All Rooms')">
+              <mat-icon>store_mall_directory</mat-icon><br>
+              <a [id]="'empty'">All Rooms</a>
+            </button>
 
           </mat-accordion>
           <ng-template #roomsError>
@@ -25,13 +32,14 @@
             </mat-error>
           </ng-template>
         </mat-card>
-      </div>
-    </div>
+      </mat-panel-description>
+
+    </mat-expansion-panel>
 
     <div flex-gt-sm="80" flex-offset-gt-sm="10">
-      <mat-card id="home-machines-card">{{this.text}}</mat-card>
       <mat-card>
-        <mat-accordion *ngIf="machines; else machinesError">
+        <mat-card-title id="home-machines-card">{{this.machineListTitle}}</mat-card-title>
+        <mat-accordion #machineList *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
             <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal'">
                 <mat-expansion-panel-header>
@@ -39,12 +47,10 @@
                 </mat-expansion-panel-header>
 
 
-                <mat-panel-description style="font-weight: 600;">
-                  <div>{{machine.status}}</div><br>
-                  <div>{{machine.room_id}}</div><br>
-                  <div>{{machine.running}}</div>
-                  <div [id]="machine.id">{{machine.id}}</div><br>
-                </mat-panel-description>
+              <mat-panel-description>{{machine.status}}</mat-panel-description>
+              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>{{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
 
             </mat-expansion-panel>
 

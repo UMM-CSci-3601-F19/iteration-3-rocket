@@ -73,3 +73,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   // Sets up theming for our custom components with the light theme
   @include app-theming($dark-theme);
 }
+
+html {
+  scroll-behavior: smooth;
+}
