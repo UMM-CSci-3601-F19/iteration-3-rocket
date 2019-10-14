@@ -79,7 +79,9 @@ html {
 }
 
 .indicator {
-  font-size: 15px;
+  font-size: 14px;
+  margin-left: 38px;
+  color: #7f7f7f;
 }
 
 .roomName {
@@ -109,4 +111,8 @@ mat-icon {
 
 mat-panel-title {
   text-transform: capitalize;
+}
+
+.room.mat-card {
+  margin:0;
 }
