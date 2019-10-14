@@ -12,7 +12,6 @@ import org.bson.json.JsonReader;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
-import spark.Request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,8 +22,8 @@ public class LaundryControllerSpec {
 
   private LaundryController laundryController;
 
-  private ObjectId machineId;
-  private ObjectId roomId;
+  private String machineId;
+  private String roomId;
 
   @Before
   public void clearAndPopulateDB() {
@@ -63,7 +62,7 @@ public class LaundryControllerSpec {
       "    \"room_id\": \"gay_hall\"\n" +
       "  }"));
 
-    machineId = new ObjectId();
+    machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
     BasicDBObject machine = new BasicDBObject("id", machineId);
     machine = machine.append("type", "dryer")
       .append("running", false)
@@ -85,7 +84,8 @@ public class LaundryControllerSpec {
       "\t\"name\": \"Independence Hall\"\n" +
       "  }\n"));
 
-    BasicDBObject room = new BasicDBObject("id", "a_room");
+    roomId = "a_room";
+    BasicDBObject room = new BasicDBObject("id", roomId);
     room = room.append("name", "Pine Hall");
 
     roomDocuments.insertMany(testRooms);
@@ -167,7 +167,7 @@ public class LaundryControllerSpec {
 
   @Test
   public void getMachineById() {
-    String jsonResult = laundryController.getMachine(machineId.toHexString());
+    String jsonResult = laundryController.getMachine(machineId);
     Document machine = Document.parse(jsonResult);
     assertEquals("Name should match", "broken", machine.get("status"));
     String noJsonResult = laundryController.getMachine(new ObjectId().toString());

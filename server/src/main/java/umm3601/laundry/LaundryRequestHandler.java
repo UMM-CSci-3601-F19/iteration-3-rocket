@@ -16,15 +16,15 @@ public class LaundryRequestHandler {
     return laundryController.getRooms();
   }
 
-  public Object getMachines(Request request, Response response) {
+  public Object getRoomMachines(Request request, Response response) {
     response.type("application/json");
-    String room_id = request.params("room");
+    String room = request.params("room");
     String machines;
-    if (room_id == null || room_id.equals("")) {
+    if (room == null || room.equals("")) {
       return laundryController.getMachines();
     } else {
 //    try {
-      machines = laundryController.getMachinesAtRoom(room_id);
+      machines = laundryController.getMachinesAtRoom(room);
 //    } catch (IllegalArgumentException e) {
       // This is thrown if the ID doesn't have the appropriate
       // form for a Mongo Object ID.
@@ -38,15 +38,19 @@ public class LaundryRequestHandler {
         return new JsonParser().parse(machines);
       } else {
         response.status(404);
-        response.body("The requested room with id " + room_id + " was not found");
+        response.body("The requested room with id " + room + " was not found");
         return "";
       }
     }
   }
 
-  public Object getMachineStatus(Request request, Response response) {
-    response.type("boolean");
-    String id = request.params("machine_id");
+  public Object getMachines(Request request, Response response) {
+    return laundryController.getMachines();
+  }
+
+  public Object getMachineJSON(Request request, Response response) {
+    response.type("application/json");
+    String id = request.params("machine");
     String machine;
 //    try {
       machine = laundryController.getMachine(id);
@@ -60,8 +64,7 @@ public class LaundryRequestHandler {
 //      return "";
 //    }
     if (machine != null) {
-      JsonObject jsonMachine = (JsonObject) new JsonParser().parse(machine);
-      return jsonMachine.get("running");
+      return machine;
     } else {
       response.status(404);
       response.body("The requested machine with id " + id + " was not found");
