@@ -80,7 +80,7 @@ html {
 
 .indicator {
   font-size: 14px;
-  margin-left: 38px;
+  margin-left: 35px;
   color: #7f7f7f;
 }
 
@@ -115,4 +115,17 @@ mat-panel-title {
 
 .room.mat-card {
   margin:0;
+  box-shadow: unset;
+}
+
+.machines.mat-expansion-panel {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: unset;
+}
+
+.home {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 }
