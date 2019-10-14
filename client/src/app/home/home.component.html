@@ -175,23 +175,6 @@
           </mat-accordion>
         </mat-accordion>
 
-        <mat-accordion *ngIf="machines; else machinesError">
-          <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'">
-              <mat-expansion-panel-header>
-                <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
-                  <mat-icon>local_laundry_service</mat-icon>
-                  {{machine.type}}</mat-panel-title>
-              </mat-expansion-panel-header>
-
-              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
-              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </mat-accordion>
-
         <ng-template #machinesError>
           <mat-error>
             There was a problem loading the machines. Possibly the server is down or perhaps there are network
