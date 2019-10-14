@@ -1,3 +1,7 @@
 #home-page-card {
   margin-top: 10px;
 }
+
+.mat-expansion-panel-header-description {
+  margin-right: 0;
+}

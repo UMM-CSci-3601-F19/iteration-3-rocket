@@ -115,4 +115,11 @@ mat-panel-title {
 
 .room.mat-card {
   margin:0;
+  box-shadow: unset;
+}
+
+.machines.mat-expansion-panel {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: unset;
 }
