@@ -71,9 +71,9 @@ public class Server {
     // List machines
 
     get("api/rooms", laundryRequestHandler::getRooms);
-    get("api/get_machines/all", laundryRequestHandler::getMachines);
-    get("api/get_machines/:room", laundryRequestHandler::getMachines);
-    get("api/get_machine_state/:machine_id", laundryRequestHandler::getMachineStatus);
+    get("api/rooms/:room/machines", laundryRequestHandler::getRoomMachines);
+    get("api/machines", laundryRequestHandler::getMachines);
+    get("api/machines/:machine", laundryRequestHandler::getMachineJSON);
 //  get("api/change_machine_status/:machine_id/:status", laundryRequestHandler::changeMachineStatus);
 
     // List users, filtered using query parameters

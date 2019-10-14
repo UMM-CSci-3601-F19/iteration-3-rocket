@@ -1,59 +1,197 @@
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
-    <mat-card id="home-page-card">
-      {{this.text}}
-    </mat-card>
+    <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelector(0)">
 
-    <mat-grid-list cols = "2" rowHeight = "400px" >
-      <mat-grid-tile
-        [style.backgroundColor] = "'black'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Gay Hall" color="accent" #input type="button" >Gay Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'black'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Independence Hall" color="accent" #input type="button" >Independence Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Blakely Hall" color="accent" #input type="button" >Blakely Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Spooner Hall" color="accent" #input type="button" >Spooner Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id="Green Prarie" color="accent" #input type="button" >Green Prarie
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Pine Hall" color="accent" #input type="button" >Pine Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" All Machines" color="primary" #input type="button" >All Machines
-        </button>
-      </mat-grid-tile>
-    </mat-grid-list>
+      <mat-expansion-panel-header>
+        <mat-panel-title id="home-rooms-card">Select a Laundry Room Here</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-panel-description style="font-weight: 600;">
+        <mat-card class="room">
+          <mat-accordion *ngIf="rooms; else roomsError">
+
+            <button id="roomSelector" mat-button style="font-weight: 600; width: 200px; height: 100px"
+                     *ngFor="let room of this.rooms" (click)="updateRoom(room.id, room.name)">
+              <mat-icon style="width: 20px; height: 20px">store_mall_directory</mat-icon>
+              <a class="roomName" [id]="room.id">
+                <a>{{room.name}}</a><br>
+                <a class="indicator">{{room.numberOfAvailableMachines}} / {{room.numberOfAllMachines}} Available</a>
+              </a>
+            </button>
+
+
+
+            <button id="allRooms" mat-button style="font-weight: 600; width: 100%; height: 66px" class="rooms"
+                    (click)="updateRoom('', 'All Rooms')">
+              <mat-icon>store_mall_directory</mat-icon>
+              <a class="roomName" [id]="'empty'">All Rooms</a>
+            </button>
+
+          </mat-accordion>
+          <ng-template #roomsError>
+            <mat-error>
+              There was a problem loading the rooms. Possibly the server is down or perhaps there are network
+              issues.
+            </mat-error>
+            <br>
+            <mat-error>
+              Please wait a bit and try again or start the server.
+            </mat-error>
+          </ng-template>
+        </mat-card>
+      </mat-panel-description>
+
+    </mat-expansion-panel>
+
+    <div flex-gt-sm="80" flex-offset-gt-sm="10">
+      <mat-card>
+        <mat-card-title id="home-machines-card-washer" style="font-weight: unset; padding-left: 8px; font-size: 15px">Washers {{this.machineListTitle}}</mat-card-title>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:green">
+                  <mat-icon>local_laundry_service</mat-icon>
+                  {{machine.type}} Vacant for {{machine.vacantTime}} Minutes
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
+                  <mat-icon>local_laundry_service</mat-icon>
+                  {{machine.type}} Available in {{machine.remainingTime}} Minutes
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <ng-template #machinesError>
+          <mat-error>
+            There was a problem loading the machines. Possibly the server is down or perhaps there are network
+            issues.
+          </mat-error>
+          <br>
+          <mat-error>
+            Please wait a bit and try again or start the server.
+          </mat-error>
+        </ng-template>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title id="home-machines-card-dryer" style="font-weight: unset; padding-left: 8px; font-size: 15px">
+          Dryers {{this.machineListTitle}}</mat-card-title>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == false">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:green">
+                  <mat-icon>fireplace</mat-icon>
+                  {{machine.type}} Vacant for {{machine.vacantTime}} Minutes
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == true">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
+                  <mat-icon>fireplace</mat-icon>
+                  {{machine.type}} Available in {{machine.remainingTime}} Minutes
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <ng-template #machinesError>
+          <mat-error>
+            There was a problem loading the machines. Possibly the server is down or perhaps there are network
+            issues.
+          </mat-error>
+          <br>
+          <mat-error>
+            Please wait a bit and try again or start the server.
+          </mat-error>
+        </ng-template>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title id="home-machines-card-broken" style="font-weight: unset; padding-left: 8px; font-size: 15px">
+          {{this.brokenMachineListTitle}}</mat-card-title>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
+                  <mat-icon>local_laundry_service</mat-icon>
+                  {{machine.type}}</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='dryer'">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
+                  <mat-icon>fireplace</mat-icon>
+                  {{machine.type}}</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <ng-template #machinesError>
+          <mat-error>
+            There was a problem loading the machines. Possibly the server is down or perhaps there are network
+            issues.
+          </mat-error>
+          <br>
+          <mat-error>
+            Please wait a bit and try again or start the server.
+          </mat-error>
+        </ng-template>
+      </mat-card>
+    </div>
   </div>
 </div>

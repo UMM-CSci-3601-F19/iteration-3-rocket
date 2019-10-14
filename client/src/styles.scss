@@ -73,3 +73,40 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   // Sets up theming for our custom components with the light theme
   @include app-theming($dark-theme);
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.indicator {
+  font-size: 15px;
+}
+
+.roomName {
+  font-size: 18px;
+}
+
+mat-card {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+mat-sidenav-content {
+  background-color: #3f51b5;
+}
+
+mat-icon {
+  margin-right: 25px;
+}
+
+#roomSelector, #allRooms {
+  text-align: left;
+}
+
+.room mat-icon {
+  margin-right: 15px;
+}
+
+mat-panel-title {
+  text-transform: capitalize;
+}

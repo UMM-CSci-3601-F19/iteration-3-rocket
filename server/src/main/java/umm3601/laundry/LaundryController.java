@@ -42,7 +42,7 @@ public class LaundryController {
 
   public String getMachine(String id) {
     FindIterable<Document> jsonMachines
-      = machineCollection.find(eq("id", new ObjectId(id)));
+      = machineCollection.find(eq("id", id));
 
     Iterator<Document> iterator = jsonMachines.iterator();
     if (iterator.hasNext()) {
