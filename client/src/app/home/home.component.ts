@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit{
       await this.delay(1000);
 
       console.log('Refresh');
-      this.homeService.updateRunningStatus(this.filteredMachines);
+      this.homeService.updateRunningStatus(this.machines);
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateTime()
     })();
