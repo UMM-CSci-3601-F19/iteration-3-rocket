@@ -3,23 +3,28 @@
     <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelector(0)">
 
       <mat-expansion-panel-header>
-        <mat-panel-title id="home-rooms-card">Choose Your Laundry Room</mat-panel-title>
+        <mat-panel-title id="home-rooms-card">Select a Laundry Room Here</mat-panel-title>
       </mat-expansion-panel-header>
 
       <mat-panel-description style="font-weight: 600;">
-        <mat-card style="float: left">
+        <mat-card class="room">
           <mat-accordion *ngIf="rooms; else roomsError">
-            <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
+
+            <button id="roomSelector" mat-button style="font-weight: 600; width: 200px; height: 100px"
                      *ngFor="let room of this.rooms" (click)="updateRoom(room.id, room.name)">
-              <mat-icon>store_mall_directory</mat-icon>
-              <a [id]="room.id">{{room.name}}</a><br>
-              <a class="indicator">{{room.numberOfAvailableMachines}} / {{room.numberOfAllMachines}} Available</a>
+              <mat-icon style="width: 20px; height: 20px">store_mall_directory</mat-icon>
+              <a class="roomName" [id]="room.id">
+                <a>{{room.name}}</a><br>
+                <a class="indicator">{{room.numberOfAvailableMachines}} / {{room.numberOfAllMachines}} Available</a>
+              </a>
             </button>
 
-            <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
+
+
+            <button id="allRooms" mat-button style="font-weight: 600; width: 100%; height: 66px" class="rooms"
                     (click)="updateRoom('', 'All Rooms')">
               <mat-icon>store_mall_directory</mat-icon>
-              <a [id]="'empty'">All Rooms</a>
+              <a class="roomName" [id]="'empty'">All Rooms</a>
             </button>
 
           </mat-accordion>

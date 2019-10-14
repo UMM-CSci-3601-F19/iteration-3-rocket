@@ -79,7 +79,11 @@ html {
 }
 
 .indicator {
-  font-size: 10px;
+  font-size: 15px;
+}
+
+.roomName {
+  font-size: 18px;
 }
 
 mat-card {
@@ -89,9 +93,20 @@ mat-card {
 
 mat-sidenav-content {
   background-color: #3f51b5;
-  
 }
 
 mat-icon {
   margin-right: 25px;
+}
+
+#roomSelector, #allRooms {
+  text-align: left;
+}
+
+.room mat-icon {
+  margin-right: 15px;
+}
+
+mat-panel-title {
+  text-transform: capitalize;
 }
