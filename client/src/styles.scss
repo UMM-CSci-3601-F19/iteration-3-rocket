@@ -80,7 +80,7 @@ html {
 
 .indicator {
   font-size: 14px;
-  margin-left: 38px;
+  margin-left: 35px;
   color: #7f7f7f;
 }
 
@@ -122,4 +122,10 @@ mat-panel-title {
   margin-top: 10px;
   margin-bottom: 10px;
   box-shadow: unset;
+}
+
+.home {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 }
