@@ -1,59 +1,78 @@
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
-    <mat-card id="home-page-card">
-      {{this.text}}
-    </mat-card>
+    <mat-card id="home-rooms-card">Rooms!</mat-card>
+    <div layout-gt-sm="row">
+      <div flex-gt-sm="80" flex-offset-gt-sm="10">
+        <mat-card style="margin-left: auto; margin-right: auto">
+          <mat-accordion *ngIf="rooms; else roomsError">
+<!--            <mat-card #elem class="rooms" *ngFor="let room of this.rooms">-->
 
-    <mat-grid-list cols = "2" rowHeight = "400px" >
-      <mat-grid-tile
-        [style.backgroundColor] = "'black'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Gay Hall" color="accent" #input type="button" >Gay Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'black'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Independence Hall" color="accent" #input type="button" >Independence Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Blakely Hall" color="accent" #input type="button" >Blakely Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Spooner Hall" color="accent" #input type="button" >Spooner Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id="Green Prarie" color="accent" #input type="button" >Green Prarie
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" Pine Hall" color="accent" #input type="button" >Pine Hall
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [style.backgroundColor] = "'cyan'"
-        [colspan] = "1"
-        [rowspan] = "1">
-        <button mat-icon-button id=" All Machines" color="primary" #input type="button" >All Machines
-        </button>
-      </mat-grid-tile>
-    </mat-grid-list>
+              <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms" *ngFor="let room of this.rooms" (click)="updateRoom(room.id, room.name)">
+                <mat-icon>store_mall_directory</mat-icon><br>
+                <a [id]="room.id">{{room.name}}</a>
+              </button>
+<!--            </mat-card>-->
+
+          </mat-accordion>
+          <ng-template #roomsError>
+            <mat-error>
+              There was a problem loading the rooms. Possibly the server is down or perhaps there are network
+              issues.
+            </mat-error>
+            <br>
+            <mat-error>
+              Please wait a bit and try again or start the server.
+            </mat-error>
+          </ng-template>
+        </mat-card>
+      </div>
+    </div>
+
+    <div flex-gt-sm="80" flex-offset-gt-sm="10">
+      <mat-card id="home-machines-card">{{this.text}}</mat-card>
+      <mat-card>
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal'">
+                <mat-expansion-panel-header>
+                  <mat-panel-title matTooltip="Running: {{machine.running}}">{{machine.type}}</mat-panel-title>
+                </mat-expansion-panel-header>
+
+
+                <mat-panel-description style="font-weight: 600;">
+                  <div>{{machine.status}}</div><br>
+                  <div>{{machine.room_id}}</div><br>
+                  <div>{{machine.running}}</div>
+                  <div [id]="machine.id">{{machine.id}}</div><br>
+                </mat-panel-description>
+
+            </mat-expansion-panel>
+
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken'">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
+                  {{machine.type}}</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-panel-description>{{machine.status}}</mat-panel-description>
+              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>{{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <ng-template #machinesError>
+          <mat-error>
+            There was a problem loading the machines. Possibly the server is down or perhaps there are network
+            issues.
+          </mat-error>
+          <br>
+          <mat-error>
+            Please wait a bit and try again or start the server.
+          </mat-error>
+        </ng-template>
+      </mat-card>
+    </div>
   </div>
 </div>
