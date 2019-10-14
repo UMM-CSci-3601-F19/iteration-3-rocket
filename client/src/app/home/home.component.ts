@@ -13,6 +13,7 @@ import {HomeService} from './home.service';
 
 export class HomeComponent implements OnInit{
   public machineListTitle: string;
+  public brokenMachineListTitle: string;
   public rooms: Room[];
   public machines: Machine[];
   public filteredMachines: Machine[];
@@ -22,7 +23,8 @@ export class HomeComponent implements OnInit{
   public selectorState: number;
 
   constructor(public roomService: HomeService) {
-    this.machineListTitle = "All Machines";
+    this.machineListTitle = "Available at All Rooms";
+    this.brokenMachineListTitle = "Unavailable Machines";
   }
 
   setSelect(state: number) {
@@ -32,7 +34,8 @@ export class HomeComponent implements OnInit{
   public updateRoom(newId: string, newName: string): void {
     this.roomId = newId;
     this.roomName = newName;
-    this.machineListTitle = "Machines Available at " + this.roomName;
+    this.machineListTitle = "Available at " + this.roomName;
+    this.brokenMachineListTitle = "Unavailable Machines at " + this.roomName;
     this.updateMachines();
     this.setSelect(1);
   }
