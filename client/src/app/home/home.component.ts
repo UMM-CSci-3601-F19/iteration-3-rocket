@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit{
     }
   }
 
-  loadAllMachines(): Observable<Machine[]> {
+  loadAllMachines(): void {
     const machines: Observable<Machine[]> = this.homeService.getMachines();
     machines.subscribe(
       machines => {
@@ -56,10 +56,9 @@ export class HomeComponent implements OnInit{
       err => {
         console.log(err);
       });
-    return machines;
   }
 
-  loadAllRooms(): Observable<Room[]> {
+  loadAllRooms(): void {
     const rooms: Observable<Room[]> = this.homeService.getRooms();
     rooms.subscribe(
       rooms => {
@@ -68,7 +67,19 @@ export class HomeComponent implements OnInit{
       err => {
         console.log(err);
       });
-    return rooms;
+  }
+
+  updateStates(): void {
+    const machines: Observable<Machine[]> = this.homeService.getMachines();
+    machines.subscribe(
+      machines => {
+        for (let m of this.machines) {
+          m.status = machines.filter(machine => machine.id == m.id)[0].status;
+        }
+      },
+      err => {
+        console.log(err);
+      });
   }
 
   ngOnInit(): void {
@@ -77,7 +88,7 @@ export class HomeComponent implements OnInit{
       this.loadAllRooms();
       this.loadAllMachines();
 
-      await this.delay(2000);
+      await this.delay(1000); // wait 1s for loading data
 
       this.homeService.updateRunningStatus(this.filteredMachines);
       this.homeService.updateAvailableMachineNumber(this.rooms, this.filteredMachines);
@@ -87,9 +98,9 @@ export class HomeComponent implements OnInit{
 
   updateTime(): void {
     (async () => {
-      await this.delay(1000);
-
+      await this.delay(5000); // hold 5s per refresh
       console.log('Refresh');
+      this.updateStates();
       this.homeService.updateRunningStatus(this.machines);
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateTime()
