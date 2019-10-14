@@ -4,8 +4,6 @@ import {Machine} from "./machine";
 import {Observable} from 'rxjs';
 import {HomeService} from './home.service';
 
-// import {MatDialog} from "@angular/material/dialog";
-
 @Component({
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.css']
@@ -22,12 +20,12 @@ export class HomeComponent implements OnInit{
   public roomName: string;
   public selectorState: number;
 
-  constructor(public roomService: HomeService) {
+  constructor(public homeService: HomeService) {
     this.machineListTitle = "Available at All Rooms";
     this.brokenMachineListTitle = "Unavailable Machines";
   }
 
-  setSelect(state: number) {
+  setSelector(state: number) {
     this.selectorState = state;
   }
 
@@ -37,28 +35,19 @@ export class HomeComponent implements OnInit{
     this.machineListTitle = "Available at " + this.roomName;
     this.brokenMachineListTitle = "Unavailable Machines at " + this.roomName;
     this.updateMachines();
-    this.setSelect(1);
+    this.setSelector(1);
   }
 
-  updateMachines(): Observable<Machine[]> {
-    const machines: Observable<Machine[]> = this.roomService.getMachinesAtRoom(this.roomId);
-    machines.subscribe(
-      machines => {
-        this.filteredMachines = machines;
-      },
-      err => {
-        console.log(err);
-      });
-    return machines;
+  updateMachines(): void {
+    this.filteredMachines = this.machines.filter(machine => machine.room_id == this.roomId)
   }
 
   loadAllMachines(): Observable<Machine[]> {
-    const machines: Observable<Machine[]> = this.roomService.getMachines();
+    const machines: Observable<Machine[]> = this.homeService.getMachines();
     machines.subscribe(
       machines => {
         this.machines = machines;
         this.filteredMachines = machines;
-        // console.log(machines)
       },
       err => {
         console.log(err);
@@ -67,7 +56,7 @@ export class HomeComponent implements OnInit{
   }
 
   loadAllRooms(): Observable<Room[]> {
-    const rooms: Observable<Room[]> = this.roomService.getRooms();
+    const rooms: Observable<Room[]> = this.homeService.getRooms();
     rooms.subscribe(
       rooms => {
         this.rooms = rooms;
@@ -79,8 +68,31 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.setSelect(0);
-    this.loadAllRooms();
-    this.loadAllMachines();
+    (async () => {
+      this.setSelector(0);
+      this.loadAllRooms();
+      this.loadAllMachines();
+
+      await this.delay(2000);
+
+      this.homeService.updateRunningStatus(this.filteredMachines);
+      this.homeService.updateAvailableMachineNumber(this.rooms, this.filteredMachines);
+      this.updateTime()
+    })();
+  }
+
+  updateTime(): void {
+    (async () => {
+      await this.delay(1000);
+
+      console.log('Refresh');
+      this.homeService.updateRunningStatus(this.filteredMachines);
+      this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
+      this.updateTime()
+    })();
+  }
+
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 }

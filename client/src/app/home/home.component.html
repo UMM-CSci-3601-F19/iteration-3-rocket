@@ -1,6 +1,6 @@
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
-    <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelect(0)">
+    <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelector(0)">
 
       <mat-expansion-panel-header>
         <mat-panel-title id="home-rooms-card">Choose Your Laundry Room</mat-panel-title>
@@ -12,7 +12,8 @@
             <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
                      *ngFor="let room of this.rooms" (click)="updateRoom(room.id, room.name)">
               <mat-icon>store_mall_directory</mat-icon><br>
-              <a [id]="room.id">{{room.name}}</a>
+              <a [id]="room.id">{{room.name}}</a><br>
+              <a>{{room.numberOfAvailableMachines}} / {{room.numberOfAllMachines}} Available</a>
             </button>
             <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
                     (click)="updateRoom('', 'All Rooms')">
@@ -39,36 +40,37 @@
     <div flex-gt-sm="80" flex-offset-gt-sm="10">
       <mat-card>
         <mat-card-title id="home-machines-card-washer" style="font-weight: unset; padding-left: 8px; font-size: 15px">Washers {{this.machineListTitle}}</mat-card-title>
+
         <mat-accordion *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
               <mat-expansion-panel-header>
-                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:orange">
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:green">
                   <mat-icon>local_laundry_service</mat-icon>
-                  {{machine.type}} Available in ~ Minutes
+                  {{machine.type}} Vacant for {{machine.vacantTime}} Minutes
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <mat-panel-description>{{machine.status}}</mat-panel-description>
-              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>{{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-accordion>
 
         <mat-accordion *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
               <mat-expansion-panel-header>
-                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:orange">
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
                   <mat-icon>local_laundry_service</mat-icon>
-                  {{machine.type}} Vacant for ~ Minutes
+                  {{machine.type}} Available in {{machine.remainingTime}} Minutes
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <mat-panel-description>{{machine.status}}</mat-panel-description>
-              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>{{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-accordion>
@@ -88,32 +90,37 @@
       <mat-card>
         <mat-card-title id="home-machines-card-dryer" style="font-weight: unset; padding-left: 8px; font-size: 15px">
           Dryers {{this.machineListTitle}}</mat-card-title>
+
         <mat-accordion *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == true">
-              <mat-expansion-panel-header>
-                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:orange">
-                  <mat-icon>fireplace</mat-icon>
-                  {{machine.type}} Available in ~ Minutes
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <mat-panel-description>{{machine.status}}</mat-panel-description>
-              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>{{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
-            </mat-expansion-panel>
-
             <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == false">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:green">
                   <mat-icon>fireplace</mat-icon>
-                  {{machine.type}} Vacant for ~ Minutes
+                  {{machine.type}} Vacant for {{machine.vacantTime}} Minutes
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <mat-panel-description>{{machine.status}}</mat-panel-description>
-              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>{{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == true">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
+                  <mat-icon>fireplace</mat-icon>
+                  {{machine.type}} Available in {{machine.remainingTime}} Minutes
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-accordion>
@@ -133,22 +140,9 @@
       <mat-card>
         <mat-card-title id="home-machines-card-broken" style="font-weight: unset; padding-left: 8px; font-size: 15px">
           {{this.brokenMachineListTitle}}</mat-card-title>
+
         <mat-accordion *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='dryer'">
-              <mat-expansion-panel-header>
-                <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
-                  <mat-icon>fireplace</mat-icon>
-                  {{machine.type}}</mat-panel-title>
-              </mat-expansion-panel-header>
-
-              <mat-panel-description>{{machine.status}}</mat-panel-description>
-              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>{{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
-            </mat-expansion-panel>
-
             <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
@@ -156,10 +150,44 @@
                   {{machine.type}}</mat-panel-title>
               </mat-expansion-panel-header>
 
-              <mat-panel-description>{{machine.status}}</mat-panel-description>
-              <mat-panel-description>{{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>{{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">{{machine.id}}</div></mat-panel-description>
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='dryer'">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
+                  <mat-icon>fireplace</mat-icon>
+                  {{machine.type}}</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-accordion>
+
+        <mat-accordion *ngIf="machines; else machinesError">
+          <mat-accordion *ngFor="let machine of this.filteredMachines">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'">
+              <mat-expansion-panel-header>
+                <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
+                  <mat-icon>local_laundry_service</mat-icon>
+                  {{machine.type}}</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
+              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
+              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
+              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-accordion>
