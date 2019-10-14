@@ -7,17 +7,18 @@
       </mat-expansion-panel-header>
 
       <mat-panel-description style="font-weight: 600;">
-        <mat-card style="margin-left: auto; margin-right: auto">
+        <mat-card style="float: left">
           <mat-accordion *ngIf="rooms; else roomsError">
             <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
                      *ngFor="let room of this.rooms" (click)="updateRoom(room.id, room.name)">
-              <mat-icon>store_mall_directory</mat-icon><br>
+              <mat-icon>store_mall_directory</mat-icon>
               <a [id]="room.id">{{room.name}}</a><br>
-              <a>{{room.numberOfAvailableMachines}} / {{room.numberOfAllMachines}} Available</a>
+              <a class="indicator">{{room.numberOfAvailableMachines}} / {{room.numberOfAllMachines}} Available</a>
             </button>
+
             <button mat-button style="font-weight: 600; width: 200px; height: 100px" class="rooms"
                     (click)="updateRoom('', 'All Rooms')">
-              <mat-icon>store_mall_directory</mat-icon><br>
+              <mat-icon>store_mall_directory</mat-icon>
               <a [id]="'empty'">All Rooms</a>
             </button>
 

@@ -39,7 +39,11 @@ export class HomeComponent implements OnInit{
   }
 
   updateMachines(): void {
-    this.filteredMachines = this.machines.filter(machine => machine.room_id == this.roomId)
+    if (this.roomId == '') {
+      this.filteredMachines = this.machines;
+    } else {
+      this.filteredMachines = this.machines.filter(machine => machine.room_id == this.roomId)
+    }
   }
 
   loadAllMachines(): Observable<Machine[]> {
