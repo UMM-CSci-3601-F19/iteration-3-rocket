@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit{
     machines.subscribe(
       machines => {
         for (let m of this.machines) {
-          m.status = machines.filter(machine => machine.id == m.id)[0].status;
+          m.running = machines.filter(machine => machine.id == m.id)[0].running;
         }
       },
       err => {
