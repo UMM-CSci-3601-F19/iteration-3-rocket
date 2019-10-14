@@ -73,7 +73,6 @@ export class HomeComponent implements OnInit{
     const machines: Observable<Machine[]> = this.homeService.getMachines();
     machines.subscribe(
       machines => {
-        this.machines = machines;
         for (let m of this.machines) {
           m.status = machines.filter(machine => machine.id == m.id)[0].status;
         }
