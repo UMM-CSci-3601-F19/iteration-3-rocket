@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit{
   }
 
   loadAllRooms(): void {
-
     const rooms: Observable<Room[]> = this.homeService.getRooms();
     rooms.subscribe(
       rooms => {
