@@ -31,7 +31,7 @@ public class Server {
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
     LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase);
     LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
-    laundryController.updateTime();
+    PollingService pollingService = new PollingService(mongoClient);
 
     //Configure Spark
     port(serverPort);
