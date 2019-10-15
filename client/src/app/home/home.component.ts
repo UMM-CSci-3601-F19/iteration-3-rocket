@@ -21,8 +21,8 @@ export class HomeComponent implements OnInit{
   public selectorState: number;
 
   constructor(public homeService: HomeService) {
-    this.machineListTitle = "Available at All Rooms";
-    this.brokenMachineListTitle = "Unavailable Machines";
+    this.machineListTitle = "available within all rooms";
+    this.brokenMachineListTitle = "Unavailable machines within all rooms";
   }
 
   setSelector(state: number) {
@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit{
   public updateRoom(newId: string, newName: string): void {
     this.roomId = newId;
     this.roomName = newName;
-    this.machineListTitle = "Available at " + this.roomName;
-    this.brokenMachineListTitle = "Unavailable Machines at " + this.roomName;
+    this.machineListTitle = "available within " + this.roomName;
+    this.brokenMachineListTitle = "Unavailable machines within " + this.roomName;
     this.updateMachines();
     this.setSelector(1);
   }
@@ -59,6 +59,7 @@ export class HomeComponent implements OnInit{
   }
 
   loadAllRooms(): void {
+
     const rooms: Observable<Room[]> = this.homeService.getRooms();
     rooms.subscribe(
       rooms => {
