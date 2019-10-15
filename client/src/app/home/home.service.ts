@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {Room} from './room';
-import {Machine} from "./machine";
+import {Machine} from './machine';
 import {environment} from '../../environments/environment';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class HomeService {
   }
 
   getMachinesAtRoom(roomId?: string): Observable<Machine[]> {
-    return this.http.get<Machine[]>(this.roomURL + "/" + roomId + "/machines");
+    return this.http.get<Machine[]>(this.roomURL + '/' + roomId + '/machines');
   }
 
 
@@ -30,20 +30,21 @@ export class HomeService {
   }
 
   getMachine(machineId: string): Observable<Machine> {
-    return this.http.get<Machine>(this.machineURL + "/" + machineId);
+    return this.http.get<Machine>(this.machineURL + '/' + machineId);
   }
 
   updateAvailableMachineNumber(rooms: Room[], machines: Machine[]): void {
     rooms.map(room => {
-      room.numberOfAllMachines = machines.filter(machine => machine.room_id == room.id).length;
-      room.numberOfAvailableMachines = machines.filter(machine => machine.room_id == room.id).filter(machine => machine.status === "normal" && machine.running === false).length;
-    })
+      room.numberOfAllMachines = machines.filter(machine => machine.room_id === room.id).length;
+      room.numberOfAvailableMachines = machines.filter(machine => machine.room_id === room.id)
+        .filter(machine => machine.status === 'normal' && machine.running === false).length;
+    });
   }
 
   updateRunningStatus(machines: Machine[]): void {
-    machines.filter(machine => machine.status=="normal").map(machine => {
-      if (machine.running == true) {
-        if (machine.previousRunningState == null || machine.previousRunningState == false) {
+    machines.filter(machine => machine.status === 'normal').map(machine => {
+      if (machine.running === true) {
+        if (machine.previousRunningState == null || machine.previousRunningState === false) {
           machine.remainingTime = 60;
           machine.vacantTime = -1;
           machine.previousRunningState = true;
@@ -54,7 +55,7 @@ export class HomeService {
           machine.vacantTime = -1;
         }
       } else {
-        if (machine.previousRunningState == null || machine.previousRunningState == true) {
+        if (machine.previousRunningState == null || machine.previousRunningState === true) {
           machine.remainingTime = -1;
           machine.vacantTime = 0;
           machine.previousRunningState = false;
