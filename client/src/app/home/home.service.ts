@@ -12,6 +12,7 @@ export class HomeService {
   readonly baseUrl: string = environment.API_URL ;
   private roomURL: string = this.baseUrl + 'rooms';
   private machineURL: string = this.baseUrl + 'machines';
+  private origins: Observable<Machine[]>;
 
   constructor(private http: HttpClient) {
   }
@@ -45,33 +46,13 @@ export class HomeService {
     }
   }
 
-  updateRunningStatus(machines: Machine[]): void {
-    if (machines != null) {
-      machines.filter(machine => machine.status === 'normal').map(machine => {
-        if (machine.running === true) {
-          if (machine.previousRunningState == null || machine.previousRunningState === false) {
-            machine.remainingTime = 60;
-            machine.vacantTime = -1;
-            machine.previousRunningState = true;
-          } else {
-            if (machine.remainingTime > 0) {
-              --machine.remainingTime;
-            }
-            machine.vacantTime = -1;
-          }
-        } else {
-          if (machine.previousRunningState == null || machine.previousRunningState === true) {
-            machine.remainingTime = -1;
-            machine.vacantTime = 0;
-            machine.previousRunningState = false;
-          } else {
-            ++machine.vacantTime;
-            machine.remainingTime = -1;
-          }
-        }
+  updateRunningStatus(filteredMachines: Machine[], machines: Machine[]): void {
+    if (filteredMachines != null) {
+      filteredMachines.map(machine => {
+        machine.remainingTime = machines.filter(m => m.id === machine.id)[0].remainingTime;
+        machine.vacantTime = machines.filter(m => m.id === machine.id)[0].vacantTime;
+        machine.running = machines.filter(m => m.id == machine.id)[0].running;
       });
-    } else {
-      this.getMachines();
     }
   }
 }
