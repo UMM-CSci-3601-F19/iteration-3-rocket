@@ -38,7 +38,7 @@ export class HomeService {
       room.numberOfAllMachines = machines.filter(machine => machine.room_id == room.id).length;
       room.numberOfAvailableMachines = machines.filter(machine => machine.room_id == room.id).filter(machine => machine.status === "normal" && machine.running === false).length;
     })
-  }vacantTime
+  }
 
   updateRunningStatus(machines: Machine[]): void {
     machines.filter(machine => machine.status=="normal").map(machine => {
