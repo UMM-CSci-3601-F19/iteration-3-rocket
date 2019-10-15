@@ -58,9 +58,7 @@ public class LaundryController {
 
   public void updateTime() {
     long currentTime = System.currentTimeMillis();
-    int timeDifferenceMins = (int)((currentTime - previousTime)/ 1000
-//      / 60
-      );
+    int timeDifferenceMins = (int)((currentTime - previousTime)/ 1000 / 60);
 
     this.previousTime = currentTime;
 
