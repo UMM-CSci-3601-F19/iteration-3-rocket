@@ -1,10 +1,12 @@
-
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {HomeComponent} from './home.component';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {CustomModule} from '../custom.module';
 import {HomeService} from './home.service';
+import {Machine} from './machine';
+import {Room} from './room';
+import {Observable} from 'rxjs';
 
 describe('Home', () => {
 
@@ -19,11 +21,35 @@ describe('Home', () => {
   let gl: HTMLElement;
   let hl: HTMLElement;
 
+  let homeServiceStub: {
+    getRooms: () => Observable<Room[]>;
+    getMachines: () => Observable<Machine[]>
+  };
+
   beforeEach(() => {
+    homeServiceStub = {
+      getMachines: () => Observable.of([{
+        id: 'string',
+        running: false,
+        status: 'normal',
+        room_id: 'room',
+        type: 'washer',
+
+        previousRunningState: null,
+        remainingTime: null,
+        vacantTime: null,
+      }]),
+      getRooms: () => Observable.of([{
+        id: 'string',
+        name: 'room',
+        numberOfAllMachines: null,
+        numberOfAvailableMachines: null,
+      }])
+    };
     TestBed.configureTestingModule({
       imports: [CustomModule],
       declarations: [HomeComponent], // declare the test component
-      providers: [{provide: HomeService}]
+      providers: [{provide: HomeService, useValue: homeServiceStub}]
     });
 
     fixture = TestBed.createComponent(HomeComponent);

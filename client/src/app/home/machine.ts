@@ -7,5 +7,5 @@ export interface Machine {
 
   previousRunningState: boolean;
   remainingTime: number;
-  vacantTime: number
+  vacantTime: number;
 }
