@@ -73,10 +73,10 @@ export class HomeComponent implements OnInit{
       this.setSelector(0);
       this.loadAllRooms();
       this.loadAllMachines();
-      this.updateMachines();
 
       await this.delay(1000); // wait 1s for loading data
 
+      this.updateMachines();
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateTime()
     })();
