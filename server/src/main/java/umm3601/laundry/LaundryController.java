@@ -15,20 +15,22 @@ import static com.mongodb.client.model.Filters.eq;
 public class LaundryController {
   private final MongoCollection<Document> roomCollection;
   private final MongoCollection<Document> machineCollection;
+  private long previousTime = System.currentTimeMillis();
 
-  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase) {
+  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase)  {
     machineCollection = machineDatabase.getCollection("machines");
     roomCollection = roomDatabase.getCollection("rooms");
   }
 
-
   public String getRooms() { return serializeIterable(roomCollection.find()); }
 
   public String getMachines() {
+    this.updateTime();
     return serializeIterable(machineCollection.find());
   }
 
   public String getMachinesAtRoom(String room) {
+    this.updateTime();
     Document filterDoc = new Document();
     filterDoc = filterDoc.append("room_id", room);      // TODO use hex string representation of id: new Object("id")
     return serializeIterable(machineCollection.find(filterDoc));
@@ -51,6 +53,45 @@ public class LaundryController {
     } else {
       // We didn't find the desired machine
       return null;
+    }
+  }
+
+  public void updateTime() {
+    long currentTime = System.currentTimeMillis();
+    int timeDifferenceMins = (int)((currentTime - previousTime)/ 1000
+//      / 60
+      );
+
+    this.previousTime = currentTime;
+
+    FindIterable<Document> jsonMachines = machineCollection.find();
+    Iterator<Document> iterator = jsonMachines.iterator();
+
+    while (iterator.hasNext()) {
+      Document document = iterator.next();
+      Document origin = new Document(document);
+      if (document.getBoolean("running")) {
+        if (document.get("previousRunningState") == null || !document.getBoolean("previousRunningState")) {
+          document.put("remainingTime", 60);
+          document.put("vacantTime", -1);
+          document.put("previousRunningState", true);
+        } else {
+          if (document.getInteger("remainingTime") > 0) {
+            document.put("remainingTime", document.getInteger("remainingTime") - timeDifferenceMins);
+          }
+          document.put("vacantTime", -1);
+        }
+      } else {
+        if (document.get("previousRunningState") == null || document.getBoolean("previousRunningState")) {
+          document.put("vacantTime", 0);
+          document.put("remainingTime", -1);
+          document.put("previousRunningState", false);
+        } else {
+          document.put("vacantTime", document.getInteger("vacantTime") + timeDifferenceMins);
+          document.put("remainingTime", -1);
+        }
+      }
+      machineCollection.replaceOne(origin, document);
     }
   }
 }

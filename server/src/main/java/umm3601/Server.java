@@ -20,7 +20,7 @@ public class Server {
   private static final String roomDatabaseName = "dev";
   private static final int serverPort = 4567;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
 
     MongoClient mongoClient = new MongoClient();
     MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
@@ -31,6 +31,7 @@ public class Server {
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
     LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase);
     LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
+    laundryController.updateTime();
 
     //Configure Spark
     port(serverPort);
