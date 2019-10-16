@@ -40,7 +40,8 @@
 
         <mat-accordion *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false"
+                                 *cdkVirtualFor="let item of items; templateCacheSize: 0">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:green">
                   <mat-icon>local_laundry_service</mat-icon>
@@ -57,7 +58,8 @@
 
         <mat-accordion *ngIf="machines">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true" 
+                                 *cdkVirtualFor="let item of items; templateCacheSize: 0">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
                   <mat-icon>local_laundry_service</mat-icon>
@@ -79,7 +81,8 @@
 
         <mat-accordion *ngIf="machines; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == false">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == false" 
+                                 *cdkVirtualFor="let item of items; templateCacheSize: 0">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:green">
                   <mat-icon>fireplace</mat-icon>
@@ -96,7 +99,8 @@
 
         <mat-accordion *ngIf="machines">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == true">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == true" 
+                                 *cdkVirtualFor="let item of items; templateCacheSize: 0">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
                   <mat-icon>fireplace</mat-icon>
@@ -116,9 +120,10 @@
         <mat-card-title id="home-machines-card-broken" style="font-weight: unset; padding-left: 8px; font-size: 15px">
           {{this.brokenMachineListTitle}}</mat-card-title>
 
-        <mat-accordion *ngIf="machines && numOgBroken > 0; else machinesError">
+        <mat-accordion *ngIf="machines && numOfBroken > 0; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'" 
+                                 *cdkVirtualFor="let item of items; templateCacheSize: 0">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
                   <mat-icon>local_laundry_service</mat-icon>
@@ -135,7 +140,8 @@
 
         <mat-accordion *ngIf="machines">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='dryer'">
+            <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='dryer'" 
+                                 *cdkVirtualFor="let item of items; templateCacheSize: 0">
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="font-style: italic; color: gray">
                   <mat-icon>fireplace</mat-icon>
@@ -151,7 +157,7 @@
         </mat-accordion>
 
         <ng-template #machinesError>
-          <div class="noMachineFoundMessage" style="padding: 20px; color: #999">There is no machine to show here.</div>
+          <div class="noMachineFoundMessage" style="padding: 20px; color: #999">There is no machine here.</div>
         </ng-template>
       </mat-card>
     </div>
