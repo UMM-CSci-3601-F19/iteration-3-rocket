@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit{
   public rooms: Room[];
   public machines: Machine[];
   public filteredMachines: Machine[];
+  public numOfBroken: number;
 
   public roomId: string;
   public roomName: string;
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit{
     } else {
       this.filteredMachines = this.machines.filter(machine => machine.room_id == this.roomId)
     }
+    this.numOfBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
   }
 
   loadAllMachines(): void {

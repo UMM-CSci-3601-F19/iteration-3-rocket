@@ -116,7 +116,7 @@
         <mat-card-title id="home-machines-card-broken" style="font-weight: unset; padding-left: 8px; font-size: 15px">
           {{this.brokenMachineListTitle}}</mat-card-title>
 
-        <mat-accordion *ngIf="machines; else machinesError">
+        <mat-accordion *ngIf="machines && numOgBroken > 0; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
             <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'">
               <mat-expansion-panel-header>
