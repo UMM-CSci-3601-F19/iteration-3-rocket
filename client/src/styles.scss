@@ -31,10 +31,18 @@
 
   // Define any styles affected by the theme.
 
+  mat-sidenav-content {
+    background-color: #607d8b;
+  }
+
   @if $is-dark {
     .mat-toolbar.mat-primary {
       background: mat-color($background, app-bar);
       color: mat-color($foreground, text);
+    }
+
+    mat-sidenav-content {
+      background-color: #b0bec5;
     }
   }
   .drawer-list-item-active {
@@ -93,10 +101,6 @@ mat-card {
   margin-bottom: 25px;
 }
 
-mat-sidenav-content {
-  background-color: #3f51b5;
-}
-
 mat-icon {
   margin-right: 25px;
 }
@@ -127,5 +131,5 @@ mat-icon {
 }
 
 .menuLabel.mat-icon.notranslate.material-icons.mat-icon-no-color{
-  margin-left: 5px;
+  margin-left: 9px;
 }
