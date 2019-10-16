@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit{
 
   updateTime(): void {
     (async () => {
-      await this.delay(10000); // hold 10s for the next refresh
+      await this.delay(60000); // hold 60s for the next refresh
       console.log('Refresh');
       this.loadAllMachines();
       this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
