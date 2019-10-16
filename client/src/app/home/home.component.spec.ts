@@ -35,13 +35,13 @@ describe('Home', () => {
         room_id: 'room',
         type: 'washer',
 
-        previousRunningState: null,
-        remainingTime: null,
-        vacantTime: null,
+        remainingTime: -1,
+        vacantTime: 10,
       }]),
       getRooms: () => Observable.of([{
         id: 'string',
         name: 'room',
+
         numberOfAllMachines: null,
         numberOfAvailableMachines: null,
       }])

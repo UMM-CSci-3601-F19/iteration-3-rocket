@@ -5,7 +5,6 @@ export interface Machine {
   room_id: string;
   type: string;
 
-  previousRunningState: boolean;
   remainingTime: number;
   vacantTime: number;
 }

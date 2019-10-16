@@ -27,7 +27,7 @@
 
           </mat-accordion>
           <ng-template #roomsError>
-            <div class="noRoomFoundMessage" style="color:#999">Cannot find any room, please try to load the page again later.</div>
+            <div class="noRoomFoundMessage" style="color:#999">Cannot find any room, please try again later.</div>
           </ng-template>
         </mat-card>
       </mat-panel-description>
@@ -61,7 +61,7 @@
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
                   <mat-icon>local_laundry_service</mat-icon>
-                  This {{machine.type}} will be available in {{machine.remainingTime}} minutes.
+                  This {{machine.type}} will be vacant in {{machine.remainingTime}} minutes.
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
@@ -100,7 +100,7 @@
               <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="Running: {{machine.running}}" style="color:darkorange">
                   <mat-icon>fireplace</mat-icon>
-                  This {{machine.type}} will be available in {{machine.remainingTime}} minutes.
+                  This {{machine.type}} will be vacant in {{machine.remainingTime}} minutes.
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
@@ -116,7 +116,7 @@
         <mat-card-title id="home-machines-card-broken" style="font-weight: unset; padding-left: 8px; font-size: 15px">
           {{this.brokenMachineListTitle}}</mat-card-title>
 
-        <mat-accordion *ngIf="machines && numOgBroken > 0; else machinesError">
+        <mat-accordion *ngIf="machines && numOfBroken > 0; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
             <mat-expansion-panel #elem class="machines" *ngIf="machine.status==='broken' && machine.type==='washer'">
               <mat-expansion-panel-header>
