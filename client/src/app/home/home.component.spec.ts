@@ -69,7 +69,7 @@ describe('Home', () => {
 
   it('displays a text of rooms', () => {
     fixture.detectChanges();
-    expect(el.textContent).toContain('Select a Laundry Room Here');
+    expect(el.textContent).toContain('Please select a laundry room here');
   });
 
   it('displays a text of washers', () => {

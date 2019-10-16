@@ -109,10 +109,6 @@ mat-icon {
   margin-right: 15px;
 }
 
-mat-panel-title {
-  text-transform: capitalize;
-}
-
 .room.mat-card {
   margin:0;
   box-shadow: unset;
@@ -125,7 +121,7 @@ mat-panel-title {
 }
 
 .home {
-  max-width: 1280px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
 }

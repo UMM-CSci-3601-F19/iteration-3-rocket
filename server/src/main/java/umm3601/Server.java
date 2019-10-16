@@ -17,19 +17,22 @@ import java.io.InputStream;
 public class Server {
   private static final String userDatabaseName = "dev";
   private static final String machineDatabaseName = "dev";
+  private static final String machinePollingDatabaseName = "dev";
   private static final String roomDatabaseName = "dev";
   private static final int serverPort = 4567;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
 
     MongoClient mongoClient = new MongoClient();
     MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
     MongoDatabase machineDatabase = mongoClient.getDatabase(machineDatabaseName);
+    MongoDatabase machinePollingDatabase = mongoClient.getDatabase(machinePollingDatabaseName);
     MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
 
+    PollingService pollingService = new PollingService(mongoClient);
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
-    LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase);
+    LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase, machinePollingDatabase);
     LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
 
     //Configure Spark

@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit{
   public rooms: Room[];
   public machines: Machine[];
   public filteredMachines: Machine[];
+  public numOfBroken: number;
 
   public roomId: string;
   public roomName: string;
@@ -33,17 +34,19 @@ export class HomeComponent implements OnInit{
     this.roomId = newId;
     this.roomName = newName;
     this.machineListTitle = "available within " + this.roomName;
-    this.brokenMachineListTitle = "Unavailable Machines within " + this.roomName;
+    this.brokenMachineListTitle = "Unavailable machines within " + this.roomName;
     this.updateMachines();
     this.setSelector(1);
   }
 
   updateMachines(): void {
-    if (this.roomId == '') {
+    if (this.roomId == null || this.roomId == '') {
       this.filteredMachines = this.machines;
     } else {
       this.filteredMachines = this.machines.filter(machine => machine.room_id == this.roomId)
     }
+    this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
+    this.numOfBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
   }
 
   loadAllMachines(): void {
@@ -51,7 +54,6 @@ export class HomeComponent implements OnInit{
     machines.subscribe(
       machines => {
         this.machines = machines;
-        this.filteredMachines = machines;
       },
       err => {
         console.log(err);
@@ -69,19 +71,6 @@ export class HomeComponent implements OnInit{
       });
   }
 
-  updateStates(): void {
-    const machines: Observable<Machine[]> = this.homeService.getMachines();
-    machines.subscribe(
-      machines => {
-        for (let m of this.machines) {
-          m.running = machines.filter(machine => machine.id == m.id)[0].running;
-        }
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
   ngOnInit(): void {
     (async () => {
       this.setSelector(0);
@@ -90,21 +79,21 @@ export class HomeComponent implements OnInit{
 
       await this.delay(1000); // wait 1s for loading data
 
-      this.homeService.updateRunningStatus(this.filteredMachines);
-      this.homeService.updateAvailableMachineNumber(this.rooms, this.filteredMachines);
+      this.updateMachines();
+      this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateTime()
     })();
   }
 
   updateTime(): void {
     (async () => {
-      await this.delay(5000); // hold 5s per refresh
+      await this.delay(10000); // hold 10s for the next refresh
       console.log('Refresh');
-      this.updateStates();
-      this.homeService.updateRunningStatus(this.machines);
+      this.loadAllMachines();
+      this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateTime()
-    })();
+    }) ();
   }
 
   delay(ms: number) {
