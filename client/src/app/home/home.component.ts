@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
   public machines: Machine[];
   public filteredMachines: Machine[];
   public numOfBroken: number;
+  public numOfWashers: number;
+  public numOfDryers: number;
 
   public roomId: string;
   public roomName: string;
@@ -47,6 +49,8 @@ export class HomeComponent implements OnInit {
     }
     this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
     this.numOfBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
+    this.numOfWashers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'washer').length;
+    this.numOfDryers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'dryer').length;
   }
 
   loadAllMachines(): void {

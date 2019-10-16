@@ -26,6 +26,7 @@ public class LaundryController {
     machineCollection = machineDatabase.getCollection("machines");
     roomCollection = roomDatabase.getCollection("rooms");
     machinePollingCollection = machinePollingDatabase.getCollection("machineDataFromPollingAPI");
+    this.updateMachines();
   }
 
   public String getRooms() { return serializeIterable(roomCollection.find()); }
