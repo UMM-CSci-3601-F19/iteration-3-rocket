@@ -14,6 +14,11 @@ import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 
+// import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+// import {CdkStepperModule} from '@angular/cdk/stepper';
+// import {CdkTableModule} from '@angular/cdk/table';
+// import {CdkTreeModule} from '@angular/cdk/tree';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -21,6 +26,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
     Routing,
     CustomModule,
     MatGridListModule,
+    // ScrollDispatchModule,
+    // CdkStepperModule,
   ],
   declarations: [
     AppComponent,
