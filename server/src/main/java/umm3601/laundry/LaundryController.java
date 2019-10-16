@@ -61,16 +61,14 @@ public class LaundryController {
     }
   }
 
-  public void updateMachines() {
+  private void updateMachines() {
     long currentTime = System.currentTimeMillis();
 
     this.previousTime = currentTime;
 
     FindIterable<Document> jsonMachines = machinePollingCollection.find();
-    Iterator<Document> iterator = jsonMachines.iterator();
 
-    while (iterator.hasNext()) {
-      Document document = iterator.next();
+    for (Document document : jsonMachines) {
       Document oldDocument = document;
       FindIterable<Document> documentsOld = machineCollection.find();
       Iterator<Document> iteratorOld = jsonMachines.iterator();
@@ -87,12 +85,10 @@ public class LaundryController {
           || document.get("remainingTime") == null || document.get("runBegin") == null) {
           document.put("runBegin", currentTime);
           document.put("runEnd", -1);
-          document.put("remainingTime", 60 - (int)((currentTime - document.getLong("runBegin")) / 60000));
+          document.put("remainingTime", 60 - (int) ((currentTime - document.getLong("runBegin")) / 60000));
           document.put("vacantTime", -1);
         } else {
-          if (document.getInteger("remainingTime") > 0) {
-            document.put("remainingTime", 60 - (int)((currentTime - document.getLong("runBegin")) / 60000));
-          }
+          document.put("remainingTime", Math.max(0, 60 - (int) ((currentTime - document.getLong("runBegin")) / 60000)));
           document.put("runEnd", -1);
           document.put("vacantTime", -1);
         }
@@ -100,10 +96,10 @@ public class LaundryController {
         if (oldDocument.get("running") == null || oldDocument.getBoolean("running") || document.get("runEnd") == null) {
           document.put("runBegin", -1);
           document.put("runEnd", currentTime);
-          document.put("vacantTime", (int)((currentTime - (long)document.getLong("runEnd")) / 60000));
+          document.put("vacantTime", (int) ((currentTime - document.getLong("runEnd")) / 60000));
           document.put("remainingTime", -1);
         } else {
-          document.put("vacantTime", (int)((currentTime - (long)document.getLong("runEnd")) / 60000));
+          document.put("vacantTime", (int) ((currentTime - document.getLong("runEnd")) / 60000));
           document.put("runBegin", -1);
           document.put("remainingTime", -1);
         }
