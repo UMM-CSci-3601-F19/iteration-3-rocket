@@ -1,26 +1,30 @@
 [
   {
-    "id": "gay_hall",
+    "id": "gay",
     "name": "Gay Hall"
   },
   {
-    "id": "independence_hall",
+    "id": "independence",
     "name": "Independence Hall"
   },
   {
-    "id": "blakely_hall",
+    "id": "blakely",
     "name": "Blakely Hall"
   },
   {
-    "id": "spooner_hall",
+    "id": "spooner",
     "name": "Spooner Hall"
   },
   {
-    "id": "green_prarie",
+    "id": "green_prairie",
     "name": "Green Prarie"
   },
   {
-    "id": "pine_hall",
+    "id": "pine",
     "name": "Pine Hall"
+  },
+  {
+    "id": "the_apartments",
+    "name": "The Appartments"
   }
 ]
