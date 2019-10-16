@@ -45,6 +45,7 @@ export class HomeComponent implements OnInit{
     } else {
       this.filteredMachines = this.machines.filter(machine => machine.room_id == this.roomId)
     }
+    this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
     this.numOfBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
   }
 
