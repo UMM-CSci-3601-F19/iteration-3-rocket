@@ -15,12 +15,14 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class LaundryController {
   private final MongoCollection<Document> roomCollection;
-  private final MongoCollection<Document> machinePollingCollection;
   private MongoCollection<Document> machineCollection;
-  private long previousTime = System.currentTimeMillis();
+
+  private  MongoCollection<Document> machinePollingCollection;
+  private MongoDatabase pullingDatabase;
 
   public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase,
                            MongoDatabase machinePollingDatabase)  {
+    this.pullingDatabase = machinePollingDatabase;
     machineCollection = machineDatabase.getCollection("machines");
     roomCollection = roomDatabase.getCollection("rooms");
     machinePollingCollection = machinePollingDatabase.getCollection("machineDataFromPollingAPI");
@@ -36,7 +38,7 @@ public class LaundryController {
   public String getMachinesAtRoom(String room) {
     this.updateMachines();
     Document filterDoc = new Document();
-    filterDoc = filterDoc.append("room_id", room);      // TODO use hex string representation of id: new Object("id")
+    filterDoc = filterDoc.append("room_id", room);
     return serializeIterable(machineCollection.find(filterDoc));
   }
 
@@ -62,16 +64,14 @@ public class LaundryController {
   }
 
   private void updateMachines() {
+    machinePollingCollection = pullingDatabase.getCollection("machineDataFromPollingAPI");
     long currentTime = System.currentTimeMillis();
-
-    this.previousTime = currentTime;
 
     FindIterable<Document> jsonMachines = machinePollingCollection.find();
 
     for (Document document : jsonMachines) {
       Document oldDocument = document;
       FindIterable<Document> documentsOld = machineCollection.find();
-      Iterator<Document> iteratorOld = jsonMachines.iterator();
       for (Document d : documentsOld) {
         if (d.get("id").equals(document.get("id"))) {
           oldDocument = d;
@@ -84,8 +84,8 @@ public class LaundryController {
         if (oldDocument.get("running") == null || !oldDocument.getBoolean("running")
           || document.get("remainingTime") == null || document.get("runBegin") == null) {
           document.put("runBegin", currentTime);
+          document.put("remainingTime", 60);
           document.put("runEnd", -1);
-          document.put("remainingTime", 60 - (int) ((currentTime - document.getLong("runBegin")) / 60000));
           document.put("vacantTime", -1);
         } else {
           document.put("remainingTime", Math.max(0, 60 - (int) ((currentTime - document.getLong("runBegin")) / 60000)));
@@ -94,9 +94,9 @@ public class LaundryController {
         }
       } else {
         if (oldDocument.get("running") == null || oldDocument.getBoolean("running") || document.get("runEnd") == null) {
-          document.put("runBegin", -1);
           document.put("runEnd", currentTime);
-          document.put("vacantTime", (int) ((currentTime - document.getLong("runEnd")) / 60000));
+          document.put("vacantTime", 0);
+          document.put("runBegin", -1);
           document.put("remainingTime", -1);
         } else {
           document.put("vacantTime", (int) ((currentTime - document.getLong("runEnd")) / 60000));

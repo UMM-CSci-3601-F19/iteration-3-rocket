@@ -21,7 +21,7 @@ public class Server {
   private static final String roomDatabaseName = "dev";
   private static final int serverPort = 4567;
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
 
     MongoClient mongoClient = new MongoClient();
     MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
