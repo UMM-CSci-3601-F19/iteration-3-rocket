@@ -16,7 +16,7 @@ browser.driver.controlFlow().execute = function () {
     // If you're tired of it taking long you can remove this call or change the delay
     // to something smaller (even 0).
     origFn.call(browser.driver.controlFlow(), () => {
-        return protractor.promise.delayed(100);
+        return protractor.promise.delayed(0);
     });
 
     return origFn.apply(browser.driver.controlFlow(), args);

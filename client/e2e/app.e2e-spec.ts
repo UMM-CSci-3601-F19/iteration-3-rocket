@@ -10,4 +10,9 @@ describe('angular-spark-lab', () => {
   it('should load', () => {
     page.navigateTo();
   });
+
+  it('should get and highlight Home title attribute ', () => {
+    page.navigateTo();
+    expect(page.getPageTitle()).toEqual('THE WEB APP');
+  });
 });
