@@ -13,6 +13,7 @@ import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,14 +73,14 @@ public class LaundryControllerSpec {
       "    \"id\": \"cd840548-7fd2-4a59-87a0-0afabeee0f85\",\n" +
       "    \"type\": \"dryer\",\n" +
       "    \"running\": true,\n" +
-      "    \"status\": \"broken\",\n" +
+      "    \"status\": \"normal\",\n" +
       "    \"room_id\": \"pine_hall\"\n" +
       "  }"));
     testPollingMachines.add(Document.parse("{\n" +
       "    \"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
       "    \"type\": \"washer\",\n" +
       "    \"running\": false,\n" +
-      "    \"status\": \"invisible\",\n" +
+      "    \"status\": \"normal\",\n" +
       "    \"room_id\": \"gay_hall\"\n" +
       "  }"));
     machinePollingDocuments.insertMany(testPollingMachines);
@@ -110,7 +111,7 @@ public class LaundryControllerSpec {
     BasicDBObject machine = new BasicDBObject("id", machineId);
     machine = machine.append("type", "dryer")
       .append("running", false)
-      .append("status", "theStatus")
+      .append("status", "the_status")
       .append("room_id", roomId);
     machinePollingDocuments.insertOne(Document.parse(machine.toJson()));
   }
@@ -136,6 +137,16 @@ public class LaundryControllerSpec {
   private static String getType(BsonValue val) {
     BsonDocument doc = val.asDocument();
     return ((BsonString) doc.get("type")).getValue();
+  }
+
+  private static String getStatus(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonString) doc.get("status")).getValue();
+  }
+
+  private static Boolean getRunning(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonBoolean) doc.get("running")).getValue();
   }
 
   @Test
@@ -165,7 +176,21 @@ public class LaundryControllerSpec {
       .sorted()
       .collect(Collectors.toList());
     List<String> expectedTypes = Arrays.asList("dryer", "dryer", "dryer", "washer", "washer");
-    assertEquals("Names should match", expectedTypes, types);
+    assertEquals("Types should match", expectedTypes, types);
+    List<String> status = docs
+      .stream()
+      .map(LaundryControllerSpec::getStatus)
+      .sorted()
+      .collect(Collectors.toList());
+    List<String> expectedStatus = Arrays.asList("normal", "normal", "normal", "normal", "the_status");
+    assertEquals("Status should be updated", expectedStatus, status);
+    List<Boolean> running = docs
+      .stream()
+      .map(LaundryControllerSpec::getRunning)
+      .sorted()
+      .collect(Collectors.toList());
+    List<Boolean> expectedRunning = Arrays.asList(false, false, false, true, true);
+    assertEquals("Running should be updated", expectedRunning, running);
   }
 
   @Test
