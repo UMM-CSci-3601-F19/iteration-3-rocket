@@ -26,6 +26,7 @@ describe('Home', () => {
     getMachines: () => Observable<Machine[]>
   };
 
+  // @ts-ignore
   beforeEach(() => {
     homeServiceStub = {
       getMachines: () => Observable.of([{
