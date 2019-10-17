@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, async} from '@angular/core/testing';
 import {HomeComponent} from './home.component';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
@@ -8,7 +8,7 @@ import {Machine} from './machine';
 import {Room} from './room';
 import {Observable} from 'rxjs';
 
-describe('Home', () => {
+describe('Home page', () => {
 
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -23,30 +23,48 @@ describe('Home', () => {
 
   let homeServiceStub: {
     getRooms: () => Observable<Room[]>;
-    getMachines: () => Observable<Machine[]>
+    getMachines: () => Observable<Machine[]>;
+    updateRunningStatus;
   };
 
   // @ts-ignore
   beforeEach(() => {
     homeServiceStub = {
       getMachines: () => Observable.of([{
-        id: 'string',
+        id: 'id_1',
         running: false,
         status: 'normal',
-        room_id: 'room',
+        room_id: 'room_a',
         type: 'washer',
 
         remainingTime: -1,
         vacantTime: 10,
+      }, {
+        id: 'string',
+        running: false,
+        status: 'normal',
+        room_id: 'room_b',
+        type: 'dryer',
+
+        remainingTime: 10,
+        vacantTime: -1,
       }]),
       getRooms: () => Observable.of([{
-        id: 'string',
-        name: 'room',
+        id: 'room_a',
+        name: 'A',
 
         numberOfAllMachines: null,
         numberOfAvailableMachines: null,
-      }])
+      }, {
+        id: 'room_b',
+        name: 'B',
+
+        numberOfAllMachines: null,
+        numberOfAvailableMachines: null,
+      }, ]),
+      updateRunningStatus: () => null,
     };
+
     TestBed.configureTestingModule({
       imports: [CustomModule],
       declarations: [HomeComponent], // declare the test component
@@ -86,5 +104,58 @@ describe('Home', () => {
   it('displays a text of broken machines', () => {
     fixture.detectChanges();
     expect(hl.textContent).toContain('Unavailable machines within all rooms');
+  });
+
+  it('update room info when a new room is selected', () => {
+    const machines: Observable<Machine[]> = homeServiceStub.getMachines();
+    machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
+      machines => {
+        component.machines = machines;
+      });
+    component.updateRoom('room_b', 'B');
+    expect(component.roomId).toBe('room_b');
+    expect(component.roomName).toBe('B');
+  });
+
+  it('update machines with a new room id', () => {
+    const machines: Observable<Machine[]> = homeServiceStub.getMachines();
+    machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
+      machines => {
+        component.machines = machines;
+      });
+    component.updateRoom('room_a', 'A');
+    expect(component.filteredMachines.length).toBe(1);
+    expect(component.filteredMachines[0].id).toBe('id_1');
+  });
+
+  it('load all the machines', () => {
+    const machines: Observable<Machine[]> = homeServiceStub.getMachines();
+    machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
+      machines => {
+        component.machines = machines;
+      });
+    expect(component.machines.length).toBe(2);
+  });
+
+  it('load all the rooms', () => {
+    const rooms: Observable<Room[]> = homeServiceStub.getRooms();
+    rooms.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
+      rooms => {
+        component.rooms = rooms;
+      });
+    expect(component.rooms.length).toBe(2);
+  });
+
+  it('should load and update the time remaining', () => {
+    let spy = spyOn(component, 'ngOnInit');
+    component.ngOnInit();
+    expect(spy).toHaveBeenCalled();
+    spy = spyOn(component, 'updateTime');
+    component.updateTime();
+    expect(spy).toHaveBeenCalled();
   });
 });
