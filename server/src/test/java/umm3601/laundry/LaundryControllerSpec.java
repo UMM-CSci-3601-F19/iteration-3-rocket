@@ -13,6 +13,7 @@ import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,9 @@ public class LaundryControllerSpec {
 
   private String machineId;
   private String roomId;
+
+  private MongoCollection<Document> machinePollingDocuments;
+  private BasicDBObject machine;
 
   @Before
   public void clearAndPopulateDB() {
@@ -38,20 +42,20 @@ public class LaundryControllerSpec {
     testMachines.add(Document.parse("{\n" +
       "    \"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
       "    \"type\": \"washer\",\n" +
-      "    \"running\": true,\n" +
-      "    \"status\": \"normal\",\n" +
+      "    \"running\": false,\n" +
+      "    \"status\": \"broken\",\n" +
       "    \"room_id\": \"gay_hall\"\n" +
       "  }"));
     testMachines.add(Document.parse("{\n" +
       "    \"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
       "    \"type\": \"dryer\",\n" +
-      "    \"running\": false,\n" +
-      "    \"status\": \"normal\",\n" +
-      "    \"room_id\": \"independmachineDocumentsence_hall\"\n" +
+      "    \"running\": true,\n" +
+      "    \"status\": \"invisible\",\n" +
+      "    \"room_id\": \"independence_hall\"\n" +
       "  }"));
     machineDocuments.insertMany(testMachines);
 
-    MongoCollection<Document> machinePollingDocuments = machinePollingDB.getCollection("machineDataFromPollingAPI");
+    machinePollingDocuments = machinePollingDB.getCollection("machineDataFromPollingAPI");
     machinePollingDocuments.drop();
     List<Document> testPollingMachines = new ArrayList<>();
     testPollingMachines.add(Document.parse("{\n" +
@@ -66,20 +70,20 @@ public class LaundryControllerSpec {
       "    \"type\": \"dryer\",\n" +
       "    \"running\": false,\n" +
       "    \"status\": \"normal\",\n" +
-      "    \"room_id\": \"independmachineDocumentsence_hall\"\n" +
+      "    \"room_id\": \"independence_hall\"\n" +
       "  }"));
     testPollingMachines.add(Document.parse("{\n" +
       "    \"id\": \"cd840548-7fd2-4a59-87a0-0afabeee0f85\",\n" +
       "    \"type\": \"dryer\",\n" +
       "    \"running\": true,\n" +
-      "    \"status\": \"broken\",\n" +
+      "    \"status\": \"normal\",\n" +
       "    \"room_id\": \"pine_hall\"\n" +
       "  }"));
     testPollingMachines.add(Document.parse("{\n" +
       "    \"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
       "    \"type\": \"washer\",\n" +
       "    \"running\": false,\n" +
-      "    \"status\": \"invisible\",\n" +
+      "    \"status\": \"normal\",\n" +
       "    \"room_id\": \"gay_hall\"\n" +
       "  }"));
     machinePollingDocuments.insertMany(testPollingMachines);
@@ -107,10 +111,10 @@ public class LaundryControllerSpec {
     laundryController = new LaundryController(machineDB, roomDB, machinePollingDB);
 
     machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
-    BasicDBObject machine = new BasicDBObject("id", machineId);
+    machine = new BasicDBObject("id", machineId);
     machine = machine.append("type", "dryer")
       .append("running", false)
-      .append("status", "theStatus")
+      .append("status", "the_status")
       .append("room_id", roomId);
     machinePollingDocuments.insertOne(Document.parse(machine.toJson()));
   }
@@ -128,6 +132,16 @@ public class LaundryControllerSpec {
     return arrayReader.decode(reader, DecoderContext.builder().build());
   }
 
+  private static Integer getRemainingTime(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonInt32) doc.get("remainingTime")).getValue();
+  }
+
+  private static Integer getVacantTime(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonInt32) doc.get("vacantTime")).getValue();
+  }
+
   private static String getName(BsonValue val) {
     BsonDocument doc = val.asDocument();
     return ((BsonString) doc.get("name")).getValue();
@@ -136,6 +150,16 @@ public class LaundryControllerSpec {
   private static String getType(BsonValue val) {
     BsonDocument doc = val.asDocument();
     return ((BsonString) doc.get("type")).getValue();
+  }
+
+  private static String getStatus(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonString) doc.get("status")).getValue();
+  }
+
+  private static Boolean getRunning(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonBoolean) doc.get("running")).getValue();
   }
 
   @Test
@@ -165,7 +189,66 @@ public class LaundryControllerSpec {
       .sorted()
       .collect(Collectors.toList());
     List<String> expectedTypes = Arrays.asList("dryer", "dryer", "dryer", "washer", "washer");
-    assertEquals("Names should match", expectedTypes, types);
+    assertEquals("Types should match", expectedTypes, types);
+    List<String> status = docs
+      .stream()
+      .map(LaundryControllerSpec::getStatus)
+      .sorted()
+      .collect(Collectors.toList());
+    List<String> expectedStatus = Arrays.asList("normal", "normal", "normal", "normal", "the_status");
+    assertEquals("Status should be updated", expectedStatus, status);
+    List<Boolean> running = docs
+      .stream()
+      .map(LaundryControllerSpec::getRunning)
+      .sorted()
+      .collect(Collectors.toList());
+    List<Boolean> expectedRunning = Arrays.asList(false, false, false, true, true);
+    assertEquals("Running should be updated", expectedRunning, running);
+  }
+
+  @Test
+  public void updateTime() {
+    String jsonResult = laundryController.getMachines();
+    BsonArray docs = parseJsonArray(jsonResult);
+
+    List<Integer> remainingTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getRemainingTime)
+      .collect(Collectors.toList());
+    List<Integer> expectedRemainingTimes = Arrays.asList(60, -1, 60, -1, -1);
+    assertEquals("Running should be updated", expectedRemainingTimes, remainingTimes);
+
+    List<Integer> vacantTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getVacantTime)
+      .collect(Collectors.toList());
+    List<Integer> expectedVacantTimes = Arrays.asList(-1, 0, -1, 0, 0);
+    assertEquals("Running should be updated", expectedVacantTimes, vacantTimes);
+
+    machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
+    BasicDBObject newMachine = new BasicDBObject("id", machineId);
+    newMachine = newMachine.append("type", "dryer")
+      .append("running", true)
+      .append("status", "the_status")
+      .append("room_id", roomId);
+    machinePollingDocuments.replaceOne(Document.parse(machine.toJson()), Document.parse(newMachine.toJson()));
+
+    jsonResult = laundryController.getMachines();
+    docs = parseJsonArray(jsonResult);
+
+    remainingTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getRemainingTime)
+      .collect(Collectors.toList());
+    expectedRemainingTimes = Arrays.asList(60, -1, 60, -1, 60);
+    assertEquals("Running should be updated", expectedRemainingTimes, remainingTimes);
+
+    vacantTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getVacantTime)
+      .collect(Collectors.toList());
+    expectedVacantTimes = Arrays.asList(-1, 0, -1, 0, -1);
+    assertEquals("Running should be updated", expectedVacantTimes, vacantTimes);
   }
 
   @Test
@@ -187,7 +270,7 @@ public class LaundryControllerSpec {
   public void getMachineById() {
     String jsonResult = laundryController.getMachine(machineId);
     Document machine = Document.parse(jsonResult);
-    assertEquals("Status should match", "theStatus", machine.get("status"));
+    assertEquals("Status should match", "the_status", machine.get("status"));
     String noJsonResult = laundryController.getMachine(new ObjectId().toString());
     assertNull("Nothing should match", noJsonResult);
   }
