@@ -41,16 +41,18 @@ export class HomeComponent implements OnInit {
     this.setSelector(1);
   }
 
-  updateMachines(): void {
+  private updateMachines(): void {
     if (this.roomId == null || this.roomId === '') {
       this.filteredMachines = this.machines;
     } else {
       this.filteredMachines = this.machines.filter(machine => machine.room_id === this.roomId);
     }
     this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
-    this.numOfBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
-    this.numOfWashers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'washer').length;
-    this.numOfDryers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'dryer').length;
+    if (this.filteredMachines !== undefined) {
+      this.numOfBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
+      this.numOfWashers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'washer').length;
+      this.numOfDryers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'dryer').length;
+    }
   }
 
   loadAllMachines(): void {
@@ -88,7 +90,7 @@ export class HomeComponent implements OnInit {
       this.updateMachines();
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateTime();
-    })();
+    }) ();
   }
 
   updateTime(): void {

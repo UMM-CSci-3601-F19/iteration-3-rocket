@@ -1,8 +1,6 @@
-import {Observable} from 'rxjs';
 import {Room} from './room';
 import {Machine} from './machine';
 import {HomeService} from './home.service';
-import {HomeComponent} from './home.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
@@ -14,7 +12,7 @@ describe('Home list Service', () => {
       id: 'bf354528bwhsg',
       running: false,
       status: 'normal',
-      room_id: 'CSCI',
+      room_id: 'room_a',
       type: 'washer',
 
       remainingTime: null,
@@ -24,9 +22,8 @@ describe('Home list Service', () => {
       id: '67gsafy908c',
       running: true,
       status: 'normal',
-      room_id: 'CSCI',
+      room_id: 'room_a',
       type: 'dryer',
-
 
       remainingTime: null,
       vacantTime: null,
@@ -35,16 +32,31 @@ describe('Home list Service', () => {
       id: 'ng6755jsg78',
       running: false,
       status: 'broken',
-      room_id: 'room',
+      room_id: 'room_b',
       type: 'washer',
 
       remainingTime: null,
       vacantTime: null,
     }
   ];
+  const testRooms: Room[] = [
+    {
+      id: 'room_a',
+      name: 'A',
+
+      numberOfAllMachines: null,
+      numberOfAvailableMachines: null,
+    },
+    {
+      id: 'room_b',
+      name: 'B',
+
+      numberOfAllMachines: null,
+      numberOfAvailableMachines: null,
+    },
+  ];
 
   let homeService: HomeService;
-
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
@@ -68,7 +80,7 @@ describe('Home list Service', () => {
 
   it('getMachines() calls api/machines', () => {
     homeService.getMachines().subscribe(
-      machine => expect(machine).toBe(testMachines));
+      machines => expect(machines).toBe(testMachines));
     const req = httpTestingController.expectOne(homeService.baseUrl + 'machines');
     // Check that the request made to that URL was a GET request.
     expect(req.request.method).toEqual('GET');
@@ -76,18 +88,15 @@ describe('Home list Service', () => {
     req.flush(testMachines);
   });
 
-  it('getMachinesAtRoom() calls api/machine/room_id', () => {
-    const targetMachine: Machine = testMachines[1];
-    const targetRoom: string = targetMachine.room_id;
-    homeService.getMachinesAtRoom(targetRoom).subscribe(
-      machine => expect(machine).toBe(machine)
-    );
-    const req = httpTestingController.expectOne(homeService.baseUrl + 'rooms/' + targetRoom + '/machines' );
+  it('getRooms() calls api/rooms', () => {
+    homeService.getRooms().subscribe(
+      rooms => expect(rooms).toBe(testRooms));
+    const req = httpTestingController.expectOne(homeService.baseUrl + 'rooms');
     // Check that the request made to that URL was a GET request.
     expect(req.request.method).toEqual('GET');
-
-    req.flush(testMachines);
+    req.flush(testRooms);
   });
+
   it('contains a machine with id ng6755jsg78', () => {
     expect(testMachines.some((machine: Machine) => machine.id === 'ng6755jsg78')).toBe(true);
   });
@@ -100,11 +109,64 @@ describe('Home list Service', () => {
     expect(testMachines.some((machine: Machine) => machine.status === 'broken')).toBe(true);
   });
 
-  it('contains a room_id of gay_hall', () => {
+  it('does not contain a room_id of gay_hall', () => {
     expect(testMachines.some((machine: Machine) => machine.room_id === 'gay_hall')).toBe(false);
   });
 
-  it('contains all the machines', () => {
-    expect(testMachines.length).toBe(3);
+  it('update Available Machine Numbers', () => {
+    homeService.updateAvailableMachineNumber(testRooms, testMachines);
+    expect(testRooms[0].numberOfAllMachines).toBe(2);
+    expect(testRooms[0].numberOfAvailableMachines).toBe(1);
+    expect(testRooms[1].numberOfAllMachines).toBe(0);
+  });
+
+  it('skip if rooms is not initialized', () => {
+    let exp;
+    try {
+      homeService.updateAvailableMachineNumber(null, testMachines);
+    } catch (e) {
+      exp = e;
+    }
+    expect(exp).toBeUndefined();
+  });
+
+  it('update Running Status', () => {
+    const updatedMachines: Machine[] = [
+      {
+        id: 'bf354528bwhsg',
+        running: true,
+        status: 'normal',
+        room_id: 'room_a',
+        type: 'washer',
+
+        remainingTime: 100,
+        vacantTime: -1,
+      },
+      {
+        id: '67gsafy908c',
+        running: false,
+        status: 'normal',
+        room_id: 'room_a',
+        type: 'dryer',
+
+        remainingTime: -1,
+        vacantTime: 10,
+      },
+      {
+        id: 'ng6755jsg78',
+        running: false,
+        status: 'broken',
+        room_id: 'room_b',
+        type: 'washer',
+
+        remainingTime: 34,
+        vacantTime: -1,
+      }
+    ];
+
+    homeService.updateRunningStatus(testMachines, updatedMachines);
+    expect(testMachines[0].running).toBe(true);
+    expect(testMachines[0].remainingTime).toBe(100);
+    expect(testMachines[0].vacantTime).toBe(-1);
   });
 });
