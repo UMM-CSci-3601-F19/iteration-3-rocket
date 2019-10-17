@@ -20,12 +20,17 @@ public class LaundryController {
   private  MongoCollection<Document> machinePollingCollection;
   private MongoDatabase pullingDatabase;
 
-  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase,
-                           MongoDatabase machinePollingDatabase)  {
+  private boolean seedLocalSourse = false;
+
+  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase)  {
     this.pullingDatabase = machinePollingDatabase;
     machineCollection = machineDatabase.getCollection("machines");
     roomCollection = roomDatabase.getCollection("rooms");
-    machinePollingCollection = machinePollingDatabase.getCollection("machineDataFromPollingAPI");
+    if (!seedLocalSourse){
+      machinePollingCollection = machinePollingDatabase.getCollection("machineDataFromPollingAPI");
+    } else {
+      machinePollingCollection = machineDatabase.getCollection("machines");
+    }
     this.updateMachines();
   }
 
@@ -65,7 +70,13 @@ public class LaundryController {
   }
 
   private void updateMachines() {
-    machinePollingCollection = pullingDatabase.getCollection("machineDataFromPollingAPI");
+
+    if (!seedLocalSourse){
+      machinePollingCollection = pullingDatabase.getCollection("machineDataFromPollingAPI");
+    } else {
+      machinePollingCollection = pullingDatabase.getCollection("machines");
+    }
+
     long currentTime = System.currentTimeMillis();
 
     FindIterable<Document> jsonMachines = machinePollingCollection.find();

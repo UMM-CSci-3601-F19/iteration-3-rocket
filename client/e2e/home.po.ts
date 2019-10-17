@@ -1,119 +1,184 @@
 import {browser, element, by, promise, ElementFinder} from 'protractor';
 import {Key} from 'selenium-webdriver';
+
 export class HomePage {
   navigateTo(): promise.Promise<any> {
-    return browser.get('/', 1500);
+    return browser.get('/');
   }
+
   // http://www.assertselenium.com/protractor/highlight-elements-during-your-protractor-test-run/
   highlightElement(byObject) {
-    // tslint:disable-next-line:no-shadowed-variable
     function setStyle(element, style) {
       const previous = element.getAttribute('style');
       element.setAttribute('style', style);
       setTimeout(() => {
         element.setAttribute('style', previous);
-      }, 200);
+      });
       return 'highlighted';
     }
     return browser.executeScript(setStyle, element(byObject).getWebElement(), 'color: red; background-color: yellow;');
   }
+
   getHomePanelTitle() {
     const title = element(by.id('home-rooms-card')).getText();
-    console.log('po1');
     this.highlightElement(by.id('home-rooms-card'));
-    console.log('po2');
-    // console.log(title);
     return title;
   }
+
   getGayHallTitleInHomePanel() {
-    const title = element(by.id('gay')).getText();
-    this.highlightElement(by.id('gay'));
+    const title = element(by.id('gayId')).getText();
+    this.highlightElement(by.id('gayId'));
     return title;
   }
+
   getIndependenceHallTitleInHomePanel() {
-    const title = element(by.id('independence')).getText();
-    this.highlightElement(by.id('independence'));
+    const title = element(by.id('independenceId')).getText();
+    this.highlightElement(by.id('independenceId'));
     return title;
   }
+
   getBlakelyHallTitleInHomePanel() {
-    const title = element(by.id('blakely')).getText();
-    this.highlightElement(by.id('blakely'));
+    const title = element(by.id('blakelyId')).getText();
+    this.highlightElement(by.id('blakelyId'));
     return title;
   }
+
   getSpoonerHallTitleInHomePanel() {
-    const title = element(by.id('spooner')).getText();
-    this.highlightElement(by.id('spooner'));
+    const title = element(by.id('spoonerId')).getText();
+    this.highlightElement(by.id('spoonerId'));
     return title;
   }
+
   getGreenPrairieHallTitleInHomePanel() {
-    const title = element(by.id('green_prairie')).getText();
-    this.highlightElement(by.id('green_prairie'));
+    const title = element(by.id('green_prairieId')).getText();
+    this.highlightElement(by.id('green_prairieId'));
     return title;
   }
+
   getPineHallTitleInHomePanel() {
-    const title = element(by.id('pine')).getText();
-    this.highlightElement(by.id('pine'));
+    const title = element(by.id('pineId')).getText();
+    this.highlightElement(by.id('pineId'));
     return title;
   }
+
   getApartmentHallTitleInHomePanel() {
-    const title = element(by.id('the_apartments')).getText();
-    this.highlightElement(by.id('the_apartments'));
+    const title = element(by.id('the_apartmentsId')).getText();
+    this.highlightElement(by.id('the_apartmentsId'));
     return title;
   }
+
   getGayHallAvailability() {
-    const availability = element(by.id('gayavailability')).getText();
-    this.highlightElement(by.id('gayavailability'));
+    const availability = element(by.id('gayAvailability')).getText();
+    this.highlightElement(by.id('gayAvailability'));
     return availability;
   }
-  getCorrectNumberOfAvailableMachinesInGayHall() {
+
+  getIndependenceHallAvailability() {
+    const availability = element(by.id('independenceAvailability')).getText();
+    this.highlightElement(by.id('independenceAvailability'));
+    return availability;
   }
-  selectUpKey() {
-    browser.actions().sendKeys(Key.ARROW_UP).perform();
+
+  getBlakelyHallAvailability() {
+    const availability = element(by.id('blakelyAvailability')).getText();
+    this.highlightElement(by.id('blakelyAvailability'));
+    return availability;
   }
-  backspace() {
-    browser.actions().sendKeys(Key.BACK_SPACE).perform();
+
+  getSpoonerHallAvailability() {
+    const availability = element(by.id('spoonerAvailability')).getText();
+    this.highlightElement(by.id('spoonerAvailability'));
+    return availability;
   }
-  getCompany(company: string) {
-    const input = element(by.id('userCompany'));
-    input.click();
-    input.sendKeys(company);
-    this.click('submit');
+
+  getGreenPrairieHallAvailability() {
+    const availability = element(by.id('green_prairieAvailability')).getText();
+    this.highlightElement(by.id('green_prairieAvailability'));
+    return availability;
   }
-  getUserByAge() {
-    const input = element(by.id('userName'));
-    input.click();
-    input.sendKeys(Key.TAB);
+
+  getPineHallAvailability() {
+    const availability = element(by.id('pineAvailability')).getText();
+    this.highlightElement(by.id('pineAvailability'));
+    return availability;
   }
-  getUniqueUser(email: string) {
-    const user = element(by.id(email)).getText();
-    this.highlightElement(by.id(email));
-    return user;
+
+  getApartmentHallAvailability() {
+    const availability = element(by.id('the_apartmentsAvailability')).getText();
+    this.highlightElement(by.id('the_apartmentsAvailability'));
+    return availability;
   }
-  getUsers() {
-    return element.all(by.className('users'));
+
+  getUniqueMachine(Id: string) {
+    this.highlightElement(by.id(Id));
+    const title = element(by.id(Id)).getText();
+    return title;
   }
+
+  clickGayHall(){
+    this.click('gayId');
+  }
+
+  getWashersTitle() {
+    const title = element(by.id('home-machines-card-washer')).getText();
+    this.highlightElement(by.id('home-machines-card-washer'));
+    return title;
+  }
+
+  getDyersTitle() {
+    const title = element(by.id('home-machines-card-dryer')).getText();
+    this.highlightElement(by.id('home-machines-card-dryer'));
+    return title;
+  }
+
+  getWashers() {
+    return element.all(by.className('washers'));
+  }
+
+  getDryers() {
+    return element.all(by.className('dryers'));
+  }
+
+  getBrokens() {
+    return element.all(by.className('brokens'));
+  }
+
+  clickRoomPanel(){
+    this.click('home-rooms-card');
+  }
+
+  clickAllRooms(){
+    this.click('allRooms');
+  }
+
   elementExistsWithId(idOfElement: string): promise.Promise<boolean> {
     if (element(by.id(idOfElement)).isPresent()) {
       this.highlightElement(by.id(idOfElement));
     }
     return element(by.id(idOfElement)).isPresent();
   }
+
   elementExistsWithCss(cssOfElement: string): promise.Promise<boolean> {
     return element(by.css(cssOfElement)).isPresent();
   }
+
   click(idOfButton: string): promise.Promise<void> {
     this.highlightElement(by.id(idOfButton));
     return element(by.id(idOfButton)).click();
   }
+
   field(idOfField: string) {
     return element(by.id(idOfField));
   }
+
   button(idOfButton: string) {
     this.highlightElement(by.id(idOfButton));
     return element(by.id(idOfButton));
   }
+
   getTextFromField(idOfField: string) {
     this.highlightElement(by.id(idOfField));
     return element(by.id(idOfField)).getText();
   }
+
 }

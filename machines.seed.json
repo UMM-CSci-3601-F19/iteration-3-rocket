@@ -18,7 +18,7 @@
     "type": "washer",
     "running": true,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "83d1f4db-496c-44c1-bf9b-fffbac67077f",
@@ -60,7 +60,7 @@
     "type": "dryer",
     "running": false,
     "status": "broken",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "d4c2ca97-5387-4f43-9cf7-a8a307473467",
@@ -95,14 +95,14 @@
     "type": "washer",
     "running": true,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "22e5916b-4eef-44de-b8ee-b786cd066e34",
     "type": "washer",
     "running": true,
     "status": "broken",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "5182f1f3-606e-4f0a-9485-fd821dc79f3c",
@@ -193,7 +193,7 @@
     "type": "dryer",
     "running": false,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "da22bdf0-bcec-4a0b-a568-536495e07741",
@@ -298,7 +298,7 @@
     "type": "dryer",
     "running": true,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "68db428b-c8c5-49ae-a2b5-0810dc40332c",
@@ -375,7 +375,7 @@
     "type": "washer",
     "running": true,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "69385e13-65b2-4f60-829a-1fc9f0d85f9e",
@@ -389,7 +389,7 @@
     "type": "dryer",
     "running": true,
     "status": "broken",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "c90fdf9f-c4e2-4945-adb6-d5cb023dca79",
@@ -515,7 +515,7 @@
     "type": "dryer",
     "running": false,
     "status": "invisible",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "9131fcb9-21c4-4a68-9833-e2ef67b0f8a7",
@@ -529,7 +529,7 @@
     "type": "washer",
     "running": false,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "fdbdb4bd-45c9-430d-932e-baa839fbb4b8",
@@ -571,7 +571,7 @@
     "type": "dryer",
     "running": true,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "86964e39-bd66-4f15-8cd5-89ae79069dc8",
@@ -592,14 +592,14 @@
     "type": "washer",
     "running": false,
     "status": "invisible",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "9ed07062-2e64-4354-973a-5551a1b9a902",
     "type": "washer",
     "running": true,
     "status": "broken",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "80f6eced-621e-448b-a106-0cc3d1f7fb47",
@@ -627,7 +627,7 @@
     "type": "dryer",
     "running": false,
     "status": "normal",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "31281417-0459-4457-be7a-b314d8718300",
@@ -648,7 +648,7 @@
     "type": "washer",
     "running": false,
     "status": "invisible",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "a6c0a087-1da4-4940-aa02-73e6c0b79d8a",
@@ -662,7 +662,7 @@
     "type": "washer",
     "running": false,
     "status": "broken",
-    "room_id": "gay_hall"
+    "room_id": "gay"
   },
   {
     "id": "f975bb77-894b-4c53-85aa-1894f527b0bd",

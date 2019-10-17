@@ -10,6 +10,8 @@ import {HomeService} from './home.service';
 })
 
 export class HomeComponent implements OnInit {
+  private autoRefresh = true;
+
   public machineListTitle: string;
   public brokenMachineListTitle: string;
   public rooms: Room[];
@@ -95,12 +97,14 @@ export class HomeComponent implements OnInit {
 
   updateTime(): void {
     (async () => {
-      await this.delay(60000); // hold 60s for the next refresh
-      console.log('Refresh');
       this.loadAllMachines();
       this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
-      this.updateTime();
+      if (this.autoRefresh) {
+        await this.delay(60000); // hold 60s for the next refresh
+        console.log('Refresh');
+        this.updateTime();
+      }
     }) ();
   }
 
