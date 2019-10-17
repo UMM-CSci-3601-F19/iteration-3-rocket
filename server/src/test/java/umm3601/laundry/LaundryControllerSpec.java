@@ -38,16 +38,16 @@ public class LaundryControllerSpec {
     testMachines.add(Document.parse("{\n" +
       "    \"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
       "    \"type\": \"washer\",\n" +
-      "    \"running\": true,\n" +
-      "    \"status\": \"normal\",\n" +
+      "    \"running\": false,\n" +
+      "    \"status\": \"broken\",\n" +
       "    \"room_id\": \"gay_hall\"\n" +
       "  }"));
     testMachines.add(Document.parse("{\n" +
       "    \"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
       "    \"type\": \"dryer\",\n" +
-      "    \"running\": false,\n" +
-      "    \"status\": \"normal\",\n" +
-      "    \"room_id\": \"independmachineDocumentsence_hall\"\n" +
+      "    \"running\": true,\n" +
+      "    \"status\": \"invisible\",\n" +
+      "    \"room_id\": \"independence_hall\"\n" +
       "  }"));
     machineDocuments.insertMany(testMachines);
 
@@ -66,7 +66,7 @@ public class LaundryControllerSpec {
       "    \"type\": \"dryer\",\n" +
       "    \"running\": false,\n" +
       "    \"status\": \"normal\",\n" +
-      "    \"room_id\": \"independmachineDocumentsence_hall\"\n" +
+      "    \"room_id\": \"independence_hall\"\n" +
       "  }"));
     testPollingMachines.add(Document.parse("{\n" +
       "    \"id\": \"cd840548-7fd2-4a59-87a0-0afabeee0f85\",\n" +
