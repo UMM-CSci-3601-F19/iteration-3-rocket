@@ -115,13 +115,13 @@ mat-icon {
 
 .room.mat-card {
   margin:0;
-  box-shadow: unset;
+  box-shadow: unset !important;
 }
 
 .machines.mat-expansion-panel {
   margin-top: 10px;
   margin-bottom: 10px;
-  box-shadow: unset;
+  box-shadow: unset !important;
 }
 
 .home {
