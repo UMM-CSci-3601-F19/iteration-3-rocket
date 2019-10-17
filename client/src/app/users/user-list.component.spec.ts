@@ -63,12 +63,6 @@ describe('User list', () => {
       fixture.detectChanges();
     });
   }));
-
-
-
-
-
-
 });
 
 describe('Misbehaving User List', () => {
