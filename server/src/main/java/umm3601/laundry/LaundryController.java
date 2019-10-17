@@ -4,12 +4,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import java.util.Observable;
 
 import static com.mongodb.client.model.Filters.eq;
 
