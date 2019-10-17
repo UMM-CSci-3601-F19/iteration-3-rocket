@@ -26,6 +26,9 @@ public class LaundryControllerSpec {
   private String machineId;
   private String roomId;
 
+  private MongoCollection<Document> machinePollingDocuments;
+  private BasicDBObject machine;
+
   @Before
   public void clearAndPopulateDB() {
     MongoClient mongoClient = new MongoClient();
@@ -52,7 +55,7 @@ public class LaundryControllerSpec {
       "  }"));
     machineDocuments.insertMany(testMachines);
 
-    MongoCollection<Document> machinePollingDocuments = machinePollingDB.getCollection("machineDataFromPollingAPI");
+    machinePollingDocuments = machinePollingDB.getCollection("machineDataFromPollingAPI");
     machinePollingDocuments.drop();
     List<Document> testPollingMachines = new ArrayList<>();
     testPollingMachines.add(Document.parse("{\n" +
@@ -108,7 +111,7 @@ public class LaundryControllerSpec {
     laundryController = new LaundryController(machineDB, roomDB, machinePollingDB);
 
     machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
-    BasicDBObject machine = new BasicDBObject("id", machineId);
+    machine = new BasicDBObject("id", machineId);
     machine = machine.append("type", "dryer")
       .append("running", false)
       .append("status", "the_status")
@@ -127,6 +130,16 @@ public class LaundryControllerSpec {
     BsonArrayCodec arrayReader = new BsonArrayCodec(codecRegistry);
 
     return arrayReader.decode(reader, DecoderContext.builder().build());
+  }
+
+  private static Integer getRemainingTime(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonInt32) doc.get("remainingTime")).getValue();
+  }
+
+  private static Integer getVacantTime(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonInt32) doc.get("vacantTime")).getValue();
   }
 
   private static String getName(BsonValue val) {
@@ -191,6 +204,51 @@ public class LaundryControllerSpec {
       .collect(Collectors.toList());
     List<Boolean> expectedRunning = Arrays.asList(false, false, false, true, true);
     assertEquals("Running should be updated", expectedRunning, running);
+  }
+
+  @Test
+  public void updateTime() {
+    String jsonResult = laundryController.getMachines();
+    BsonArray docs = parseJsonArray(jsonResult);
+
+    List<Integer> remainingTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getRemainingTime)
+      .collect(Collectors.toList());
+    List<Integer> expectedRemainingTimes = Arrays.asList(60, -1, 60, -1, -1);
+    assertEquals("Running should be updated", expectedRemainingTimes, remainingTimes);
+
+    List<Integer> vacantTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getVacantTime)
+      .collect(Collectors.toList());
+    List<Integer> expectedVacantTimes = Arrays.asList(-1, 0, -1, 0, 0);
+    assertEquals("Running should be updated", expectedVacantTimes, vacantTimes);
+
+    machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
+    BasicDBObject newMachine = new BasicDBObject("id", machineId);
+    newMachine = newMachine.append("type", "dryer")
+      .append("running", true)
+      .append("status", "the_status")
+      .append("room_id", roomId);
+    machinePollingDocuments.replaceOne(Document.parse(machine.toJson()), Document.parse(newMachine.toJson()));
+
+    jsonResult = laundryController.getMachines();
+    docs = parseJsonArray(jsonResult);
+
+    remainingTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getRemainingTime)
+      .collect(Collectors.toList());
+    expectedRemainingTimes = Arrays.asList(60, -1, 60, -1, 60);
+    assertEquals("Running should be updated", expectedRemainingTimes, remainingTimes);
+
+    vacantTimes = docs
+      .stream()
+      .map(LaundryControllerSpec::getVacantTime)
+      .collect(Collectors.toList());
+    expectedVacantTimes = Arrays.asList(-1, 0, -1, 0, -1);
+    assertEquals("Running should be updated", expectedVacantTimes, vacantTimes);
   }
 
   @Test
