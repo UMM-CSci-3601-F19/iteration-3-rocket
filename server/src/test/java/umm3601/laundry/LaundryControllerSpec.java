@@ -212,7 +212,7 @@ public class LaundryControllerSpec {
   public void getMachineById() {
     String jsonResult = laundryController.getMachine(machineId);
     Document machine = Document.parse(jsonResult);
-    assertEquals("Status should match", "theStatus", machine.get("status"));
+    assertEquals("Status should match", "the_status", machine.get("status"));
     String noJsonResult = laundryController.getMachine(new ObjectId().toString());
     assertNull("Nothing should match", noJsonResult);
   }
