@@ -10,6 +10,15 @@ import {HomeService} from './home.service';
 })
 
 export class HomeComponent implements OnInit {
+
+  /*
+   * This is a switch for the E2E test
+   * before running the tests
+   * set autoRefresh to be true,
+   * after testing, set the boolean
+   * back to true in order to make
+   * the functionailty works.
+   */
   private autoRefresh = true;
 
   public machineListTitle: string;

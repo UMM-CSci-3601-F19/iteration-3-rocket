@@ -20,6 +20,14 @@ public class LaundryController {
   private  MongoCollection<Document> machinePollingCollection;
   private MongoDatabase pullingDatabase;
 
+  /*
+   * This is a switch for the E2E test
+   * before running the tests
+   * set seedlocalSourse to be true,
+   * after testing, set the boolean
+   * back to true in order to make
+   * the functionailty works.
+   */
   private boolean seedLocalSourse = false;
 
   public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase)  {
