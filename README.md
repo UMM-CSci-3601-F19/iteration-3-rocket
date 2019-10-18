@@ -1,17 +1,28 @@
-# CSCI 3601 Production Template, F19
+# The Web App
+### CSCI 3601 F19 Iteration 1
+##### Authors: Michael Fairbanks, Kai Zang, Tyler Rowland, and Waller Li
+
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-F19/iteration-1-rambunctious-racoons.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-F19/iteration-1-rambunctious-racoons)
 
-This is your starter code for Iteration 1.
+## Important notes about our iteration 1 project
+To run the E2E tests, because the E2E tests is based on a fixed data and the auto updating should be turn off, please set the "autoRefresh" false at line 22 of client/src/app/home/home.component.ts, and set the "seedLocalSourse" true at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
 
-There are a number of pieces in this production template to help you get started.
-As you work on your project, you should replace some of these pieces with 
-elements of your project and remove whatever you don't need (e.g., 
-markdown files, JSON data files, or any remnants of the labs).
+```{java}
+private autoRefresh = false;                // client/src/app/home/home.component.ts
+```
+```{java}
+private boolean seedLocalSourse = true;     // server/src/main/java/umm3601/laundry/LaundryController.java
+```
+
+The MongoDB must be seed to reset the data before running any gradlew server tasks.
+
+We did not remove some files about the user both in the client and the server because they will be helpful as a template for our future iterations.
 
 <!-- TOC depthFrom:1 depthTo:5 withLinks:1 updateOnSave:1 orderedList:0 -->
 ## Table of Contents
+- [Important notes](#important-notes-about-our-iteration-1-project)
 - [Setup](#setup)
-- [Running your project](#running-your-project)
+- [Running the project](#running-the-project)
 - [Testing and Continuous Integration](#testing-and-continuous-integration)
 - [Resources](#resources)
 	- [Angular](#angular)
@@ -22,49 +33,23 @@ markdown files, JSON data files, or any remnants of the labs).
 
 ## Setup
 
-As in the labs, you'll be using IntelliJ. Once you've all joined your
-group using GitHub classroom, you can clone your repository using IntelliJ:
-
 - When prompted to create a new IntelliJ project, select **yes**.
 - Select **import project from existing model** and select **Gradle.**
   - Make sure **Use default Gradle wrapper** is selected.
 - Click **Finish.**
-- If IDEA asks you if you want to compile TypeScript to JavaScript :fire: DO NOT :fire:
-it will break your project.
+- Do not compile TypeScript to JavaScript.
 
-:warning: IDEA will sometimes decide to "help" you by offering
-"Compile TypeScript to JavaScript?" :bangbang: *Never* say "OK" to this
-offer -- if you do it will make a complete mess of your project. We're
-using other tools (`gradle`, `ng`, and a thing called `webpack` which you
-never explicitly see) to do that compilation. If you let IDEA do it, you'll
-have a ton of JavaScript files cluttering up your project and confusing other
-tools.
+## Running the project
 
-## Running your project
-
-- The familiar **run** Gradle task will still run your SparkJava server.
+- The **run** Gradle task will still run the SparkJava server.
 (which is available at ``localhost:4567``)
 - The **build** (or its' alias **buildExecutable**) task will still _build_ the entire project (but not run it)
 - The **runClient** task will build and run the client side of your project (available at ``localhost:9000``)
-
-The major difference between this lab and lab #3 is that, here, your data
-(users and todos) will be stored in a database rather than as "flat" JSON files
-within the server source code.
-
-For the most part, you will be using a local installation of Mongo as a
-`dev` (development) database. You don't *really* need to worry about how this is set up,
-but you *do* need to know a couple of tricks to help you use it:
 
 - To load new seed data into your local dev database, use the gradle task:
 **seedMongoDB**.
 - *Seed* data is stored in the correspondingly named JSON files at the top
 level (e.g., `users.seed.json`).
-
-:exclamation: Pro-tip: IntelliJ comes with a nice view to see the mongo databases setup.
-To access this click on File -> Settings -> Plugins, type Mongo and make sure the Mongo Plugin is installed.
-Now head to View -> Tool Windows -> Mongo Explorer. Then use the tool icon to add configuration.
-Once prompted type for Path to Mongo Shell: _"/usr/bin/mongo"_
-and hit the <span style="color:green">green :heavy_plus_sign:</span>, to add your label and, huzzah!, Mongo Explorer is on your side bar.
 
 ## Testing and Continuous Integration
 
@@ -78,8 +63,6 @@ Testing client:
 The server (`run`) needs to be on for this test to work, and you have to
 run the `seedMongoDB` task before running the e2e tests!
 * runServerTests runs the server tests.
-
-Turn on your repo in [Travis CI][travis], replace the build status image in this README, and push your changes. That will trigger a build with Travis.
 
 ## Resources
 ### Angular
