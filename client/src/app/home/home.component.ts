@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
    * set autoRefresh to be true,
    * after testing, set the boolean
    * back to true in order to make
-   * the functionailty works.
+   * the functionality works.
    */
   private autoRefresh = true;
 
