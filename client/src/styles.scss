@@ -1,4 +1,5 @@
 @import '../node_modules/@angular/material/theming';
+// @import "@material/fab/mdc-fab";
 
 // General themes for across the app and those that need access to theming go here
 // Styles that affect only things in an individual component should go in that component's scss/css file.
@@ -32,7 +33,7 @@
   // Define any styles affected by the theme.
 
   mat-sidenav-content {
-    background-color: #607d8b;
+    background-color: mat-color($primary);
   }
 
   @if $is-dark {
@@ -42,7 +43,7 @@
     }
 
     mat-sidenav-content {
-      background-color: #b0bec5;
+      background-color: mat-color($primary);
     }
   }
   .drawer-list-item-active {
@@ -89,7 +90,7 @@ html {
 .indicator {
   font-size: 14px;
   margin-left: 35px;
-  color: #7f7f7f;
+  color: #555;
 }
 
 .roomName {
@@ -115,13 +116,13 @@ mat-icon {
 
 .room.mat-card {
   margin:0;
-  box-shadow: unset !important;
+  box-shadow: none !important;
 }
 
 .machines.mat-expansion-panel {
   margin-top: 10px;
   margin-bottom: 10px;
-  box-shadow: unset !important;
+  box-shadow: none !important;
 }
 
 .home {

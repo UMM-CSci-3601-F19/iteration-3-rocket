@@ -12,7 +12,9 @@ import {APP_BASE_HREF} from '@angular/common';
 
 import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
-import {MatGridListModule} from "@angular/material/grid-list";
+import {MatGridListModule} from '@angular/material/grid-list';
+
+// import {MDCRipple} from '@material/ripple';
 
 // import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 // import {CdkStepperModule} from '@angular/cdk/stepper';
@@ -26,6 +28,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
     Routing,
     CustomModule,
     MatGridListModule,
+    // MDCRipple,
     // ScrollDispatchModule,
     // CdkStepperModule,
   ],
