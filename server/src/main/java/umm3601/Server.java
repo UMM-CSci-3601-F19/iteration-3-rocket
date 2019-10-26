@@ -13,6 +13,9 @@ import umm3601.user.UserRequestHandler;
 
 import static spark.Spark.*;
 import java.io.InputStream;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
   private static final String userDatabaseName = "dev";
@@ -29,11 +32,22 @@ public class Server {
     MongoDatabase machinePollingDatabase = mongoClient.getDatabase(machinePollingDatabaseName);
     MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
 
-    PollingService pollingService = new PollingService(mongoClient);
+//    PollingService pollingService = new PollingService(mongoClient);
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
     LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase, machinePollingDatabase);
     LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
+
+//    final ScheduledExecutorService executor
+//        wait(10000);Service = Executors.newSingleThreadScheduledExecutor();
+//    executorService.scheduleAtFixedRate(() -> pollFromServer(mongoClient), 0, 1, TimeUnit.MINUTES);
+//    executorService.scheduleAtFixedRate(laundryController::updateMachines, 30000, 1, TimeUnit.MINUTES);
+
+    final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    executorService.scheduleAtFixedRate(() -> {
+      pollFromServer(mongoClient);
+      laundryController.updateMachines();
+    }, 0, 1, TimeUnit.MINUTES);
 
     //Configure Spark
     port(serverPort);
@@ -106,6 +120,11 @@ public class Server {
       res.status(404);
       return "Sorry, we couldn't find that!";
     });
+  }
+
+  private static void pollFromServer(MongoClient mongoClient) {
+//    mongoClient.dropDatabase("dev");
+    new PollingService(mongoClient);
   }
 
   // Enable GZIP for all responses
