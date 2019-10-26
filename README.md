@@ -11,16 +11,15 @@ At client/src/app/home/home.component.ts:
 ```{java}
 private autoRefresh = false;                
 ```
-
-
 At server/src/main/java/umm3601/laundry/LaundryController.java:
 ```{java}
 private boolean seedLocalSourse = true;     
 ```
+To run other tests, please set the "autoRefresh" true and set the "seedLocalSourse" false.
 
 The MongoDB must be seed to reset the data before running any gradlew server tasks.
 
-We did not remove some files about the user both in the client and the server because they will be helpful as a template for our future iterations.
+We did not remove the modules of users' functionalities in the client and the server because they will be helpful as a template for future iterations.
 
 <!-- TOC depthFrom:1 depthTo:5 withLinks:1 updateOnSave:1 orderedList:0 -->
 ## Table of Contents
