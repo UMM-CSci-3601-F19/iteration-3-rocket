@@ -37,7 +37,7 @@ public class LaundryController {
     } else {
       machinePollingCollection = machineDatabase.getCollection("machines");
     }
-//    this.updateMachines();
+    this.updateMachines();
   }
 
   public String getRooms() {

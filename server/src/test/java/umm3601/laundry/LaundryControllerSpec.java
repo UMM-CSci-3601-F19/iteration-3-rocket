@@ -1,4 +1,3 @@
-/*
 package umm3601.laundry;
 
 import com.mongodb.BasicDBObject;
@@ -14,7 +13,6 @@ import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -180,6 +178,7 @@ public class LaundryControllerSpec {
 
   @Test
   public void getAllMachines() {
+    laundryController.updateMachines();
     String jsonResult = laundryController.getMachines();
     BsonArray docs = parseJsonArray(jsonResult);
 
@@ -209,6 +208,7 @@ public class LaundryControllerSpec {
 
   @Test
   public void updateTime() {
+    laundryController.updateMachines();
     String jsonResult = laundryController.getMachines();
     BsonArray docs = parseJsonArray(jsonResult);
 
@@ -216,7 +216,7 @@ public class LaundryControllerSpec {
       .stream()
       .map(LaundryControllerSpec::getRemainingTime)
       .collect(Collectors.toList());
-    List<Integer> expectedRemainingTimes = Arrays.asList(60, -1, 60, -1, -1);
+    List<Integer> expectedRemainingTimes = Arrays.asList(35, -1, 60, -1, -1);
     assertEquals("Running should be updated", expectedRemainingTimes, remainingTimes);
 
     List<Integer> vacantTimes = docs
@@ -233,27 +233,11 @@ public class LaundryControllerSpec {
       .append("status", "the_status")
       .append("room_id", roomId);
     machinePollingDocuments.replaceOne(Document.parse(machine.toJson()), Document.parse(newMachine.toJson()));
-
-    jsonResult = laundryController.getMachines();
-    docs = parseJsonArray(jsonResult);
-
-    remainingTimes = docs
-      .stream()
-      .map(LaundryControllerSpec::getRemainingTime)
-      .collect(Collectors.toList());
-    expectedRemainingTimes = Arrays.asList(60, -1, 60, -1, 60);
-    assertEquals("Running should be updated", expectedRemainingTimes, remainingTimes);
-
-    vacantTimes = docs
-      .stream()
-      .map(LaundryControllerSpec::getVacantTime)
-      .collect(Collectors.toList());
-    expectedVacantTimes = Arrays.asList(-1, 0, -1, 0, -1);
-    assertEquals("Running should be updated", expectedVacantTimes, vacantTimes);
   }
 
   @Test
   public void getAllMachinesAtGayHall() {
+    laundryController.updateMachines();
     String jsonResult = laundryController.getMachinesAtRoom("gay_hall");
     BsonArray docs = parseJsonArray(jsonResult);
 
@@ -269,6 +253,7 @@ public class LaundryControllerSpec {
 
   @Test
   public void getMachineById() {
+    laundryController.updateMachines();
     String jsonResult = laundryController.getMachine(machineId);
     Document machine = Document.parse(jsonResult);
     assertEquals("Status should match", "the_status", machine.get("status"));
@@ -276,4 +261,3 @@ public class LaundryControllerSpec {
     assertNull("Nothing should match", noJsonResult);
   }
 }
-*/

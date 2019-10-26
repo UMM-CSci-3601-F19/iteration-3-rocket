@@ -27,21 +27,16 @@ public class Server {
   public static void main(String[] args) {
 
     MongoClient mongoClient = new MongoClient();
+
     MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
     MongoDatabase machineDatabase = mongoClient.getDatabase(machineDatabaseName);
     MongoDatabase machinePollingDatabase = mongoClient.getDatabase(machinePollingDatabaseName);
     MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
 
-//    PollingService pollingService = new PollingService(mongoClient);
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
     LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase, machinePollingDatabase);
     LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
-
-//    final ScheduledExecutorService executor
-//        wait(10000);Service = Executors.newSingleThreadScheduledExecutor();
-//    executorService.scheduleAtFixedRate(() -> pollFromServer(mongoClient), 0, 1, TimeUnit.MINUTES);
-//    executorService.scheduleAtFixedRate(laundryController::updateMachines, 30000, 1, TimeUnit.MINUTES);
 
     final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     executorService.scheduleAtFixedRate(() -> {
@@ -123,7 +118,6 @@ public class Server {
   }
 
   private static void pollFromServer(MongoClient mongoClient) {
-//    mongoClient.dropDatabase("dev");
     new PollingService(mongoClient);
   }
 
