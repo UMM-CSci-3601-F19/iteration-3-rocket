@@ -28,7 +28,7 @@ public class LaundryController {
    */
   private boolean seedLocalSource = false;
 
-  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase)  {
+  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase) {
     this.pullingDatabase = machinePollingDatabase;
     machineCollection = machineDatabase.getCollection("machines");
     roomCollection = roomDatabase.getCollection("rooms");
@@ -40,7 +40,9 @@ public class LaundryController {
 //    this.updateMachines();
   }
 
-  public String getRooms() { return serializeIterable(roomCollection.find()); }
+  public String getRooms() {
+    return serializeIterable(roomCollection.find());
+  }
 
   public String getMachines() {
 //    this.updateMachines();
@@ -77,7 +79,7 @@ public class LaundryController {
 
   public void updateMachines() {
 
-    if (!seedLocalSource){
+    if (!seedLocalSource) {
       machinePollingCollection = pullingDatabase.getCollection("machineDataFromPollingAPI");
     } else {
       machinePollingCollection = pullingDatabase.getCollection("machines");
@@ -104,18 +106,34 @@ public class LaundryController {
 //      System.out.println(oldDocument.getBoolean("runEnd") == null);
 
       if (newDocument.getBoolean("running")) {
-        if (!oldDocument.getBoolean("running") || oldDocument.get("runBegin") == null) {
-          newDocument.put("runBegin", currentTime);
-          newDocument.put("remainingTime", 60);
-          newDocument.put("runEnd", -1);
-          newDocument.put("vacantTime", -1);
+        if (newDocument.get("type").equals("dryer")) {
+          if (!oldDocument.getBoolean("running") || oldDocument.get("runBegin") == null) {
+            newDocument.put("runBegin", currentTime);
+            newDocument.put("remainingTime", 60);
+            newDocument.put("runEnd", -1);
+            newDocument.put("vacantTime", -1);
 //          System.out.println("not run before, run now");
-        } else {
-          newDocument.put("runBegin", oldDocument.get("runBegin"));
-          newDocument.put("remainingTime", Math.max(0, 60 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000)));
+          } else {
+            newDocument.put("runBegin", oldDocument.get("runBegin"));
+            newDocument.put("remainingTime", Math.max(0, 60 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000)));
 //          System.out.println(60 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000));
-          newDocument.put("runEnd", -1);
-          newDocument.put("vacantTime", -1);
+            newDocument.put("runEnd", -1);
+            newDocument.put("vacantTime", -1);
+          }
+        } else {
+          if (!oldDocument.getBoolean("running") || oldDocument.get("runBegin") == null) {
+            newDocument.put("runBegin", currentTime);
+            newDocument.put("remainingTime", 35);
+            newDocument.put("runEnd", -1);
+            newDocument.put("vacantTime", -1);
+//          System.out.println("not run before, run now");
+          } else {
+            newDocument.put("runBegin", oldDocument.get("runBegin"));
+            newDocument.put("remainingTime", Math.max(0, 35 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000)));
+//          System.out.println(60 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000));
+            newDocument.put("runEnd", -1);
+            newDocument.put("vacantTime", -1);
+          }
         }
       } else {
         if (oldDocument.getBoolean("running") || oldDocument.get("runEnd") == null) {
@@ -132,6 +150,8 @@ public class LaundryController {
           newDocument.put("remainingTime", -1);
         }
       }
+
+
       machinePollingCollection.replaceOne(originalNewDocument, newDocument);
 //      System.out.println(oldDocument);
     }
