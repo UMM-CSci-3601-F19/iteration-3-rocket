@@ -13,13 +13,22 @@
   left: 0;
 }
 
-.room.mat-card {
-  margin:0;
-  box-shadow: unset;
+#all-rooms{
+  height: 50px;
+  top: auto;
+  right: 20px;
+  bottom: 25px;
+  left: auto;
+  position: fixed;
+  border-radius: 25px;
+  z-index: 1;
 }
 
-.machines.mat-expansion-panel {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  box-shadow: unset;
+@media screen and (min-width: 1024px) {
+  #all-rooms {
+    font-size: 110%;
+    height: 60px;
+    border-radius: 30px;
+    right: 30px;
+  }
 }

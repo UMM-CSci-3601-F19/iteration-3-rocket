@@ -1,4 +1,5 @@
 @import '../node_modules/@angular/material/theming';
+// @import "@material/fab/mdc-fab";
 
 // General themes for across the app and those that need access to theming go here
 // Styles that affect only things in an individual component should go in that component's scss/css file.
@@ -32,7 +33,7 @@
   // Define any styles affected by the theme.
 
   mat-sidenav-content {
-    background-color: #607d8b;
+    background-color: mat-color($primary);
   }
 
   @if $is-dark {
@@ -42,9 +43,26 @@
     }
 
     mat-sidenav-content {
-      background-color: #b0bec5;
+      background: mat-color($background, app-bar);
+    }
+
+    .indicator {
+      color: $light-secondary-text !important;
+    }
+
+    .vacant {
+      color: #00ee55 !important;
+    }
+
+    .inUse {
+      color: #ffc520 !important;
+    }
+
+    .unavailable {
+      color: #aaaaaa !important;
     }
   }
+
   .drawer-list-item-active {
     background-color: mat-color($background, hover) !important;
     color: mat-color($primary) !important;
@@ -89,7 +107,7 @@ html {
 .indicator {
   font-size: 14px;
   margin-left: 35px;
-  color: #7f7f7f;
+  color: $dark-secondary-text;
 }
 
 .roomName {
@@ -115,13 +133,17 @@ mat-icon {
 
 .room.mat-card {
   margin:0;
-  box-shadow: unset !important;
+  box-shadow: none !important;
+}
+
+.mat-expansion-panel:not([class*='mat-elevation-z']) {
+  box-shadow: none;
 }
 
 .machines.mat-expansion-panel {
   margin-top: 10px;
   margin-bottom: 10px;
-  box-shadow: unset !important;
+  box-shadow: none !important;
 }
 
 .home {
@@ -132,4 +154,17 @@ mat-icon {
 
 .menuLabel.mat-icon.notranslate.material-icons.mat-icon-no-color{
   margin-left: 9px;
+}
+
+.vacant {
+  color: #007700;
+}
+
+.inUse {
+  color: #777700;
+}
+
+.unavailable {
+  color: #555555;
+  font-style: italic;
 }
