@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {HomeComponent} from './home.component';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
@@ -40,8 +40,8 @@ describe('Home page', () => {
         remainingTime: -1,
         vacantTime: 10,
       }, {
-        id: 'string',
-        running: false,
+        id: 'id_2',
+        running: true,
         status: 'normal',
         room_id: 'room_b',
         type: 'dryer',
@@ -53,14 +53,14 @@ describe('Home page', () => {
         id: 'room_a',
         name: 'A',
 
-        numberOfAllMachines: null,
-        numberOfAvailableMachines: null,
+        numberOfAllMachines: 1,
+        numberOfAvailableMachines: 1,
       }, {
         id: 'room_b',
         name: 'B',
 
-        numberOfAllMachines: null,
-        numberOfAvailableMachines: null,
+        numberOfAllMachines: 1,
+        numberOfAvailableMachines: 0,
       }, ]),
       updateRunningStatus: () => null,
     };
@@ -157,5 +157,22 @@ describe('Home page', () => {
     spy = spyOn(component, 'updateTime');
     component.updateTime();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should the machine counters', () => {
+    expect(component.numOfVacant).toBe(undefined);
+    expect(component.numOfAll).toBe(undefined);
+    component.updateCounter();
+    expect(component.numOfVacant).toBe(0);
+    expect(component.numOfAll).toBe(0);
+    const rooms: Observable<Room[]> = homeServiceStub.getRooms();
+    rooms.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
+      rooms => {
+        component.rooms = rooms;
+      });
+    component.updateCounter();
+    expect(component.numOfVacant).toBe(1);
+    expect(component.numOfAll).toBe(2);
   });
 });
