@@ -6,6 +6,8 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.utils.IOUtils;
+import umm3601.history.HistoryController;
+import umm3601.history.HistoryRequestHandler;
 import umm3601.laundry.LaundryController;
 import umm3601.laundry.LaundryRequestHandler;
 import umm3601.user.UserController;
@@ -22,6 +24,7 @@ public class Server {
   private static final String machineDatabaseName = "dev";
   private static final String machinePollingDatabaseName = "dev";
   private static final String roomDatabaseName = "dev";
+  private static final String roomHistoricalDatabaseName = "dev";
   private static final int serverPort = 4567;
 
   public static void main(String[] args) {
@@ -32,17 +35,25 @@ public class Server {
     MongoDatabase machineDatabase = mongoClient.getDatabase(machineDatabaseName);
     MongoDatabase machinePollingDatabase = mongoClient.getDatabase(machinePollingDatabaseName);
     MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
+    MongoDatabase roomsHistoryDatabase = mongoClient.getDatabase(roomHistoricalDatabaseName);
 
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
     LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase, machinePollingDatabase);
     LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
+    HistoryController historyController = new HistoryController(roomDatabase, machineDatabase, roomsHistoryDatabase);
+    HistoryRequestHandler historyRequestHandler = new HistoryRequestHandler(historyController);
 
     final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     executorService.scheduleAtFixedRate(() -> {
       pollFromServer(mongoClient);
       laundryController.updateMachines();
     }, 0, 1, TimeUnit.MINUTES);
+
+    executorService.scheduleAtFixedRate(() -> {
+      pollFromServer(mongoClient);
+      historyController.updateHistory();
+    }, 0, 10, TimeUnit.MINUTES);
 
     //Configure Spark
     port(serverPort);
@@ -86,6 +97,7 @@ public class Server {
     get("api/rooms/:room/machines", laundryRequestHandler::getRoomMachines);
     get("api/machines", laundryRequestHandler::getMachines);
     get("api/machines/:machine", laundryRequestHandler::getMachineJSON);
+    get("api/history/:room", historyRequestHandler::getHistory);
 //  get("api/change_machine_status/:machine_id/:status", laundryRequestHandler::changeMachineStatus);
 
     // List users, filtered using query parameters
