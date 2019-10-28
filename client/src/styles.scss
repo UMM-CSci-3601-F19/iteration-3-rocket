@@ -136,6 +136,10 @@ mat-icon {
   box-shadow: none !important;
 }
 
+.mat-expansion-panel:not([class*='mat-elevation-z']) {
+  box-shadow: none;
+}
+
 .machines.mat-expansion-panel {
   margin-top: 10px;
   margin-bottom: 10px;
