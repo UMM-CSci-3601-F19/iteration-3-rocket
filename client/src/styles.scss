@@ -43,9 +43,26 @@
     }
 
     mat-sidenav-content {
-      background-color: mat-color($primary);
+      background: mat-color($background, app-bar);
+    }
+
+    .indicator {
+      color: $light-secondary-text !important;
+    }
+
+    .vacant {
+      color: #00ee55 !important;
+    }
+
+    .inUse {
+      color: #ffc520 !important;
+    }
+
+    .unavailable {
+      color: #aaaaaa !important;
     }
   }
+
   .drawer-list-item-active {
     background-color: mat-color($background, hover) !important;
     color: mat-color($primary) !important;
@@ -90,7 +107,7 @@ html {
 .indicator {
   font-size: 14px;
   margin-left: 35px;
-  color: #555;
+  color: $dark-secondary-text;
 }
 
 .roomName {
@@ -133,4 +150,17 @@ mat-icon {
 
 .menuLabel.mat-icon.notranslate.material-icons.mat-icon-no-color{
   margin-left: 9px;
+}
+
+.vacant {
+  color: #007700;
+}
+
+.inUse {
+  color: #777700;
+}
+
+.unavailable {
+  color: #555555;
+  font-style: italic;
 }
