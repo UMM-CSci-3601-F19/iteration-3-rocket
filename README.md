@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-F19/iteration-2-purple-moths.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-F19/iteration-2-purple-moths)
 
-## Important notes about our iteration 1 project
+## Important notes about our iteration 2 project
 To run the E2E tests, because the E2E tests is based on a fixed data and the auto updating should be turn off, please set the "autoRefresh" false at line 22 of client/src/app/home/home.component.ts, and set the "seedLocalSourse" true at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
 
 At client/src/app/home/home.component.ts:
