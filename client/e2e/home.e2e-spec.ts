@@ -1,5 +1,5 @@
 import {HomePage} from './home.po';
-import {browser, protractor, element, by} from 'protractor';
+import {browser, protractor} from 'protractor';
 import {Key} from 'selenium-webdriver';
 
 // This line (combined with the function that follows) is here for us

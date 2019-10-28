@@ -33,6 +33,8 @@ export class HomeComponent implements OnInit {
   public roomId: string;
   public roomName: string;
   public selectorState: number;
+  public numOfVacant: number;
+  public numOfAll: number;
 
   constructor(public homeService: HomeService) {
     this.machineListTitle = 'available within all rooms';
@@ -100,6 +102,7 @@ export class HomeComponent implements OnInit {
 
       this.updateMachines();
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
+      this.updateCounter();
       this.updateTime();
     }) ();
   }
@@ -109,12 +112,27 @@ export class HomeComponent implements OnInit {
       this.loadAllMachines();
       this.homeService.updateRunningStatus(this.filteredMachines, this.machines);
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
+      this.updateCounter();
       if (this.autoRefresh) {
         await this.delay(60000); // hold 60s for the next refresh
         console.log('Refresh');
         this.updateTime();
       }
     }) ();
+  }
+
+  updateCounter(): void {
+    this.numOfVacant = 0;
+    this.numOfAll = 0;
+    if (this.rooms !== undefined) {
+      this.rooms.map(r => {
+        this.numOfVacant += r.numberOfAvailableMachines;
+        this.numOfAll += r.numberOfAllMachines;
+      });
+    } else {
+      this.numOfVacant = 0;
+      this.numOfAll = 0;
+    }
   }
 
   delay(ms: number) {
