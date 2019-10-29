@@ -30,7 +30,31 @@ public class HistoryController {
   }
 
   public void updateHistory() {
+    while (roomHistoryCollection.count() >= 1008) { // store the data of a week
+      Document first = roomHistoryCollection.find().first();
+      roomHistoryCollection.deleteOne(first);
+    }
 
+    FindIterable<Document> machines = machineCollection.find();
+    FindIterable<Document> rooms = roomCollection.find();
+    Document newDocument = new Document();
+    newDocument.put("time", System.currentTimeMillis());
+    for (Document room: rooms) {
+      String roomId = (String)room.get("id");
+      Bson filter1 = Filters.eq("status", "normal");
+      Bson filter2 = Filters.eq("running", true);
+      Bson filter3 = Filters.eq("room_id", roomId);
+      FindIterable<Document> runningMachinesInRoom =  machines.filter(and(filter1, filter2, filter3));
+      int count = 0;
+//      System.out.println(roomId);
+      for (Document ignored : runningMachinesInRoom) {
+        ++count;
+      }
+//      System.out.println(count);
+      newDocument.put(roomId, count);
+    }
+    roomHistoryCollection.insertOne(newDocument);
+    System.out.println("[history-controller] INFO rooms availability history - updated");
   }
 
   public String getHistory() {
