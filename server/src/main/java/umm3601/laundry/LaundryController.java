@@ -37,7 +37,6 @@ public class LaundryController {
     } else {
       machinePollingCollection = machineDatabase.getCollection("machines");
     }
-//    this.updateMachines();
   }
 
   public String getRooms() {
@@ -45,12 +44,10 @@ public class LaundryController {
   }
 
   public String getMachines() {
-//    this.updateMachines();
     return serializeIterable(machineCollection.find());
   }
 
   public String getMachinesAtRoom(String room) {
-//    this.updateMachines();
     Document filterDoc = new Document();
     filterDoc = filterDoc.append("room_id", room);
     return serializeIterable(machineCollection.find(filterDoc));
@@ -63,7 +60,6 @@ public class LaundryController {
   }
 
   public String getMachine(String id) {
-//    this.updateMachines();
     FindIterable<Document> jsonMachines
       = machineCollection.find(eq("id", id));
 
@@ -163,6 +159,6 @@ public class LaundryController {
       machineCollection.insertOne(d);
 //      System.out.println(d);
     }
-    System.out.println("[laundry-controller] INFO machines collection status - updated");
+    System.out.println("[laundry-controller] INFO - Machines collection status updated");
   }
 }

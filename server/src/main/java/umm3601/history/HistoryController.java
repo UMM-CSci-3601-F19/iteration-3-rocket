@@ -1,18 +1,11 @@
 package umm3601.history;
 
-import com.google.gson.JsonObject;
-import com.mongodb.DBCursor;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
-
-import javax.print.Doc;
-import java.sql.Timestamp;
-import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -54,7 +47,7 @@ public class HistoryController {
       newDocument.put(roomId, count);
     }
     roomHistoryCollection.insertOne(newDocument);
-    System.out.println("[history-controller] INFO rooms availability history - updated");
+    System.out.println("[history-controller] INFO - Rooms availability history updated");
   }
 
   public String getHistory() {
