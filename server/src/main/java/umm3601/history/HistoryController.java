@@ -23,7 +23,7 @@ public class HistoryController {
   }
 
   public void updateHistory() {
-    while (roomHistoryCollection.count() >= 1008) { // store the data of a week
+    while (roomHistoryCollection.countDocuments() >= 1008) { // store the data of a week
       Document first = roomHistoryCollection.find().first();
       roomHistoryCollection.deleteOne(first);
     }
