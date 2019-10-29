@@ -14,21 +14,26 @@
 }
 
 #all-rooms{
-  height: 50px;
+  height: 40px;
   top: auto;
-  right: 20px;
-  bottom: 25px;
+  right: 15px;
+  bottom: 15px;
   left: auto;
   position: fixed;
-  border-radius: 25px;
+  border-radius: 20px;
   z-index: 1;
 }
 
-@media screen and (min-width: 1024px) {
+.mat-expansion-panel, .mat-card {
+  border-radius: 20px;
+}
+
+@media screen and (min-width: 720px) {
   #all-rooms {
     font-size: 110%;
-    height: 60px;
-    border-radius: 30px;
-    right: 30px;
+    height: 50px;
+    border-radius: 25px;
+    right: 40px;
+    bottom: 25px;
   }
 }
