@@ -163,6 +163,6 @@ public class LaundryController {
       machineCollection.insertOne(d);
 //      System.out.println(d);
     }
-    System.out.println("[laundry-controller] Machines collection updated");
+    System.out.println("[laundry-controller] INFO machines collection status - updated");
   }
 }

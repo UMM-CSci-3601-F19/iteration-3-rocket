@@ -1,6 +1,5 @@
 package umm3601.laundry;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import spark.Request;
 import spark.Response;
