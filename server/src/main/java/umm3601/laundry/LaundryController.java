@@ -21,7 +21,7 @@ public class LaundryController {
   /*
    * This is a switch for the E2E test
    * before running the tests
-   * set seedlocalSourse to be true,
+   * set seedLocalSource to be true,
    * after testing, set the boolean
    * back to true in order to make
    * the functionality works.
@@ -90,16 +90,11 @@ public class LaundryController {
       FindIterable<Document> oldDocuments = machineCollection.find();
       for (Document d : oldDocuments) {
         if (d.get("id").equals(newDocument.get("id"))) {
-//          System.out.println(d);
           oldDocument = new Document(d);
           break;
         }
       }
       Document originalNewDocument = new Document(newDocument);
-//      System.out.println(newDocument.getBoolean("running"));
-//      System.out.println(oldDocument.getBoolean("running"));
-//      System.out.println(oldDocument.getBoolean("runBegin") == null);
-//      System.out.println(oldDocument.getBoolean("runEnd") == null);
 
       if (newDocument.getBoolean("running")) {
         if (newDocument.get("type").equals("dryer")) {
@@ -108,11 +103,9 @@ public class LaundryController {
             newDocument.put("remainingTime", 60);
             newDocument.put("runEnd", -1);
             newDocument.put("vacantTime", -1);
-//          System.out.println("not run before, run now");
           } else {
             newDocument.put("runBegin", oldDocument.get("runBegin"));
             newDocument.put("remainingTime", Math.max(0, 60 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000)));
-//          System.out.println(60 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000));
             newDocument.put("runEnd", -1);
             newDocument.put("vacantTime", -1);
           }
@@ -122,11 +115,9 @@ public class LaundryController {
             newDocument.put("remainingTime", 35);
             newDocument.put("runEnd", -1);
             newDocument.put("vacantTime", -1);
-//          System.out.println("not run before, run now");
           } else {
             newDocument.put("runBegin", oldDocument.get("runBegin"));
             newDocument.put("remainingTime", Math.max(0, 35 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000)));
-//          System.out.println(60 - (int) ((currentTime - oldDocument.getLong("runBegin")) / 60000));
             newDocument.put("runEnd", -1);
             newDocument.put("vacantTime", -1);
           }
@@ -137,11 +128,9 @@ public class LaundryController {
           newDocument.put("vacantTime", 0);
           newDocument.put("runBegin", -1);
           newDocument.put("remainingTime", -1);
-//          System.out.println("run before, not run now");
         } else {
           newDocument.put("runEnd", oldDocument.get("runEnd"));
           newDocument.put("vacantTime", (int) ((currentTime - oldDocument.getLong("runEnd")) / 60000));
-//          System.out.println((int) ((currentTime - oldDocument.getLong("runEnd")) / 60000));
           newDocument.put("runBegin", -1);
           newDocument.put("remainingTime", -1);
         }
@@ -149,15 +138,11 @@ public class LaundryController {
 
 
       machinePollingCollection.replaceOne(originalNewDocument, newDocument);
-//      System.out.println(oldDocument);
     }
-//  System.out.println(machineCollection == machinePollingCollection);
-//    machineCollection = machinePollingCollection;
 
     machineCollection.drop();
     for (Document d : newMachines) {
       machineCollection.insertOne(d);
-//      System.out.println(d);
     }
     System.out.println("[laundry-controller] INFO - Machines collection status updated");
   }
