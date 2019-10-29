@@ -97,7 +97,7 @@ public class Server {
     get("api/rooms/:room/machines", laundryRequestHandler::getRoomMachines);
     get("api/machines", laundryRequestHandler::getMachines);
     get("api/machines/:machine", laundryRequestHandler::getMachineJSON);
-//  get("api/change_machine_status/:machine_id/:status", laundryRequestHandler::changeMachineStatus);
+//    get("api/change_machine_status/:machine_id/:status", laundryRequestHandler::changeMachineStatus);
 
     // Returns the history of the up-coming 24h of last week
     get("api/history/rooms", historyRequestHandler::getHistory);
