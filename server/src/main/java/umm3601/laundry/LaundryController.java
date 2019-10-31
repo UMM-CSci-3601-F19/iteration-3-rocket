@@ -144,6 +144,6 @@ public class LaundryController {
     for (Document d : newMachines) {
       machineCollection.insertOne(d);
     }
-    System.out.println("[laundry-controller] INFO - Machines collection status updated");
+    System.out.println("[auto-update] INFO laundry.LaundryController - Machines collection status updated time=" + currentTime);
   }
 }
