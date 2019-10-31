@@ -53,7 +53,7 @@ public class Server {
     executorService.scheduleAtFixedRate(() -> {
       pollFromServer(mongoClient);
       historyController.updateHistory();
-    }, 0, 10, TimeUnit.MINUTES);
+    }, 0, 30, TimeUnit.MINUTES);
 
     //Configure Spark
     port(serverPort);
@@ -99,8 +99,8 @@ public class Server {
     get("api/machines/:machine", laundryRequestHandler::getMachineJSON);
 //    get("api/change_machine_status/:machine_id/:status", laundryRequestHandler::changeMachineStatus);
 
-    // Returns the history of the up-coming 24h of last week
-    get("api/history/rooms", historyRequestHandler::getHistory);
+    // Returns the history of the up-coming 24h of last week with the given room id
+    get("api/history/:room", historyRequestHandler::getHistory);
 
     // List users, filtered using query parameters
 
