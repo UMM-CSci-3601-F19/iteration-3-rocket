@@ -6,10 +6,12 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+
+import java.util.Calendar;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.and;
 
 public class HistoryController {
   private final MongoCollection<Document> roomCollection;
@@ -23,35 +25,59 @@ public class HistoryController {
   }
 
   public void updateHistory() {
-    while (roomHistoryCollection.countDocuments() >= 1008) { // store the data of a week
-      Document first = roomHistoryCollection.find().first();
-      roomHistoryCollection.deleteOne(first);
-    }
+    Calendar calendar = Calendar.getInstance();
+
+    int today = calendar.get(Calendar.DAY_OF_WEEK);   // SUN -> 1, SAT -> 7
+    int now = calendar.get(Calendar.HOUR_OF_DAY) * 2 + calendar.get(Calendar.MINUTE) / 30; // 48 observations per day
 
     FindIterable<Document> machines = machineCollection.find();
     FindIterable<Document> rooms = roomCollection.find();
-    Document newDocument = new Document();
-    newDocument.put("time", System.currentTimeMillis());
     for (Document room: rooms) {
+      Document filterDoc = new Document();
+      filterDoc = filterDoc.append("room_id", room.get("id"));
+      Document targetRoom = roomHistoryCollection.find(filterDoc).first();
+
+      if (targetRoom == null) {
+        targetRoom = new Document();
+        targetRoom.append("room_id", room.get("id"));
+        for (int d = 1; d <= 7; ++d) {
+          Document targetDay = new Document();
+          for (int t = 0; t < 48; ++t) {
+            targetDay.append(String.valueOf(t), 0);
+          }
+          targetRoom.append(String.valueOf(d), targetDay);
+        }
+        roomHistoryCollection.insertOne(targetRoom);
+      }
+
+      Document targetDay = (Document)targetRoom.get(String.valueOf(today));
+      int originalUsage = (int)targetDay.get(String.valueOf(now));
+
       String roomId = (String)room.get("id");
       Bson filter1 = Filters.eq("status", "normal");
       Bson filter2 = Filters.eq("running", true);
       Bson filter3 = Filters.eq("room_id", roomId);
       FindIterable<Document> runningMachinesInRoom =  machines.filter(and(filter1, filter2, filter3));
       int count = 0;
-//      System.out.println(roomId);
       for (Document ignored : runningMachinesInRoom) {
         ++count;
       }
-//      System.out.println(count);
-      newDocument.put(roomId, count);
+
+      int currentUsage = (int)(originalUsage*0.6 + count*0.4);
+//      System.out.println(currentUsage);
+      targetDay.put(String.valueOf(now), currentUsage);
+//      System.out.println(targetDay);
+      targetRoom.put(String.valueOf(today), targetDay);
+//      System.out.println(targetRoom);
+      roomHistoryCollection.replaceOne(filterDoc, targetRoom);
     }
-    roomHistoryCollection.insertOne(newDocument);
-    System.out.println("[history-controller] INFO - Rooms availability history updated");
+    System.out.println("[auto-update] INFO history.HistoryController - Rooms availability history updated day=" + today + " hour=" + now);
   }
 
-  public String getHistory() {
-    return serializeIterable(roomHistoryCollection.find().limit(144));
+  public String getHistory(String room) {
+    Document filterDoc = new Document();
+    filterDoc = filterDoc.append("room_id", room);
+    return serializeIterable(roomHistoryCollection.find(filterDoc));
   }
 
   private String serializeIterable(Iterable<Document> documents) {
