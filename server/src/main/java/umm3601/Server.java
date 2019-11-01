@@ -25,7 +25,7 @@ public class Server {
   private static final String machinePollingDatabaseName = "dev";
   private static final String roomDatabaseName = "dev";
   private static final String roomPollingDatabaseName = "dev";
-  private static final String roomHistoricalDatabaseName = "dev";
+  private static final String roomHistoryDatabaseName = "dev";
   private static final int serverPort = 4567;
 
   public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class Server {
     MongoDatabase machinePollingDatabase = mongoClient.getDatabase(machinePollingDatabaseName);
     MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
     MongoDatabase roomPollingDatabase = mongoClient.getDatabase(roomPollingDatabaseName);
-    MongoDatabase roomsHistoryDatabase = mongoClient.getDatabase(roomHistoricalDatabaseName);
+    MongoDatabase roomsHistoryDatabase = mongoClient.getDatabase(roomHistoryDatabaseName);
 
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
@@ -47,13 +47,13 @@ public class Server {
     HistoryRequestHandler historyRequestHandler = new HistoryRequestHandler(historyController);
 
     final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    executorService.scheduleAtFixedRate(() -> pollFromServer(mongoClient), 0, 1, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(() -> pollFromServer(mongoClient), 0, 1,  TimeUnit.MINUTES);
 
-    executorService.scheduleAtFixedRate(laundryController::updateRooms, 0, 60, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(laundryController::updateRooms,    0, 60, TimeUnit.MINUTES);
 
-    executorService.scheduleAtFixedRate(laundryController::updateMachines, 0, 1, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(laundryController::updateMachines, 0, 1,  TimeUnit.MINUTES);
 
-    executorService.scheduleAtFixedRate(historyController::updateHistory, 0, 30, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(historyController::updateHistory,  0, 30, TimeUnit.MINUTES);
 
     //Configure Spark
     port(serverPort);

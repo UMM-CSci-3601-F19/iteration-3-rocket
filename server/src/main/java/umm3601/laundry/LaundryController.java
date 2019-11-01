@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -147,25 +148,29 @@ public class LaundryController {
     }
 
     machineCollection.drop();
+    int n = 0;
     for (Document d : newMachines) {
       machineCollection.insertOne(d);
+      ++n;
     }
-    System.out.println("[laundry-controller] Machines collection updated");
-  }
+    System.out.println("[auto-update] INFO laundry.LaundryController - Updated machines collection status with " + n + " machines");
+ }
 
   public void updateRooms() {
 
     if (!seedLocalSource) {
-      roomPollingCollection = machinePullingDatabase.getCollection("roomDataFromPollingAPI");
+      roomPollingCollection = roomPullingDatabase.getCollection("roomDataFromPollingAPI");
     } else {
-      roomPollingCollection = machinePullingDatabase.getCollection("rooms");
+      roomPollingCollection = roomPullingDatabase.getCollection("rooms");
     }
 
     FindIterable<Document> newRooms = roomPollingCollection.find();
     roomCollection.drop();
+    int n = 0;
     for (Document d : newRooms) {
       roomCollection.insertOne(d);
+      ++n;
     }
-    System.out.println("[auto-update] INFO laundry.LaundryController - Room collection updated");
+    System.out.println("[auto-update] INFO laundry.LaundryController - Updated rooms collection with " + n + " rooms");
   }
 }
