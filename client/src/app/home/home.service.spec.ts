@@ -6,7 +6,7 @@ import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
 
 
-xdescribe('Home list Service', () => {
+describe('Home list Service', () => {
   const testMachines: Machine[] = [
     {
       id: 'bf354528bwhsg',
