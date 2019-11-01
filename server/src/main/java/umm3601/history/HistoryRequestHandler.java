@@ -21,4 +21,9 @@ public class HistoryRequestHandler {
       return "";
     }
   }
+  public Object getAllHistory(Request ignore, Response response) {
+    response.type("application/json");
+    String history = historyController.getAllHistory();
+    return new JsonParser().parse(history);
+  }
 }

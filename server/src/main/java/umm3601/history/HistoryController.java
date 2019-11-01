@@ -80,6 +80,10 @@ public class HistoryController {
     return serializeIterable(roomHistoryCollection.find(filterDoc));
   }
 
+  public String getAllHistory() {
+    return serializeIterable(roomHistoryCollection.find());
+  }
+
   private String serializeIterable(Iterable<Document> documents) {
     return StreamSupport.stream(documents.spliterator(), false)
       .map(Document::toJson)
