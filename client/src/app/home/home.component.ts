@@ -41,11 +41,19 @@ export class HomeComponent implements OnInit {
   canvas: any;
   ctx: any;
   myChart: any;
-  graphMode = 'bar';
+  graphMode = 'line';
   chart='myChart';
   public inputRoom = "all";
   public history: History[];
-  public filteredHistory: History[];
+  public filteredHistory: History;
+  public inputDay = 1;
+  public gayHistory: History[];
+  public independenceHistory: History;
+  public blakelyHistory: History;
+  public spoonerHistory: History;
+  public greenPrairieHistory: History;
+  public pineHistory: History;
+  public theApartmentsHistory: History;
 
   constructor(public homeService: HomeService) {
     this.machineListTitle = 'available within all rooms';
@@ -78,16 +86,32 @@ export class HomeComponent implements OnInit {
       this.numOfDryers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'dryer').length;
     }
   }
-/*
+
   filterGraphData(){
-    this.history = this.homeService.get
-    if (this.inputRoom === 'all'){
-      this.filteredHistory
-    } else {
+    if (this.inputRoom !== 'all'){
       this.filteredHistory = this.history.filter(history => history.room_id === this.inputRoom);
+
+    } else {
+      this.gayHistory = this.history.filter(history => history.room_id === 'gay');
+      this.independenceHistory = this.history.filter(history => history.room_id === 'independence');
+      this.blakelyHistory = this.history.filter(history => history.room_id === 'blakely');
+      this.spoonerHistory = this.history.filter(history => history.room_id === 'spooner');
+      this.greenPrairieHistory = this.history.filter(history => history.room_id === 'green_prairie');
+      this.pineHistory = this.history.filter(history => history.room_id === 'pine');
+      this.theApartmentsHistory = this.history.filter(history => history.room_id === 'the_apartments');
     }
   }
-*/
+
+  getWeekDayByRoom(room, wekd): number[] {
+    let tempWekd: Array<number> = [];
+    for (var i = 0; i < 48; i++){
+      var a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
+      tempWekd.push(a);
+      this.gayHistory = this.history.filter(history => history.room_id === room);
+    }
+    return tempWekd
+  }
+
   loadAllMachines(): void {
     const machines: Observable<Machine[]> = this.homeService.getMachines();
     machines.subscribe(
@@ -128,47 +152,104 @@ export class HomeComponent implements OnInit {
     this.ctx = this.canvas;
 
     let xlabel;
+    this.filterGraphData();
+
+    console.log("i'm ok here");
+    console.log(this.inputDay);
+    console.log(this.getWeekDayByRoom('gay', this.inputDay));
 
     xlabel = ['0a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a',
       '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p',
       '9p', '10p', '11p']
 
-    this.myChart = new Chart(this.ctx, {
-      type: this.graphMode,
-      data: {
-        labels: xlabel,
-        datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
+    if(this.inputRoom !== 'all') {
+      this.myChart = new Chart(this.ctx, {
+        type: 'bar',
+        data: {
+          labels: xlabel,
+          datasets: [{
+            data: this.getWeekDayByRoom(this.inputRoom,this.inputDay),
           }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
         }
-      }
-    });
+      });
+    } else {
+      this.myChart = new Chart(this.ctx, {
+        type: 'line',
+        data: {
+          labels: xlabel,
+          datasets: [
+            {
+              labal: "Gay",
+              data: this.getWeekDayByRoom('gay',this.inputDay),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+            },
+            {
+              labal: "Independence",
+              data: this.getWeekDayByRoom('independence',this.inputDay),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+            },
+            {
+              labal: "Blakely",
+              data: this.getWeekDayByRoom('blakely',this.inputDay),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+            },
+            {
+              labal: "Spooner",
+              data: this.getWeekDayByRoom('spooner',this.inputDay),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+            },
+            {
+              labal: "Green Prairie",
+              data: this.getWeekDayByRoom('green_prairie',this.inputDay),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+            },
+            {
+              labal: "Pine",
+              data: this.getWeekDayByRoom('pine',this.inputDay),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+            },
+            {
+              labal: "Apartments",
+              data: this.getWeekDayByRoom('the_apartments',this.inputDay),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+            },
+          ]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    }
+
   }
 
   ngOnInit(): void {
@@ -179,7 +260,7 @@ export class HomeComponent implements OnInit {
       this.loadAllHistory();
 
       await this.delay(1000); // wait 1s for loading data
-      
+
       this.buildChart();
       this.updateMachines();
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);

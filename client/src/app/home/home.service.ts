@@ -37,6 +37,10 @@ export class HomeService {
     return this.http.get<History[]>(this.historyURL + '/' + room);
   }
 
+  getAllHistory(): Observable<History[]>{
+    return this.http.get<History[]>(this.baseUrl + '/all_history');
+  }
+
   updateAvailableMachineNumber(rooms: Room[], machines: Machine[]): void {
     if (rooms != null) {
       rooms.map(room => {
