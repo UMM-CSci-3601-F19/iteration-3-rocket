@@ -101,6 +101,7 @@ public class Server {
 
     // Returns the history of the up-coming 24h of last week with the given room id
     get("api/history/:room", historyRequestHandler::getHistory);
+    get("api/all_history", historyRequestHandler::getAllHistory);
 
     // List users, filtered using query parameters
 
