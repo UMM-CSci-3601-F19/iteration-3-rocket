@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 
 import {Room} from './room';
 import {Machine} from './machine';
+import {History} from './history';
 import {environment} from '../../environments/environment';
 
 @Injectable()
@@ -12,7 +13,7 @@ export class HomeService {
   readonly baseUrl: string = environment.API_URL ;
   private roomURL: string = this.baseUrl + 'rooms';
   private machineURL: string = this.baseUrl + 'machines';
-  private historyURL: string = this.baseUrl + 'history';
+  // private historyURL: string = this.baseUrl + 'history';
 
   constructor(private http: HttpClient) {
   }
@@ -33,9 +34,9 @@ export class HomeService {
   //   return this.http.get<Machine>(this.machineURL + '/' + machineId);
   // }
 
-  getHistoryByRooms(room: string): Observable<History[]>{
-    return this.http.get<History[]>(this.historyURL + '/' + room);
-  }
+  // getHistoryByRooms(room: string): Observable<History[]>{
+  //   return this.http.get<History[]>(this.historyURL + '/' + room);
+  // }
 
   getAllHistory(): Observable<History[]>{
     return this.http.get<History[]>(this.baseUrl + '/all_history');

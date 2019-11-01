@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
   canvas: any;
   ctx: any;
   myChart: any;
-  graphMode = 'line';
+  // graphMode = 'line';
   chart='myChart';
   public inputRoom = "all";
   public history: History[];
@@ -109,8 +109,8 @@ export class HomeComponent implements OnInit {
 
   getWeekDayByRoom(room, wekd): number[] {
     let tempWekd: Array<number> = [];
-    for (var i = 0; i < 48; i++){
-      var a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
+    for (let i = 0; i < 48; i++){
+      let a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
       tempWekd.push(a);
     }
     return tempWekd
@@ -118,26 +118,12 @@ export class HomeComponent implements OnInit {
 
   modifyArray(arr): number[]{
     let temp: Array<number> = [];
-    for (var i = 0; i < 48; i = i + 6){
-      var a: number;
-      var b: number;
-      var c: number;
-      var d: number;
-      var e: number;
-      var f: number;
-      var j = i;
-      a = arr[j];
-      j++;
-      b = arr[j];
-      j++;
-      c = arr[j];
-      j++;
-      d = arr[j];
-      j++;
-      e = arr[j];
-      j++;
-      f = arr[j];
-      temp.push((a + b + c + d + e + f)/6);
+    for (let i = 0; i < 48; i = i + 6){
+      let sum = 0;
+      for (let j = 0; j < 6; j++){
+        sum = sum + arr[j + i];
+      }
+      temp.push(sum/6);
     }
     return temp;
   }
@@ -167,8 +153,8 @@ export class HomeComponent implements OnInit {
   }
 
   loadAllHistory(): void {
-    const history: Observable<History[]> = this.homeService.getAllHistory();
-    history.subscribe(
+    const histories: Observable<History[]> = this.homeService.getAllHistory();
+    histories.subscribe(
       history => {
         this.history = history;
       },
@@ -191,9 +177,9 @@ export class HomeComponent implements OnInit {
 
     xlabel = ['0a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a',
       '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p',
-      '9p', '10p', '11p']
+      '9p', '10p', '11p'];
 
-    xlabel2 = ['0a-3a', '3a-6a', '6a-9a', '9a-12p', '12p-3p', '3p-6p', '6p-9p', '9p-12p']
+    xlabel2 = ['0a-3a', '3a-6a', '6a-9a', '9a-12p', '12p-3p', '3p-6p', '6p-9p', '9p-12p'];
 
     if(this.inputRoom !== 'all') {
       this.myChart = new Chart(this.ctx, {
@@ -221,64 +207,80 @@ export class HomeComponent implements OnInit {
           labels: xlabel2,
           datasets: [
             {
-              labal: "Gay",
-              data: this.modifyArray(this.getWeekDayByRoom('gay',this.inputDay)),
+              "labal": "Gay",
+              "data": this.modifyArray(this.getWeekDayByRoom('gay',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
-              borderColor: 'rgb(64,255,0)',
-              backgroundColor: 'rgb(64,255,0)'
+              borderColor: 'rgb(255,99,132)',
+              backgroundColor: 'rgb(255,99,132)'
             },
             {
-              labal: "Independence",
+              "labal": "Independence",
               data: this.modifyArray(this.getWeekDayByRoom('independence',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
-              borderColor: 'rgb(0,128,255)',
-              backgroundColor: 'rgb(0,128,255)'
-            },/*
-            {
-              labal: "Blakely",
-              data: this.getWeekDayByRoom('blakely',this.inputDay),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
+              borderColor: 'rgb(54, 162, 235)',
+              backgroundColor: 'rgb(54, 162, 235)'
             },
             {
-              labal: "Spooner",
-              data: this.getWeekDayByRoom('spooner',this.inputDay),
+              "labal": "Blakely",
+              data: this.modifyArray(this.getWeekDayByRoom('blakely',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
+              borderColor: 'rgb(255, 206, 86)',
+              backgroundColor: 'rgb(255, 206, 86)'
             },
             {
-              labal: "Green Prairie",
-              data: this.getWeekDayByRoom('green_prairie',this.inputDay),
+              "labal": "Spooner",
+              data: this.modifyArray(this.getWeekDayByRoom('spooner',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
+              borderColor: 'rgb(75, 192, 192)',
+              backgroundColor: 'rgb(75, 192, 192)'
             },
             {
-              labal: "Pine",
-              data: this.getWeekDayByRoom('pine',this.inputDay),
+              "labal": "Green Prairie",
+              data: this.modifyArray(this.getWeekDayByRoom('green_prairie',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
+              borderColor: 'rgb(153, 102, 255)',
+              backgroundColor: 'rgb(153, 102, 255)'
             },
             {
-              labal: "Apartments",
-              data: this.getWeekDayByRoom('the_apartments',this.inputDay),
+              "labal": "Pine",
+              data: this.modifyArray(this.getWeekDayByRoom('pine',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
-            },*/
+              borderColor: 'rgb(255, 159, 64)',
+              backgroundColor: 'rgb(255, 159, 64)'
+            },
+            {
+              labal: 'Apartments',
+              data: this.modifyArray(this.getWeekDayByRoom('the_apartments',this.inputDay)),
+              hidden: false,
+              fill: false,
+              lineTension: 0.2,
+              borderColor: 'rgb(100,100,100)',
+              backgroundColor: 'rgb(100,100,100)'
+            },
           ]
         },
         options: {
+          elements: {
+            point: {
+              radius: 0
+            }
+          },
           scales: {
             yAxes: [{
               ticks: {
+                display: false,
                 beginAtZero: true
               }
             }]
