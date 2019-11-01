@@ -17,15 +17,16 @@
   left: 0;
 }
 
-#all-rooms{
+#all-rooms {
   height: 40px;
   top: auto;
   right: 15px;
-  bottom: 15px;
+  bottom: -50px;
   left: auto;
   position: fixed;
   border-radius: 20px;
   z-index: 1;
+  transition: bottom 1s 1s;
 }
 
 .mat-expansion-panel, .mat-card {

@@ -1,9 +1,9 @@
 <div layout-gt-sm="row" class="home">
-  <div flex-gt-sm="80" flex-offset-gt-sm="10"  id="mainBody">
+  <div flex-gt-sm="80" flex-offset-gt-sm="10"  id="mainBody" style="margin-bottom: 70px">
 
-    <button mat-raised-button color="warn" id="all-rooms" (click)="scroll('scrollBox')"><i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms</button>
+    <button mat-raised-button color="warn" id="all-rooms" (click)="scroll('scrollBox'); this.setSelector(0);"><i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms</button>
+    <div id="scrollBox" style="display: block; position: relative; top: -57px"></div>
 
-    <div id="scrollBox" style="display: block; position: relative; top: -65px"></div>
     <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelector(0)">
 
       <mat-expansion-panel-header>
@@ -39,7 +39,7 @@
 
     </mat-expansion-panel>
 
-    <div flex-gt-sm="80" flex-offset-gt-sm="10">
+    <div flex-gt-sm="80" flex-offset-gt-sm="10" id="allMachineList" style="display: none">
       <mat-card>
         <mat-card-title id="home-machines-card-washer" style="font-weight: unset; padding-left: 8px; font-size: 15px">Washers {{this.machineListTitle}}</mat-card-title>
 

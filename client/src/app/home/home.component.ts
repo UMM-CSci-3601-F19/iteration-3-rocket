@@ -52,6 +52,9 @@ export class HomeComponent implements OnInit {
     this.brokenMachineListTitle = 'Unavailable machines within ' + this.roomName;
     this.updateMachines();
     this.setSelector(1);
+    document.getElementById('allMachineList').style.display = 'unset';
+    document.getElementById('all-rooms').style.bottom = '20px';
+    this.scroll('mainBody');
   }
 
   private updateMachines(): void {
@@ -141,7 +144,6 @@ export class HomeComponent implements OnInit {
 
   scroll(id: string) {
     document.getElementById(id).scrollIntoView();
-    this.setSelector(0);
   }
 }
 
