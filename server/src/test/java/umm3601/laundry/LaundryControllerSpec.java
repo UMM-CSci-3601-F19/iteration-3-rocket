@@ -32,8 +32,9 @@ public class LaundryControllerSpec {
   public void clearAndPopulateDB() {
     MongoClient mongoClient = new MongoClient();
     MongoDatabase machineDB = mongoClient.getDatabase("test");
-    MongoDatabase roomDB = mongoClient.getDatabase("test");
     MongoDatabase machinePollingDB = mongoClient.getDatabase("test");
+    MongoDatabase roomDB = mongoClient.getDatabase("test");
+    MongoDatabase roomPollingDB = mongoClient.getDatabase("test");
 
     MongoCollection<Document> machineDocuments = machineDB.getCollection("machines");
     machineDocuments.drop();
@@ -104,10 +105,12 @@ public class LaundryControllerSpec {
     roomDocuments.insertMany(testRooms);
     roomDocuments.insertOne(Document.parse(room.toJson()));
 
+    MongoCollection<Document> roomPollingDocuments = roomDB.getCollection("roomPollingAPI");
+
     // It might be important to construct this _after_ the DB is set up
     // in case there are bits in the constructor that care about the state
     // of the database.
-    laundryController = new LaundryController(machineDB, roomDB, machinePollingDB);
+    laundryController = new LaundryController(machineDB, roomDB, machinePollingDB, roomDB);
 
     machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
     machine = new BasicDBObject("id", machineId);

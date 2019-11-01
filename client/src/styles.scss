@@ -100,10 +100,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   @include app-theming($dark-theme);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 .indicator {
   font-size: 14px;
   margin-left: 35px;
@@ -134,6 +130,8 @@ mat-icon {
 .room.mat-card {
   margin:0;
   box-shadow: none !important;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .mat-expansion-panel:not([class*='mat-elevation-z']) {

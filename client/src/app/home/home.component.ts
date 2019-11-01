@@ -81,6 +81,9 @@ export class HomeComponent implements OnInit {
     this.myChart.destroy();
     this.updateMachines();
     this.setSelector(1);
+    document.getElementById('allMachineList').style.display = 'unset';
+    document.getElementById('all-rooms').style.bottom = '20px';
+    this.scroll('mainBody');
   }
 
   private updateMachines(): void {
@@ -367,4 +370,9 @@ export class HomeComponent implements OnInit {
   delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
+
+  scroll(id: string) {
+    document.getElementById(id).scrollIntoView();
+  }
 }
+
