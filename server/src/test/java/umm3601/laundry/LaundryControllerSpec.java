@@ -107,7 +107,7 @@ public class LaundryControllerSpec {
     // It might be important to construct this _after_ the DB is set up
     // in case there are bits in the constructor that care about the state
     // of the database.
-    laundryController = new LaundryController(machineDB, roomDB, machinePollingDB);
+    laundryController = new LaundryController(machineDB, roomDB, machinePollingDB, roomDB);
 
     machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
     machine = new BasicDBObject("id", machineId);
