@@ -143,7 +143,7 @@ export class HomeComponent implements OnInit {
   }
 
   scroll(id: string) {
-    document.getElementById(id).scrollIntoView();
+    this.delay(200).then(() => document.getElementById(id).scrollIntoView());
   }
 
   hideSelector() {
