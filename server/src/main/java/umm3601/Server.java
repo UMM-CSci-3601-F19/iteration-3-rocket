@@ -47,13 +47,13 @@ public class Server {
     HistoryRequestHandler historyRequestHandler = new HistoryRequestHandler(historyController);
 
     final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    executorService.scheduleAtFixedRate(() -> pollFromServer(mongoClient), 0, 1, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(() -> pollFromServer(mongoClient), 0, 1,  TimeUnit.MINUTES);
 
-    executorService.scheduleAtFixedRate(laundryController::updateRooms, 0, 60, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(laundryController::updateRooms,    0, 60, TimeUnit.MINUTES);
 
-    executorService.scheduleAtFixedRate(laundryController::updateMachines, 0, 1, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(laundryController::updateMachines, 0, 1,  TimeUnit.MINUTES);
 
-    executorService.scheduleAtFixedRate(historyController::updateHistory, 0, 30, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(historyController::updateHistory,  0, 30, TimeUnit.MINUTES);
 
     //Configure Spark
     port(serverPort);
