@@ -182,10 +182,6 @@ export class HomeComponent implements OnInit {
     let xlabel2;
     this.filterGraphData();
 
-    console.log("i'm ok here");
-    console.log(this.inputDay);
-    console.log(this.getWeekDayByRoom('gay', this.inputDay));
-
     xlabel = ['0a', '', '2a', '', '4a', '', '6a', '', '8a', '', '10a', '', '12p', '', '2p', '', '4p', '',
       '6p', '', '8p', '', '10p', ''];
 
