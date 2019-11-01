@@ -1,7 +1,7 @@
 <div layout-gt-sm="row" class="home">
   <div flex-gt-sm="80" flex-offset-gt-sm="10"  id="mainBody" style="margin-bottom: 70px">
 
-    <button mat-raised-button color="warn" id="all-rooms" (click)="scroll('scrollBox'); this.setSelector(0);">
+    <button mat-raised-button color="warn" id="all-rooms" (click)="hideSelector(); scroll('scrollBox'); setSelector(0);">
       <i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms
     </button>
 
