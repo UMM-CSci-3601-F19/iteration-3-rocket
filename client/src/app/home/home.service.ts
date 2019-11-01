@@ -12,6 +12,7 @@ export class HomeService {
   readonly baseUrl: string = environment.API_URL ;
   private roomURL: string = this.baseUrl + 'rooms';
   private machineURL: string = this.baseUrl + 'machines';
+  private historyURL: string = this.baseUrl + 'history';
 
   constructor(private http: HttpClient) {
   }
@@ -31,6 +32,10 @@ export class HomeService {
   // getMachine(machineId: string): Observable<Machine> {
   //   return this.http.get<Machine>(this.machineURL + '/' + machineId);
   // }
+
+  getHistoryByRooms(room: string): Observable<History[]>{
+    return this.http.get<History[]>(this.historyURL + '/' + room);
+  }
 
   updateAvailableMachineNumber(rooms: Room[], machines: Machine[]): void {
     if (rooms != null) {
