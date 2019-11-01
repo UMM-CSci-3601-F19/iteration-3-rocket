@@ -73,11 +73,19 @@ export class HomeComponent implements OnInit {
     this.roomName = newName;
     this.machineListTitle = 'available within ' + this.roomName;
     this.brokenMachineListTitle = 'Unavailable machines within ' + this.roomName;
+    if(newId === ''){
+      this.inputRoom = 'all';
+    } else {
+      this.inputRoom = newId;
+    }
+    this.myChart.destroy();
     this.updateMachines();
     this.setSelector(1);
   }
 
   private updateMachines(): void {
+    console.log(this.inputRoom);
+    this.buildChart();
     if (this.roomId == null || this.roomId === '') {
       this.filteredMachines = this.machines;
     } else {
@@ -116,14 +124,14 @@ export class HomeComponent implements OnInit {
     return tempWekd
   }
 
-  modifyArray(arr): number[]{
+  modifyArray(arr, num): number[]{
     let temp: Array<number> = [];
-    for (let i = 0; i < 48; i = i + 6){
+    for (let i = 0; i < 48; i = i + num){
       let sum = 0;
-      for (let j = 0; j < 6; j++){
+      for (let j = 0; j < num; j++){
         sum = sum + arr[j + i];
       }
-      temp.push(sum/6);
+      temp.push(sum/num);
     }
     return temp;
   }
@@ -175,9 +183,8 @@ export class HomeComponent implements OnInit {
     console.log(this.inputDay);
     console.log(this.getWeekDayByRoom('gay', this.inputDay));
 
-    xlabel = ['0a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a',
-      '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p',
-      '9p', '10p', '11p'];
+    xlabel = ['0a', '', '2a', '', '4a', '', '6a', '', '8a', '', '10a', '', '12p', '', '2p', '', '4p', '',
+      '6p', '', '8p', '', '10p', ''];
 
     xlabel2 = ['0a-3a', '3a-6a', '6a-9a', '9a-12p', '12p-3p', '3p-6p', '6p-9p', '9p-12p'];
 
@@ -187,13 +194,33 @@ export class HomeComponent implements OnInit {
         data: {
           labels: xlabel,
           datasets: [{
-            data: this.getWeekDayByRoom(this.inputRoom,this.inputDay),
+            data: this.modifyArray(this.getWeekDayByRoom(this.inputRoom,this.inputDay), 2),
           }]
         },
         options: {
+          legend: {
+            display: false,
+          },/*
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem) {
+                console.log(tooltipItem);
+                return tooltipItem.yLabel;
+              }
+            }
+          },*/
           scales: {
+            xAxes: [{
+              gridLines: {
+                display: false
+              },
+            }],
             yAxes: [{
+              gridLines: {
+                display: false,
+              },
               ticks: {
+                display: false,
                 beginAtZero: true
               }
             }]
@@ -207,8 +234,8 @@ export class HomeComponent implements OnInit {
           labels: xlabel2,
           datasets: [
             {
-              "labal": "Gay",
-              "data": this.modifyArray(this.getWeekDayByRoom('gay',this.inputDay)),
+              label: "Gay",
+              data: this.modifyArray(this.getWeekDayByRoom('gay',this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -216,8 +243,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(255,99,132)'
             },
             {
-              "labal": "Independence",
-              data: this.modifyArray(this.getWeekDayByRoom('independence',this.inputDay)),
+              label: "Independence",
+              data: this.modifyArray(this.getWeekDayByRoom('independence',this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -225,8 +252,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(54, 162, 235)'
             },
             {
-              "labal": "Blakely",
-              data: this.modifyArray(this.getWeekDayByRoom('blakely',this.inputDay)),
+              label: "Blakely",
+              data: this.modifyArray(this.getWeekDayByRoom('blakely',this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -234,8 +261,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(255, 206, 86)'
             },
             {
-              "labal": "Spooner",
-              data: this.modifyArray(this.getWeekDayByRoom('spooner',this.inputDay)),
+              label: "Spooner",
+              data: this.modifyArray(this.getWeekDayByRoom('spooner',this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -243,8 +270,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(75, 192, 192)'
             },
             {
-              "labal": "Green Prairie",
-              data: this.modifyArray(this.getWeekDayByRoom('green_prairie',this.inputDay)),
+              label: "Green Prairie",
+              data: this.modifyArray(this.getWeekDayByRoom('green_prairie',this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -252,8 +279,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(153, 102, 255)'
             },
             {
-              "labal": "Pine",
-              data: this.modifyArray(this.getWeekDayByRoom('pine',this.inputDay)),
+              label: "Pine",
+              data: this.modifyArray(this.getWeekDayByRoom('pine',this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -261,8 +288,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(255, 159, 64)'
             },
             {
-              labal: 'Apartments',
-              data: this.modifyArray(this.getWeekDayByRoom('the_apartments',this.inputDay)),
+              label: 'Apartments',
+              data: this.modifyArray(this.getWeekDayByRoom('the_apartments',this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -300,6 +327,7 @@ export class HomeComponent implements OnInit {
 
       await this.delay(1000); // wait 1s for loading data
 
+      // this.myChart.destroy();
       this.buildChart();
       this.updateMachines();
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
