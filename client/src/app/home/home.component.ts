@@ -45,8 +45,8 @@ export class HomeComponent implements OnInit {
   ctx: any;
   myChart: any;
   // graphMode = 'line';
-  chart='myChart';
-  public inputRoom = "all";
+  chart = 'myChart';
+  public inputRoom = 'all';
   public history: History[];
   public filteredHistory: History[];
   public inputDay = 1;
@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
     this.roomName = newName;
     this.machineListTitle = 'available within ' + this.roomName;
     this.brokenMachineListTitle = 'Unavailable machines within ' + this.roomName;
-    if(newId === ''){
+    if (newId === '') {
       this.inputRoom = 'all';
     } else {
       this.inputRoom = newId;
@@ -102,8 +102,8 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  filterGraphData(){
-    if (this.inputRoom !== 'all'){
+  filterGraphData() {
+    if (this.inputRoom !== 'all') {
       this.filteredHistory = this.history.filter(history => history.room_id === this.inputRoom);
 
     } /*else {
@@ -119,22 +119,22 @@ export class HomeComponent implements OnInit {
   }
 
   getWeekDayByRoom(room, wekd): number[] {
-    let tempWekd: Array<number> = [];
-    for (let i = 0; i < 48; i++){
-      let a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
+    const tempWekd: Array<number> = [];
+    for (let i = 0; i < 48; i++) {
+      const a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
       tempWekd.push(a);
     }
-    return tempWekd
+    return tempWekd;
   }
 
-  modifyArray(arr, num): number[]{
-    let temp: Array<number> = [];
-    for (let i = 0; i < 48; i = i + num){
+  modifyArray(arr, num): number[] {
+    const temp: Array<number> = [];
+    for (let i = 0; i < 48; i = i + num) {
       let sum = 0;
-      for (let j = 0; j < num; j++){
+      for (let j = 0; j < num; j++) {
         sum = sum + arr[j + i];
       }
-      temp.push(sum/num);
+      temp.push(sum / num);
     }
     return temp;
   }
@@ -174,7 +174,7 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  buildChart(){
+  buildChart() {
     this.canvas = document.getElementById(this.chart);
     this.ctx = this.canvas;
 
@@ -187,19 +187,19 @@ export class HomeComponent implements OnInit {
 
     xlabel2 = ['0a-3a', '3a-6a', '6a-9a', '9a-12p', '12p-3p', '3p-6p', '6p-9p', '9p-12p'];
 
-    if(this.inputRoom !== 'all') {
+    if (this.inputRoom !== 'all') {
       this.myChart = new Chart(this.ctx, {
         type: 'bar',
         data: {
           labels: xlabel,
           datasets: [{
-            data: this.modifyArray(this.getWeekDayByRoom(this.inputRoom,this.inputDay), 2),
+            data: this.modifyArray(this.getWeekDayByRoom(this.inputRoom, this.inputDay), 2),
           }]
         },
         options: {
           legend: {
             display: false,
-          },/*
+          }, /*
           tooltips: {
             callbacks: {
               label: function(tooltipItem) {
@@ -233,8 +233,8 @@ export class HomeComponent implements OnInit {
           labels: xlabel2,
           datasets: [
             {
-              label: "Gay",
-              data: this.modifyArray(this.getWeekDayByRoom('gay',this.inputDay), 6),
+              label: 'Gay',
+              data: this.modifyArray(this.getWeekDayByRoom('gay', this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -242,8 +242,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(255,99,132)'
             },
             {
-              label: "Independence",
-              data: this.modifyArray(this.getWeekDayByRoom('independence',this.inputDay), 6),
+              label: 'Independence',
+              data: this.modifyArray(this.getWeekDayByRoom('independence', this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -251,8 +251,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(54, 162, 235)'
             },
             {
-              label: "Blakely",
-              data: this.modifyArray(this.getWeekDayByRoom('blakely',this.inputDay), 6),
+              label: 'Blakely',
+              data: this.modifyArray(this.getWeekDayByRoom('blakely', this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -260,8 +260,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(255, 206, 86)'
             },
             {
-              label: "Spooner",
-              data: this.modifyArray(this.getWeekDayByRoom('spooner',this.inputDay), 6),
+              label: 'Spooner',
+              data: this.modifyArray(this.getWeekDayByRoom('spooner', this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -269,8 +269,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(75, 192, 192)'
             },
             {
-              label: "Green Prairie",
-              data: this.modifyArray(this.getWeekDayByRoom('green_prairie',this.inputDay), 6),
+              label: 'Green Prairie',
+              data: this.modifyArray(this.getWeekDayByRoom('green_prairie', this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -278,8 +278,8 @@ export class HomeComponent implements OnInit {
               backgroundColor: 'rgb(153, 102, 255)'
             },
             {
-              label: "Pine",
-              data: this.modifyArray(this.getWeekDayByRoom('pine',this.inputDay), 6),
+              label: 'Pine',
+              data: this.modifyArray(this.getWeekDayByRoom('pine', this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -288,7 +288,7 @@ export class HomeComponent implements OnInit {
             },
             {
               label: 'Apartments',
-              data: this.modifyArray(this.getWeekDayByRoom('the_apartments',this.inputDay), 6),
+              data: this.modifyArray(this.getWeekDayByRoom('the_apartments', this.inputDay), 6),
               hidden: false,
               fill: false,
               lineTension: 0.2,
@@ -314,7 +314,6 @@ export class HomeComponent implements OnInit {
         }
       });
     }
-
   }
 
   ngOnInit(): void {
