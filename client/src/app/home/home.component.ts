@@ -82,7 +82,7 @@ export class HomeComponent implements OnInit {
     this.updateMachines();
     this.setSelector(1);
     document.getElementById('allMachineList').style.display = 'unset';
-    document.getElementById('all-rooms').style.bottom = '15px';
+    document.getElementById('all-rooms').style.bottom = '2%';
     this.scroll('mainBody');
   }
 
@@ -310,6 +310,10 @@ export class HomeComponent implements OnInit {
                 beginAtZero: true
               }
             }]
+          },
+          legend: {
+            position: 'right',
+            display: window.innerWidth > 500,
           }
         }
       });
