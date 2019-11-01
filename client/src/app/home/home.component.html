@@ -45,7 +45,6 @@
 
         <mat-accordion *ngIf="machines && numOfWashers > 0; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-<!--            <ng-container  *cdkVirtualFor="let item of items">-->
             <mat-expansion-panel #elem class="washers" [id]="machine.id" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
               <mat-expansion-panel-header>
                 <div class="visualBox"> </div>
@@ -59,13 +58,11 @@
               <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
               <mat-panel-description>ID: {{machine.id}}</mat-panel-description>
             </mat-expansion-panel>
-<!--            </ng-container>-->
           </mat-accordion>
         </mat-accordion>
 
         <mat-accordion *ngIf="machines">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-<!--            <ng-container  *cdkVirtualFor="let item of items">-->
             <mat-expansion-panel #elem class="washers" [id]="machine.id" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
               <mat-expansion-panel-header>
                 <div class="visualBox"> </div>
@@ -79,7 +76,6 @@
               <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
               <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
             </mat-expansion-panel>
-<!--            </ng-container>-->
           </mat-accordion>
         </mat-accordion>
       </mat-card>
