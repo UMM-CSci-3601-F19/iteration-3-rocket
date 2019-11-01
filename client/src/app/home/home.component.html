@@ -1,7 +1,11 @@
 <div layout-gt-sm="row" class="home">
-  <div flex-gt-sm="80" flex-offset-gt-sm="10">
+  <div flex-gt-sm="80" flex-offset-gt-sm="10"  id="mainBody" style="margin-bottom: 70px">
 
-    <button mat-raised-button color="warn" id="all-rooms"><i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Rooms</button>
+    <button mat-raised-button color="warn" id="all-rooms" (click)="scroll('scrollBox'); this.setSelector(0);">
+      <i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms
+    </button>
+
+    <div id="scrollBox" style="display: block; position: relative; top: -57px"></div>
 
     <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelector(0)">
 
@@ -38,13 +42,12 @@
 
     </mat-expansion-panel>
 
-    <div flex-gt-sm="80" flex-offset-gt-sm="10">
+    <div flex-gt-sm="80" flex-offset-gt-sm="10" id="allMachineList" style="display: none">
       <mat-card>
         <mat-card-title id="home-machines-card-washer" style="font-weight: unset; padding-left: 8px; font-size: 15px">Washers {{this.machineListTitle}}</mat-card-title>
 
         <mat-accordion *ngIf="machines && numOfWashers > 0; else machinesError">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-<!--            <ng-container  *cdkVirtualFor="let item of items">-->
             <mat-expansion-panel #elem class="washers" [id]="machine.id" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
               <mat-expansion-panel-header>
                 <div class="visualBox"> </div>
@@ -58,13 +61,11 @@
               <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
               <mat-panel-description>ID: {{machine.id}}</mat-panel-description>
             </mat-expansion-panel>
-<!--            </ng-container>-->
           </mat-accordion>
         </mat-accordion>
 
         <mat-accordion *ngIf="machines">
           <mat-accordion *ngFor="let machine of this.filteredMachines">
-<!--            <ng-container  *cdkVirtualFor="let item of items">-->
             <mat-expansion-panel #elem class="washers" [id]="machine.id" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
               <mat-expansion-panel-header>
                 <div class="visualBox"> </div>
@@ -78,7 +79,6 @@
               <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
               <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
             </mat-expansion-panel>
-<!--            </ng-container>-->
           </mat-accordion>
         </mat-accordion>
       </mat-card>
