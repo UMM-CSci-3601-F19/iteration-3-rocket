@@ -1,8 +1,9 @@
 <div layout-gt-sm="row" class="home">
-  <div flex-gt-sm="80" flex-offset-gt-sm="10">
+  <div flex-gt-sm="80" flex-offset-gt-sm="10"  id="mainBody">
 
-    <button mat-raised-button color="warn" id="all-rooms"><i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Rooms</button>
+    <button mat-raised-button color="warn" id="all-rooms" (click)="scroll('scrollBox')"><i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms</button>
 
+    <div id="scrollBox" style="display: block; position: relative; top: -65px"></div>
     <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelector(0)">
 
       <mat-expansion-panel-header>

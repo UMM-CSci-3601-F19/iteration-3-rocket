@@ -138,4 +138,10 @@ export class HomeComponent implements OnInit {
   delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
+
+  scroll(id: string) {
+    document.getElementById(id).scrollIntoView();
+    this.setSelector(0);
+  }
 }
+

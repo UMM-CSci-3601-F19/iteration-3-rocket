@@ -2,6 +2,10 @@
   margin-top: 10px;
 }
 
+.home {
+  scroll-behavior: smooth;
+}
+
 .mat-expansion-panel-header-description {
   margin-right: 0;
 }
