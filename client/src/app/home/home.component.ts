@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Room} from './room';
+import {History} from './history';
 import {Machine} from './machine';
 import {Observable} from 'rxjs';
 import {HomeService} from './home.service';
@@ -10,6 +11,8 @@ import * as Chart from 'chart.js';
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+
 
 export class HomeComponent implements OnInit {
 
@@ -45,8 +48,9 @@ export class HomeComponent implements OnInit {
   chart='myChart';
   public inputRoom = "all";
   public history: History[];
-  public filteredHistory: History;
+  public filteredHistory: History[];
   public inputDay = 1;
+  /*
   public gayHistory: History[];
   public independenceHistory: History;
   public blakelyHistory: History;
@@ -54,7 +58,7 @@ export class HomeComponent implements OnInit {
   public greenPrairieHistory: History;
   public pineHistory: History;
   public theApartmentsHistory: History;
-
+*/
   constructor(public homeService: HomeService) {
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
@@ -91,7 +95,8 @@ export class HomeComponent implements OnInit {
     if (this.inputRoom !== 'all'){
       this.filteredHistory = this.history.filter(history => history.room_id === this.inputRoom);
 
-    } else {
+    } /*else {
+
       this.gayHistory = this.history.filter(history => history.room_id === 'gay');
       this.independenceHistory = this.history.filter(history => history.room_id === 'independence');
       this.blakelyHistory = this.history.filter(history => history.room_id === 'blakely');
@@ -99,7 +104,7 @@ export class HomeComponent implements OnInit {
       this.greenPrairieHistory = this.history.filter(history => history.room_id === 'green_prairie');
       this.pineHistory = this.history.filter(history => history.room_id === 'pine');
       this.theApartmentsHistory = this.history.filter(history => history.room_id === 'the_apartments');
-    }
+    }*/
   }
 
   getWeekDayByRoom(room, wekd): number[] {
@@ -107,9 +112,34 @@ export class HomeComponent implements OnInit {
     for (var i = 0; i < 48; i++){
       var a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
       tempWekd.push(a);
-      this.gayHistory = this.history.filter(history => history.room_id === room);
     }
     return tempWekd
+  }
+
+  modifyArray(arr): number[]{
+    let temp: Array<number> = [];
+    for (var i = 0; i < 48; i = i + 6){
+      var a: number;
+      var b: number;
+      var c: number;
+      var d: number;
+      var e: number;
+      var f: number;
+      var j = i;
+      a = arr[j];
+      j++;
+      b = arr[j];
+      j++;
+      c = arr[j];
+      j++;
+      d = arr[j];
+      j++;
+      e = arr[j];
+      j++;
+      f = arr[j];
+      temp.push((a + b + c + d + e + f)/6);
+    }
+    return temp;
   }
 
   loadAllMachines(): void {
@@ -152,6 +182,7 @@ export class HomeComponent implements OnInit {
     this.ctx = this.canvas;
 
     let xlabel;
+    let xlabel2;
     this.filterGraphData();
 
     console.log("i'm ok here");
@@ -161,6 +192,8 @@ export class HomeComponent implements OnInit {
     xlabel = ['0a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a',
       '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p',
       '9p', '10p', '11p']
+
+    xlabel2 = ['0a-3a', '3a-6a', '6a-9a', '9a-12p', '12p-3p', '3p-6p', '6p-9p', '9p-12p']
 
     if(this.inputRoom !== 'all') {
       this.myChart = new Chart(this.ctx, {
@@ -185,22 +218,26 @@ export class HomeComponent implements OnInit {
       this.myChart = new Chart(this.ctx, {
         type: 'line',
         data: {
-          labels: xlabel,
+          labels: xlabel2,
           datasets: [
             {
               labal: "Gay",
-              data: this.getWeekDayByRoom('gay',this.inputDay),
+              data: this.modifyArray(this.getWeekDayByRoom('gay',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
+              borderColor: 'rgb(64,255,0)',
+              backgroundColor: 'rgb(64,255,0)'
             },
             {
               labal: "Independence",
-              data: this.getWeekDayByRoom('independence',this.inputDay),
+              data: this.modifyArray(this.getWeekDayByRoom('independence',this.inputDay)),
               hidden: false,
               fill: false,
               lineTension: 0.2,
-            },
+              borderColor: 'rgb(0,128,255)',
+              backgroundColor: 'rgb(0,128,255)'
+            },/*
             {
               labal: "Blakely",
               data: this.getWeekDayByRoom('blakely',this.inputDay),
@@ -235,7 +272,7 @@ export class HomeComponent implements OnInit {
               hidden: false,
               fill: false,
               lineTension: 0.2,
-            },
+            },*/
           ]
         },
         options: {
