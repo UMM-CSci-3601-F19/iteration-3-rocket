@@ -71,7 +71,7 @@ public class HistoryController {
 //      System.out.println(targetRoom);
       roomHistoryCollection.replaceOne(filterDoc, targetRoom);
     }
-    System.out.println("[auto-update] INFO history.HistoryController - Rooms availability history updated day=" + today + " hour=" + now);
+    System.out.println("[auto-update] INFO history.HistoryController - Updated rooms availability history to day " + today + " time " + now);
   }
 
   public String getHistory(String room) {
