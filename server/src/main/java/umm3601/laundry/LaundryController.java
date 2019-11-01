@@ -156,9 +156,9 @@ public class LaundryController {
   public void updateRooms() {
 
     if (!seedLocalSource) {
-      roomPollingCollection = machinePullingDatabase.getCollection("roomDataFromPollingAPI");
+      roomPollingCollection = roomPullingDatabase.getCollection("roomDataFromPollingAPI");
     } else {
-      roomPollingCollection = machinePullingDatabase.getCollection("rooms");
+      roomPollingCollection = roomPullingDatabase.getCollection("rooms");
     }
 
     FindIterable<Document> newRooms = roomPollingCollection.find();

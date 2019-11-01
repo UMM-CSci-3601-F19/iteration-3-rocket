@@ -25,7 +25,7 @@ public class Server {
   private static final String machinePollingDatabaseName = "dev";
   private static final String roomDatabaseName = "dev";
   private static final String roomPollingDatabaseName = "dev";
-  private static final String roomHistoricalDatabaseName = "dev";
+  private static final String roomHistoryDatabaseName = "dev";
   private static final int serverPort = 4567;
 
   public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class Server {
     MongoDatabase machinePollingDatabase = mongoClient.getDatabase(machinePollingDatabaseName);
     MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
     MongoDatabase roomPollingDatabase = mongoClient.getDatabase(roomPollingDatabaseName);
-    MongoDatabase roomsHistoryDatabase = mongoClient.getDatabase(roomHistoricalDatabaseName);
+    MongoDatabase roomsHistoryDatabase = mongoClient.getDatabase(roomHistoryDatabaseName);
 
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
