@@ -63,7 +63,7 @@ public class HistoryController {
         ++count;
       }
 
-      int currentUsage = (int)(originalUsage*0.6 + count*0.4);
+      int currentUsage = (int)(originalUsage*0.6 + count*100*0.4);
 //      System.out.println(currentUsage);
       targetDay.put(String.valueOf(now), currentUsage);
 //      System.out.println(targetDay);
@@ -78,6 +78,10 @@ public class HistoryController {
     Document filterDoc = new Document();
     filterDoc = filterDoc.append("room_id", room);
     return serializeIterable(roomHistoryCollection.find(filterDoc));
+  }
+
+  public String getAllHistory() {
+    return serializeIterable(roomHistoryCollection.find());
   }
 
   private String serializeIterable(Iterable<Document> documents) {
