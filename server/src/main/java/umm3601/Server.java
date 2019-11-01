@@ -24,6 +24,7 @@ public class Server {
   private static final String machineDatabaseName = "dev";
   private static final String machinePollingDatabaseName = "dev";
   private static final String roomDatabaseName = "dev";
+  private static final String roomPollingDatabaseName = "dev";
   private static final String roomHistoricalDatabaseName = "dev";
   private static final int serverPort = 4567;
 
@@ -35,25 +36,24 @@ public class Server {
     MongoDatabase machineDatabase = mongoClient.getDatabase(machineDatabaseName);
     MongoDatabase machinePollingDatabase = mongoClient.getDatabase(machinePollingDatabaseName);
     MongoDatabase roomDatabase = mongoClient.getDatabase(roomDatabaseName);
+    MongoDatabase roomPollingDatabase = mongoClient.getDatabase(roomPollingDatabaseName);
     MongoDatabase roomsHistoryDatabase = mongoClient.getDatabase(roomHistoricalDatabaseName);
 
     UserController userController = new UserController(userDatabase);
     UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
-    LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase, machinePollingDatabase);
+    LaundryController laundryController = new LaundryController(machineDatabase, roomDatabase, machinePollingDatabase, roomPollingDatabase);
     LaundryRequestHandler laundryRequestHandler = new LaundryRequestHandler(laundryController);
     HistoryController historyController = new HistoryController(roomDatabase, machineDatabase, roomsHistoryDatabase);
     HistoryRequestHandler historyRequestHandler = new HistoryRequestHandler(historyController);
 
     final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    executorService.scheduleAtFixedRate(() -> {
-      pollFromServer(mongoClient);
-      laundryController.updateMachines();
-    }, 0, 1, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(() -> pollFromServer(mongoClient), 0, 1, TimeUnit.MINUTES);
 
-    executorService.scheduleAtFixedRate(() -> {
-      pollFromServer(mongoClient);
-      historyController.updateHistory();
-    }, 0, 30, TimeUnit.MINUTES);
+    executorService.scheduleAtFixedRate(laundryController::updateRooms, 0, 60, TimeUnit.MINUTES);
+
+    executorService.scheduleAtFixedRate(laundryController::updateMachines, 0, 1, TimeUnit.MINUTES);
+
+    executorService.scheduleAtFixedRate(historyController::updateHistory, 0, 30, TimeUnit.MINUTES);
 
     //Configure Spark
     port(serverPort);
