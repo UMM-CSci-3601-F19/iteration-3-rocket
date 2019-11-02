@@ -35,20 +35,28 @@ describe('Home page', () => {
       getMachines: () => Observable.of([
         {
           id: 'id_1',
+          name: '',
           running: false,
           status: 'normal',
           room_id: 'room_a',
           type: 'washer',
-
+          position: {
+            x: 0,
+            y: 0,
+          },
           remainingTime: -1,
           vacantTime: 10,
         }, {
           id: 'id_2',
+          name: '',
           running: true,
           status: 'normal',
           room_id: 'room_b',
           type: 'dryer',
-
+          position: {
+            x: 0,
+            y: 0,
+          },
           remainingTime: 10,
           vacantTime: -1,
         },
@@ -420,8 +428,8 @@ describe('Home page', () => {
             46: 8,
             47: 3
           },
-          "_id": "5dbb7ca7d8ba936a8e8d9e3f",
-          "room_id": "gay"
+          '_id': '5dbb7ca7d8ba936a8e8d9e3f',
+          'room_id': 'gay'
         },
       ]),
       updateRunningStatus: () => null,
