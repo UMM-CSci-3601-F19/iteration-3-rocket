@@ -43,8 +43,8 @@ public class LaundryController {
       machinePollingCollection = machineDatabase.getCollection("machines");
       roomPollingCollection = machineDatabase.getCollection("rooms");
     }
-    this.updateMachines();
     this.updateRooms();
+    this.updateMachines();
   }
 
   public String getRooms() {
