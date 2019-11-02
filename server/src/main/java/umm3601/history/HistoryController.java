@@ -68,7 +68,7 @@ public class HistoryController {
       targetRoom.put(String.valueOf(today), targetDay);
       roomHistoryCollection.replaceOne(filterDoc, targetRoom);
     }
-    System.out.println("[auto-update] INFO history.HistoryController - Updated availability history to window $" + today + "$" + now);
+    System.out.println("[update] INFO history.HistoryController - Updated availability history to window D" + today + "T" + now);
   }
 
   public String getHistory(String room) {
