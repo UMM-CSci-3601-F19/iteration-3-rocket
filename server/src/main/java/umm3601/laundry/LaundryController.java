@@ -44,6 +44,7 @@ public class LaundryController {
       roomPollingCollection = machineDatabase.getCollection("rooms");
     }
     this.updateMachines();
+    this.updateRooms();
   }
 
   public String getRooms() {
@@ -153,7 +154,7 @@ public class LaundryController {
       machineCollection.insertOne(d);
       ++n;
     }
-    System.out.println("[auto-update] INFO laundry.LaundryController - Updated machines collection status with " + n + " machines");
+    System.out.println("[auto-update] INFO laundry.LaundryController - Updated machines collection with " + n + " machines");
  }
 
   public void updateRooms() {
