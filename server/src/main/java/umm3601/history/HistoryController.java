@@ -64,14 +64,11 @@ public class HistoryController {
       }
 
       int currentUsage = (int)(originalUsage*0.6 + count*100*0.4);
-//      System.out.println(currentUsage);
       targetDay.put(String.valueOf(now), currentUsage);
-//      System.out.println(targetDay);
       targetRoom.put(String.valueOf(today), targetDay);
-//      System.out.println(targetRoom);
       roomHistoryCollection.replaceOne(filterDoc, targetRoom);
     }
-    System.out.println("[auto-update] INFO history.HistoryController - Updated rooms availability history to day " + today + " time " + now);
+    System.out.println("[update] INFO history.HistoryController - Updated availability history to window D" + today + "T" + now);
   }
 
   public String getHistory(String room) {

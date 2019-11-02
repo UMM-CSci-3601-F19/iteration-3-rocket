@@ -78,4 +78,3 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/java,angular,intellij+all,gradle
 .project
 *.prefs
-/package-lock.json

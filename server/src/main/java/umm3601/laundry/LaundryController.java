@@ -43,6 +43,7 @@ public class LaundryController {
       machinePollingCollection = machineDatabase.getCollection("machines");
       roomPollingCollection = machineDatabase.getCollection("rooms");
     }
+    this.updateRooms();
     this.updateMachines();
   }
 
@@ -153,7 +154,7 @@ public class LaundryController {
       machineCollection.insertOne(d);
       ++n;
     }
-    System.out.println("[auto-update] INFO laundry.LaundryController - Updated machines collection status with " + n + " machines");
+    System.out.println("[update] INFO laundry.LaundryController - Updated machines collection with " + n + " machines");
  }
 
   public void updateRooms() {
@@ -171,6 +172,6 @@ public class LaundryController {
       roomCollection.insertOne(d);
       ++n;
     }
-    System.out.println("[auto-update] INFO laundry.LaundryController - Updated rooms collection with " + n + " rooms");
+    System.out.println("[update] INFO laundry.LaundryController - Updated rooms collection with " + n + " rooms");
   }
 }
