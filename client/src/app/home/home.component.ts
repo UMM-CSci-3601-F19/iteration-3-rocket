@@ -237,15 +237,16 @@ export class HomeComponent implements OnInit {
         options: {
           legend: {
             display: false,
-          }, /*
+          },
           tooltips: {
-            callbacks: {
-              label: function(tooltipItem) {
-                console.log(tooltipItem);
-                return tooltipItem.yLabel;
-              }
-            }
-          },*/
+            enabled: false,
+            // callbacks: {
+            //   label: function(tooltipItem) {
+            //     console.log(tooltipItem);
+            //     return tooltipItem.yLabel;
+            //   }
+            // }
+          },
           scales: {
             xAxes: [{
               gridLines: {
