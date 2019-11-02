@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.inputRoom = newId;
     }
-    this.myChart.destroy();
+    if (this.myChart !== undefined) { this.myChart.destroy(); }
     this.updateMachines();
     this.setSelector(1);
     document.getElementById('allMachineList').style.display = 'unset';
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
   }
 
   private updateMachines(): void {
-    console.log(this.inputRoom);
+    // console.log(this.inputRoom);
     this.buildChart();
     if (this.roomId == null || this.roomId === '') {
       this.filteredMachines = this.machines;
