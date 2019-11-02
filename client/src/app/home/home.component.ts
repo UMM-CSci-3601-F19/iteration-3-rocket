@@ -53,9 +53,18 @@ export class HomeComponent implements OnInit {
 
 
   public inputRoom = 'all';
-  public history: History[];
-  public filteredHistory: History[];
-  public inputDay = 1;
+  public today = new Date();
+  public inputDay: number = this.today.getDay() + 1;
+  Days = [
+    {value: 1, name: 'Sunday'},
+    {value: 2, name: 'Monday'},
+    {value: 3, name: 'Tuesday'},
+    {value: 4, name: 'Wednesday'},
+    {value: 5, name: 'Thursday'},
+    {value: 6, name: 'Friday'},
+    {value: 7, name: 'Saturday'},
+  ];
+
   /*
   public gayHistory: History[];
   public independenceHistory: History;
@@ -85,6 +94,7 @@ export class HomeComponent implements OnInit {
       this.inputRoom = newId;
     }
     if (this.myChart !== undefined) { this.myChart.destroy(); }
+    this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
     this.setSelector(1);
     document.getElementById('allMachineList').style.display = 'unset';
@@ -125,14 +135,16 @@ export class HomeComponent implements OnInit {
   // }
 
 
-      this.gayHistory = this.history.filter(history => history.room_id === 'gay');
-      this.independenceHistory = this.history.filter(history => history.room_id === 'independence');
-      this.blakelyHistory = this.history.filter(history => history.room_id === 'blakely');
-      this.spoonerHistory = this.history.filter(history => history.room_id === 'spooner');
-      this.greenPrairieHistory = this.history.filter(history => history.room_id === 'green_prairie');
-      this.pineHistory = this.history.filter(history => history.room_id === 'pine');
-      this.theApartmentsHistory = this.history.filter(history => history.room_id === 'the_apartments');
-    }*/
+  updateDayByButton(num: number) {
+    // console.log("in button inputday was" + this.inputDay);
+    this.inputDay = (+this.inputDay + +num) % 7;
+    // console.log("in button inputday is for now" + this.inputDay);
+    if (this.inputDay === 0) {
+      this.inputDay = 7;
+    }
+    this.myChart.destroy();
+    this.buildChart();
+    // console.log("in button inputday is" + this.inputDay);
   }
 
 
