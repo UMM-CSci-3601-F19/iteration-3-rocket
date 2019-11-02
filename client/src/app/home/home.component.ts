@@ -377,5 +377,11 @@ export class HomeComponent implements OnInit {
   hideSelector() {
     document.getElementById('all-rooms').style.bottom = '-50px';
   }
+
+  // getMachineStyle() {
+  //   let style = {
+  //   };
+  //   return style;
+  // }
 }
 

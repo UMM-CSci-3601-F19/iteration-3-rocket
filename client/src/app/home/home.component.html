@@ -44,6 +44,44 @@
 
     <mat-card><canvas id="myChart" width="400" height="200"></canvas></mat-card>
 
+    <div flex-gt-sm="80" flex-offset-gt-sm="10" id="roomMap">
+      <mat-card>
+        <mat-card-title id="roomMapTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">Machines {{this.machineListTitle}}</mat-card-title>
+
+        <mat-card style="display: block; box-shadow: none !important; margin-top: unset; height: 200px;">
+          <mat-accordion *ngIf="numOfAll > 0; else machinesError">
+            <mat-accordion *ngFor="let machine of this.filteredMachines">
+
+              <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal'">
+                <button mat-button class="machine" [ngStyle]="{'display': 'unset', 'position': 'absolute', 'left': machine.position.x, 'top': machine.position.y}">
+                  <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                </button>
+              </mat-accordion>
+
+              <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal'">
+                <button mat-button class="machine" [ngStyle]="{'display': 'unset', 'position': 'absolute', 'right': machine.position.x, 'top': machine.position.y}">
+                  <mat-icon style="margin-right: 0 ;">local_laundry_service</mat-icon>
+                </button>
+              </mat-accordion>
+
+              <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'broken'">
+                <button mat-button class="machine" [ngStyle]="{'display': 'unset', 'position': 'absolute', 'left': machine.position.x, 'bottom': machine.position.y}">
+                  <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                </button>
+              </mat-accordion>
+
+              <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'broken'">
+                <button mat-button class="machine" [ngStyle]="{'display': 'unset', 'position': 'absolute', 'right': machine.position.x, 'bottom': machine.position.y}">
+                  <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                </button>
+              </mat-accordion>
+
+            </mat-accordion>
+          </mat-accordion>
+        </mat-card>
+      </mat-card>
+    </div>
+
     <div flex-gt-sm="80" flex-offset-gt-sm="10" id="allMachineList" style="display: none">
       <mat-card>
         <mat-card-title id="home-machines-card-washer" style="font-weight: unset; padding-left: 8px; font-size: 15px">Washers {{this.machineListTitle}}</mat-card-title>
@@ -61,7 +99,9 @@
               <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
               <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
               <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description>ID: {{machine.id}}</mat-panel-description>
+              <mat-panel-description>Name: {{machine.name}}</mat-panel-description>
+              <mat-panel-description>x: {{machine.position.x}}</mat-panel-description>
+              <mat-panel-description>y: {{machine.position.y}}</mat-panel-description>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-accordion>
