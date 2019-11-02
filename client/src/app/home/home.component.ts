@@ -41,11 +41,17 @@ export class HomeComponent implements OnInit {
   public numOfVacant: number;
   public numOfAll: number;
 
+  public history: History[];
+  // public filteredHistory: History[];
   canvas: any;
   ctx: any;
   myChart: any;
-  // graphMode = 'line';
   chart = 'myChart';
+  // graphMode = 'line';
+
+
+
+
   public inputRoom = 'all';
   public history: History[];
   public filteredHistory: History[];
@@ -102,11 +108,22 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  filterGraphData() {
-    if (this.inputRoom !== 'all') {
-      this.filteredHistory = this.history.filter(history => history.room_id === this.inputRoom);
+  // filterGraphData() {
+  //   if (this.inputRoom !== 'all') {
+  //     this.filteredHistory = this.history.filter(history => history.room_id === this.inputRoom);
+  //
+  //   } else {
+  //
+  //     this.gayHistory = this.history.filter(history => history.room_id === 'gay');
+  //     this.independenceHistory = this.history.filter(history => history.room_id === 'independence');
+  //     this.blakelyHistory = this.history.filter(history => history.room_id === 'blakely');
+  //     this.spoonerHistory = this.history.filter(history => history.room_id === 'spooner');
+  //     this.greenPrairieHistory = this.history.filter(history => history.room_id === 'green_prairie');
+  //     this.pineHistory = this.history.filter(history => history.room_id === 'pine');
+  //     this.theApartmentsHistory = this.history.filter(history => history.room_id === 'the_apartments');
+  //   }
+  // }
 
-    } /*else {
 
       this.gayHistory = this.history.filter(history => history.room_id === 'gay');
       this.independenceHistory = this.history.filter(history => history.room_id === 'independence');
@@ -116,6 +133,15 @@ export class HomeComponent implements OnInit {
       this.pineHistory = this.history.filter(history => history.room_id === 'pine');
       this.theApartmentsHistory = this.history.filter(history => history.room_id === 'the_apartments');
     }*/
+  }
+
+
+  updateDayBySelector(num: number) {
+    // console.log("in selector inputday was" + this.inputDay);
+    this.inputDay = +num;
+    this.myChart.destroy();
+    this.buildChart();
+    // console.log("in selector inputday is" + this.inputDay);
   }
 
   getWeekDayByRoom(room, wekd): number[] {
@@ -180,7 +206,7 @@ export class HomeComponent implements OnInit {
 
     let xlabel;
     let xlabel2;
-    this.filterGraphData();
+    // this.filterGraphData();
 
     xlabel = ['0a', '', '2a', '', '4a', '', '6a', '', '8a', '', '10a', '', '12p', '', '2p', '', '4p', '',
       '6p', '', '8p', '', '10p', ''];
@@ -377,5 +403,6 @@ export class HomeComponent implements OnInit {
   hideSelector() {
     document.getElementById('all-rooms').style.bottom = '-50px';
   }
+
 }
 
