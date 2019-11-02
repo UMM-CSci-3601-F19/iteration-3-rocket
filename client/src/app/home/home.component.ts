@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
     this.updateMachines();
     this.setSelector(1);
     document.getElementById('allMachineList').style.display = 'unset';
-    document.getElementById('all-rooms').style.bottom = '20px';
+    document.getElementById('all-rooms').style.bottom = '15px';
     this.scroll('mainBody');
   }
 
@@ -144,6 +144,10 @@ export class HomeComponent implements OnInit {
 
   scroll(id: string) {
     document.getElementById(id).scrollIntoView();
+  }
+
+  hideSelector() {
+    document.getElementById('all-rooms').style.bottom = '-50px';
   }
 }
 
