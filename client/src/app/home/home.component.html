@@ -42,7 +42,16 @@
 
     </mat-expansion-panel>
 
-    <mat-card><canvas id="myChart" width="400" height="200"></canvas></mat-card>
+    <mat-card>
+      <button id="previous-day" (click)="updateDayByButton(-1)"><mat-icon>navigate_before</mat-icon></button>
+      <button id="next-day" (click)="updateDayByButton(1)"><mat-icon>navigate_next</mat-icon></button>
+      <label>
+        <select id="day-selector">
+          <option *ngFor="let day of Days" [value]="day.value" [selected]="day.value === inputDay" (click)="updateDayBySelector($event.target.value)">{{day.name}}</option>
+        </select>
+      </label>
+      <canvas id="myChart" width="400" height="200"></canvas>
+    </mat-card>
 
     <div flex-gt-sm="80" flex-offset-gt-sm="10" id="roomMap">
       <mat-card>
