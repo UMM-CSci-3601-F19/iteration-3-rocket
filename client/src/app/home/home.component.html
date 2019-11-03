@@ -43,14 +43,22 @@
     </mat-expansion-panel>
 
     <mat-card>
-      <button id="previous-day" (click)="updateDayByButton(-1)"><mat-icon>navigate_before</mat-icon></button>
-      <button id="next-day" (click)="updateDayByButton(1)"><mat-icon>navigate_next</mat-icon></button>
-      <label>
-        <select id="day-selector">
-          <option *ngFor="let day of Days" [value]="day.value" [selected]="day.value === inputDay" (click)="updateDayBySelector($event.target.value)">{{day.name}}</option>
-        </select>
-      </label>
-      <canvas id="myChart" width="400" height="200"></canvas>
+      <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">Busy time on
+        <a style="display: unset; float: bottom">
+          <mat-select id="day-selector" [(value)]="inputDay" style="width: 100px">
+            <mat-option *ngFor="let day of Days" [value]="day.value" (click)="updateDayBySelector($event.target.value)">{{day.name}}</mat-option>
+          </mat-select>
+        </a>
+      </mat-card-title>
+      <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 40%">
+        <mat-icon style="margin: 5px 0">navigate_next</mat-icon>
+      </button>
+      <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 40%;">
+        <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
+      </button>
+      <div style="margin: 0 15px">
+        <canvas id="myChart" style="display: unset"></canvas>
+      </div>
     </mat-card>
 
     <div flex-gt-sm="80" flex-offset-gt-sm="10" id="roomMap">
