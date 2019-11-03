@@ -1,4 +1,4 @@
-import {NgModule,} from '@angular/core';
+import {NgModule, } from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -12,8 +12,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import {FlexLayoutModule,} from '@angular/flex-layout';
+import {FlexLayoutModule, } from '@angular/flex-layout';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -29,6 +31,8 @@ const ANGULAR_MODULES: any[] = [
 ];
 
 const MATERIAL_MODULES: any[] = [
+  MatProgressSpinnerModule,
+  MatSelectModule,
   MatListModule,
   MatButtonModule,
   MatIconModule,

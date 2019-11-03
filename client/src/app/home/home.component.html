@@ -29,7 +29,7 @@
             <button id="allRooms" mat-button style="width: 200px; height: 80px" class="rooms"
                     (click)="updateRoom('', 'All Rooms')">
               <mat-icon>store_mall_directory</mat-icon>
-              <a class="roomName" [id]="'empty'">All Rooms</a><br>
+              <a class="roomName" [id]="'empty'">All Room</a><br>
               <a class="indicator" id="{{'allRoomsAvailability'}}">{{this.numOfVacant}} / {{this.numOfAll}} vacant</a>
             </button>
 
@@ -42,7 +42,91 @@
 
     </mat-expansion-panel>
 
-    <mat-card><canvas id="myChart" width="400" height="200"></canvas></mat-card>
+    <mat-card>
+      <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
+        <a style="display: unset; float: bottom">
+          <mat-select id="day-selector" [(value)]="inputDay" style="width: 90px" (selectionChange)="updateDayBySelector($event.value)">
+            <mat-option *ngFor="let day of Days" [value]="day.value">{{day.name}}</mat-option>
+          </mat-select>
+        </a>
+      </mat-card-title>
+
+      <mat-accordion *ngIf="history; else graphError">
+        <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 45%">
+          <mat-icon style="margin: 5px 0">navigate_next</mat-icon>
+        </button>
+        <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 45%;">
+          <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
+        </button>
+        <div style="margin: 0 15px">
+          <canvas id="myChart" [height]="100" style="display: unset"></canvas>
+        </div>
+      </mat-accordion>
+    </mat-card>
+
+    <div flex-gt-sm="80" flex-offset-gt-sm="10" id="roomMap">
+      <mat-accordion *ngIf="this.roomId != ''">
+        <mat-card>
+          <mat-card-title id="roomMapTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">Machines {{this.machineListTitle}}</mat-card-title>
+
+<!--        TODO-->
+          <mat-accordion *ngIf="numOfAll > 0; else machinesError">
+            <mat-card class="map" style="display: block; box-shadow: none !important; height: 200px; margin: 0 10px">
+              <mat-accordion *ngFor="let machine of this.filteredMachines">
+
+                <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == false">
+                  <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                    <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
+                  </button>
+                </mat-accordion>
+
+                <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == false">
+                  <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                          [ngStyle]="{'left': machine.position.x, 'bottom': machine.position.y}">
+                    <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
+                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
+                  </button>
+                </mat-accordion>
+
+                <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == true">
+                  <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                          [ngStyle]="{'right': machine.position.x, 'top': machine.position.y}">
+                    <mat-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{100-machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-spinner>
+                    <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                  </button>
+                </mat-accordion>
+
+                <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == true">
+                  <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                          [ngStyle]="{'right': machine.position.x, 'bottom': machine.position.y}">
+                    <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
+                    <mat-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{100-machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-spinner>
+                  </button>
+                </mat-accordion>
+                <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'broken'">
+                  <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                    <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
+                  </button>
+                </mat-accordion>
+
+                <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'broken'">
+                  <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                          [ngStyle]="{'right': machine.position.x, 'bottom': machine.position.y}">
+                    <mat-icon style="margin-right: 0 ">fireplace</mat-icon>
+                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
+                  </button>
+                </mat-accordion>
+
+              </mat-accordion>
+            </mat-card>
+          </mat-accordion>
+        </mat-card>
+      </mat-accordion>
+    </div>
 
     <div flex-gt-sm="80" flex-offset-gt-sm="10" id="allMachineList" style="display: none">
       <mat-card>
@@ -61,7 +145,9 @@
               <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
               <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
               <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description>ID: {{machine.id}}</mat-panel-description>
+              <mat-panel-description>Name: {{machine.name}}</mat-panel-description>
+              <mat-panel-description>x: {{machine.position.x}}</mat-panel-description>
+              <mat-panel-description>y: {{machine.position.y}}</mat-panel-description>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-accordion>
@@ -167,7 +253,11 @@
         </mat-accordion>
 
         <ng-template #machinesError>
-          <div class="noMachineFoundMessage" style="padding: 20px; color: #999">There is no machine to display within the section currently.</div>
+          <div class="noMachineFoundMessage" style="padding: 0 20px; color: #999">There is no machine to display within the section currently.</div>
+        </ng-template>
+
+        <ng-template #graphError>
+          <div class="noMachineFoundMessage" style="padding: 0 20px; color: #999">Cannot load history currently. Please try again later</div>
         </ng-template>
       </mat-card>
     </div>
