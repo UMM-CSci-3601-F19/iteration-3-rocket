@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   public numOfWashers: number;
   public numOfDryers: number;
 
-  public roomId: string;
+  public roomId = '';
   public roomName = 'All room';
   public selectorState: number;
   public numOfVacant: number;
