@@ -29,7 +29,7 @@
             <button id="allRooms" mat-button style="width: 200px; height: 80px" class="rooms"
                     (click)="updateRoom('', 'All Rooms')">
               <mat-icon>store_mall_directory</mat-icon>
-              <a class="roomName" [id]="'empty'">All Rooms</a><br>
+              <a class="roomName" [id]="'empty'">All Room</a><br>
               <a class="indicator" id="{{'allRoomsAvailability'}}">{{this.numOfVacant}} / {{this.numOfAll}} vacant</a>
             </button>
 
@@ -43,21 +43,21 @@
     </mat-expansion-panel>
 
     <mat-card>
-      <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">Busy time on
+      <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
         <a style="display: unset; float: bottom">
-          <mat-select id="day-selector" [(value)]="inputDay" style="width: 100px">
-            <mat-option *ngFor="let day of Days" [value]="day.value" (click)="updateDayBySelector($event.target.value)">{{day.name}}</mat-option>
+          <mat-select id="day-selector" [(value)]="inputDay" style="width: 90px" (selectionChange)="updateDayBySelector($event.value)">
+            <mat-option *ngFor="let day of Days" [value]="day.value">{{day.name}}</mat-option>
           </mat-select>
         </a>
       </mat-card-title>
-      <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 40%">
+      <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 45%">
         <mat-icon style="margin: 5px 0">navigate_next</mat-icon>
       </button>
-      <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 40%;">
+      <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 45%;">
         <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
       </button>
       <div style="margin: 0 15px">
-        <canvas id="myChart" style="display: unset"></canvas>
+        <canvas id="myChart" [height]="100" style="display: unset"></canvas>
       </div>
     </mat-card>
 
@@ -65,7 +65,7 @@
       <mat-card>
         <mat-card-title id="roomMapTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">Machines {{this.machineListTitle}}</mat-card-title>
 
-        <mat-card class="map" style="display: block; box-shadow: none !important; margin-top: unset; height: 200px; margin: 0 10px;">
+        <mat-card class="map" style="display: block; box-shadow: none !important; height: 200px; margin: 0 10px;">
           <mat-accordion *ngIf="numOfAll > 0; else machinesError">
             <mat-accordion *ngFor="let machine of this.filteredMachines">
 

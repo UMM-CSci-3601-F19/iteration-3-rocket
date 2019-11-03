@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   public numOfDryers: number;
 
   public roomId: string;
-  public roomName: string;
+  public roomName = 'All room';
   public selectorState: number;
   public numOfVacant: number;
   public numOfAll: number;
@@ -144,11 +144,11 @@ export class HomeComponent implements OnInit {
 
 
   updateDayBySelector(num: number) {
-    // console.log("in selector inputday was" + this.inputDay);
+    console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
     this.myChart.destroy();
     this.buildChart();
-    // console.log("in selector inputday is" + this.inputDay);
+    console.log('in selector inputday is' + this.inputDay);
   }
 
   getWeekDayByRoom(room, wekd): number[] {
