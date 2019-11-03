@@ -14,6 +14,7 @@ import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 // import {MDCRipple} from '@material/ripple';
 
@@ -30,6 +31,7 @@ import {MatSelectModule} from '@angular/material/select';
     CustomModule,
     MatGridListModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
     // MDCRipple,
     // ScrollDispatchModule,
     // CdkStepperModule,
