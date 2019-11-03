@@ -41,6 +41,9 @@ export class HomeComponent implements OnInit {
   public numOfVacant: number;
   public numOfAll: number;
 
+  public mapWidth: number;
+  public mapHeight: number;
+
   public history: History[];
   // public filteredHistory: History[];
   canvas: any;
@@ -110,6 +113,8 @@ export class HomeComponent implements OnInit {
       this.numOfBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
       this.numOfWashers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'washer').length;
       this.numOfDryers = this.filteredMachines.filter(m => m.status === 'normal' && m.type === 'dryer').length;
+      this.mapHeight = this.filteredMachines.reduce((max, b) => Math.max(max, b.position.y), this.filteredMachines[0].position.y);
+      this.mapWidth = this.filteredMachines.reduce((max, b) => Math.max(max, b.position.x), this.filteredMachines[0].position.x);
     }
   }
 
@@ -410,6 +415,16 @@ export class HomeComponent implements OnInit {
 
   hideSelector() {
     document.getElementById('all-rooms').style.bottom = '-50px';
+  }
+
+  getX(machine: Machine) {
+    const x = machine.position.x * 20;
+    return x + 'px';
+  }
+
+  getY(machine: Machine) {
+    const y = machine.position.y * 20;
+    return y + 'px';
   }
 }
 
