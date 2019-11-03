@@ -151,16 +151,18 @@ export class HomeComponent implements OnInit {
   updateDayBySelector(num: number) {
     console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
-    this.myChart.destroy();
+    if (this.myChart !== undefined) {this.myChart.destroy(); }
     this.buildChart();
     console.log('in selector inputday is' + this.inputDay);
   }
 
   getWeekDayByRoom(room, wekd): number[] {
     const tempWekd: Array<number> = [];
-    for (let i = 0; i < 48; i++) {
-      const a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
-      tempWekd.push(a);
+    if (this.history !== undefined) {
+      for (let i = 0; i < 48; i++) {
+        const a = this.history.filter(history => history.room_id === room).pop()[wekd][i];
+        tempWekd.push(a);
+      }
     }
     return tempWekd;
   }
@@ -213,149 +215,151 @@ export class HomeComponent implements OnInit {
   }
 
   buildChart() {
-    this.canvas = document.getElementById(this.chart);
-    this.ctx = this.canvas;
+    if (this.history !== undefined) {
+      this.canvas = document.getElementById(this.chart);
+      this.ctx = this.canvas;
 
-    let xlabel;
-    let xlabel2;
-    // this.filterGraphData();
+      let xlabel;
+      let xlabel2;
+      // this.filterGraphData();
 
-    xlabel = ['0a', '', '2a', '', '4a', '', '6a', '', '8a', '', '10a', '', '12p', '', '2p', '', '4p', '',
-      '6p', '', '8p', '', '10p', ''];
+      xlabel = ['0a', '', '2a', '', '4a', '', '6a', '', '8a', '', '10a', '', '12p', '', '2p', '', '4p', '',
+        '6p', '', '8p', '', '10p', ''];
 
-    xlabel2 = ['0a-3a', '3a-6a', '6a-9a', '9a-12p', '12p-3p', '3p-6p', '6p-9p', '9p-12p'];
+      xlabel2 = ['0a-3a', '3a-6a', '6a-9a', '9a-12p', '12p-3p', '3p-6p', '6p-9p', '9p-12p'];
 
-    if (this.inputRoom !== 'all') {
-      this.myChart = new Chart(this.ctx, {
-        type: 'bar',
-        data: {
-          labels: xlabel,
-          datasets: [{
-            data: this.modifyArray(this.getWeekDayByRoom(this.inputRoom, this.inputDay), 2),
-          }]
-        },
-        options: {
-          legend: {
-            display: false,
-          },
-          tooltips: {
-            enabled: false,
-            // callbacks: {
-            //   label: function(tooltipItem) {
-            //     console.log(tooltipItem);
-            //     return tooltipItem.yLabel;
-            //   }
-            // }
-          },
-          scales: {
-            xAxes: [{
-              gridLines: {
-                display: false
-              },
-            }],
-            yAxes: [{
-              gridLines: {
-                display: false,
-              },
-              ticks: {
-                display: false,
-                beginAtZero: true
-              }
+      if (this.inputRoom !== 'all') {
+        this.myChart = new Chart(this.ctx, {
+          type: 'bar',
+          data: {
+            labels: xlabel,
+            datasets: [{
+              data: this.modifyArray(this.getWeekDayByRoom(this.inputRoom, this.inputDay), 2),
             }]
-          }
-        }
-      });
-    } else {
-      this.myChart = new Chart(this.ctx, {
-        type: 'line',
-        data: {
-          labels: xlabel2,
-          datasets: [
-            {
-              label: 'Gay',
-              data: this.modifyArray(this.getWeekDayByRoom('gay', this.inputDay), 6),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
-              borderColor: 'rgb(255,99,132)',
-              backgroundColor: 'rgb(255,99,132)'
+          },
+          options: {
+            legend: {
+              display: false,
             },
-            {
-              label: 'Independence',
-              data: this.modifyArray(this.getWeekDayByRoom('independence', this.inputDay), 6),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
-              borderColor: 'rgb(54, 162, 235)',
-              backgroundColor: 'rgb(54, 162, 235)'
+            tooltips: {
+              enabled: false,
+              // callbacks: {
+              //   label: function(tooltipItem) {
+              //     console.log(tooltipItem);
+              //     return tooltipItem.yLabel;
+              //   }
+              // }
             },
-            {
-              label: 'Blakely',
-              data: this.modifyArray(this.getWeekDayByRoom('blakely', this.inputDay), 6),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
-              borderColor: 'rgb(255, 206, 86)',
-              backgroundColor: 'rgb(255, 206, 86)'
-            },
-            {
-              label: 'Spooner',
-              data: this.modifyArray(this.getWeekDayByRoom('spooner', this.inputDay), 6),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
-              borderColor: 'rgb(75, 192, 192)',
-              backgroundColor: 'rgb(75, 192, 192)'
-            },
-            {
-              label: 'Green Prairie',
-              data: this.modifyArray(this.getWeekDayByRoom('green_prairie', this.inputDay), 6),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
-              borderColor: 'rgb(153, 102, 255)',
-              backgroundColor: 'rgb(153, 102, 255)'
-            },
-            {
-              label: 'Pine',
-              data: this.modifyArray(this.getWeekDayByRoom('pine', this.inputDay), 6),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
-              borderColor: 'rgb(255, 159, 64)',
-              backgroundColor: 'rgb(255, 159, 64)'
-            },
-            {
-              label: 'Apartments',
-              data: this.modifyArray(this.getWeekDayByRoom('the_apartments', this.inputDay), 6),
-              hidden: false,
-              fill: false,
-              lineTension: 0.2,
-              borderColor: 'rgb(100,100,100)',
-              backgroundColor: 'rgb(100,100,100)'
-            },
-          ]
-        },
-        options: {
-          elements: {
-            point: {
-              radius: 0
+            scales: {
+              xAxes: [{
+                gridLines: {
+                  display: false
+                },
+              }],
+              yAxes: [{
+                gridLines: {
+                  display: false,
+                },
+                ticks: {
+                  display: false,
+                  beginAtZero: true
+                }
+              }]
             }
-          },
-          scales: {
-            yAxes: [{
-              ticks: {
-                display: false,
-                beginAtZero: true
-              }
-            }]
-          },
-          legend: {
-            position: 'right',
-            display: window.innerWidth > 500,
           }
-        }
-      });
+        });
+      } else {
+        this.myChart = new Chart(this.ctx, {
+          type: 'line',
+          data: {
+            labels: xlabel2,
+            datasets: [
+              {
+                label: 'Gay',
+                data: this.modifyArray(this.getWeekDayByRoom('gay', this.inputDay), 6),
+                hidden: false,
+                fill: false,
+                lineTension: 0.2,
+                borderColor: 'rgb(255,99,132)',
+                backgroundColor: 'rgb(255,99,132)'
+              },
+              {
+                label: 'Independence',
+                data: this.modifyArray(this.getWeekDayByRoom('independence', this.inputDay), 6),
+                hidden: false,
+                fill: false,
+                lineTension: 0.2,
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgb(54, 162, 235)'
+              },
+              {
+                label: 'Blakely',
+                data: this.modifyArray(this.getWeekDayByRoom('blakely', this.inputDay), 6),
+                hidden: false,
+                fill: false,
+                lineTension: 0.2,
+                borderColor: 'rgb(255, 206, 86)',
+                backgroundColor: 'rgb(255, 206, 86)'
+              },
+              {
+                label: 'Spooner',
+                data: this.modifyArray(this.getWeekDayByRoom('spooner', this.inputDay), 6),
+                hidden: false,
+                fill: false,
+                lineTension: 0.2,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgb(75, 192, 192)'
+              },
+              {
+                label: 'Green Prairie',
+                data: this.modifyArray(this.getWeekDayByRoom('green_prairie', this.inputDay), 6),
+                hidden: false,
+                fill: false,
+                lineTension: 0.2,
+                borderColor: 'rgb(153, 102, 255)',
+                backgroundColor: 'rgb(153, 102, 255)'
+              },
+              {
+                label: 'Pine',
+                data: this.modifyArray(this.getWeekDayByRoom('pine', this.inputDay), 6),
+                hidden: false,
+                fill: false,
+                lineTension: 0.2,
+                borderColor: 'rgb(255, 159, 64)',
+                backgroundColor: 'rgb(255, 159, 64)'
+              },
+              {
+                label: 'Apartments',
+                data: this.modifyArray(this.getWeekDayByRoom('the_apartments', this.inputDay), 6),
+                hidden: false,
+                fill: false,
+                lineTension: 0.2,
+                borderColor: 'rgb(100,100,100)',
+                backgroundColor: 'rgb(100,100,100)'
+              },
+            ]
+          },
+          options: {
+            elements: {
+              point: {
+                radius: 0
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  display: false,
+                  beginAtZero: true
+                }
+              }]
+            },
+            legend: {
+              position: 'right',
+              display: window.innerWidth > 500,
+            }
+          }
+        });
+      }
     }
   }
 
