@@ -71,12 +71,12 @@
 
 <!--        TODO-->
           <mat-accordion *ngIf="numOfAll > 0; else machinesError">
-            <mat-card class="map" style="display: block; box-shadow: none !important; height: 200px; margin: 0 10px">
+            <mat-card class="map" style="display: block; box-shadow: none !important; height: 120px; width: 210px">
               <mat-accordion *ngFor="let machine of this.filteredMachines">
 
                 <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == false">
                   <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
                     <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
                   </button>
@@ -84,7 +84,7 @@
 
                 <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == false">
                   <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
                     <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
                   </button>
@@ -92,7 +92,7 @@
 
                 <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == true">
                   <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-progress-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
                     <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
                   </button>
@@ -100,14 +100,14 @@
 
                 <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == true">
                   <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
                     <mat-progress-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
                   </button>
                 </mat-accordion>
                 <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'broken'">
                   <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
                     <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
                   </button>
@@ -115,7 +115,7 @@
 
                 <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'broken'">
                   <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ">fireplace</mat-icon>
                     <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
                   </button>
@@ -123,6 +123,7 @@
 
               </mat-accordion>
             </mat-card>
+            <div style="display: block; text-align: center">Entrance</div>
           </mat-accordion>
         </mat-card>
       </mat-accordion>

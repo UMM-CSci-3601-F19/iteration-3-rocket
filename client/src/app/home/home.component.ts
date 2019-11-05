@@ -94,6 +94,7 @@ export class HomeComponent implements OnInit {
     if (this.myChart !== undefined) { this.myChart.destroy(); }
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
+    this.fakePositions(this.filteredMachines)
     this.setSelector(1);
     document.getElementById('allMachineList').style.display = 'unset';
     document.getElementById('all-rooms').style.bottom = '2%';
@@ -421,14 +422,24 @@ export class HomeComponent implements OnInit {
     document.getElementById('all-rooms').style.bottom = '-50px';
   }
 
-  getX(machine: Machine) {
-    const x = machine.position.x * 20;
-    return x + 'px';
+  fakePositions(machines: Machine[]) {
+    const w =  5;
+    for (let i = 0; i < machines.length;  ++i) {
+      machines[i].position.x = i % w * 50;
+      machines[i].position.y = Math.floor(i / w) * 50;
+      console.log('x' + machines[i].position.x);
+      console.log('y' + machines[i].position.y);
+    }
   }
 
-  getY(machine: Machine) {
-    const y = machine.position.y * 20;
-    return y + 'px';
-  }
+  // getX(machine: Machine) {
+  //   const x = machine.position.x * 20;
+  //   return x + 'px';
+  // }
+
+  // getY(machine: Machine) {
+  //   const y = machine.position.y * 20;
+  //   return y + 'px';
+  // }
 }
 

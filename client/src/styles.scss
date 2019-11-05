@@ -86,6 +86,11 @@
 // Sets up theming for our custom components with the light theme
 @include app-theming($light-theme);
 
+
+.map mat-card {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 html, body { height: 100%; scroll-behavior: smooth}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -165,4 +170,9 @@ mat-icon {
 .unavailable {
   color: #555555;
   font-style: italic;
+}
+
+.map.mat-card {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
