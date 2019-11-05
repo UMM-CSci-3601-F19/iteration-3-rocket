@@ -60,7 +60,7 @@
               <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
               <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
               <mat-panel-description>ID: {{machine.id}}</mat-panel-description>
-              <mat-panel-description>Something wrong? - <a href="https://docs.google.com/forms/d/e/1FAIpQLSfgErPi--3ThBM6nQA7q182OY-sAek6RiLuB2wU2yILBvtX9A/viewform?entry.575915592={{machine.room_id}}&entry.1586442783=Laundry+room" class="button">Report Here</a> </mat-panel-description>
+              <mat-panel-description>Something wrong? -  <a href="{{generateCustomLink(machine.room_id, machine.type, machine.id)}}" target="_blank">Report Here</a></mat-panel-description>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-accordion>
