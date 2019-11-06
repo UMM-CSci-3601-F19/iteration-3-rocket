@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -16,7 +17,9 @@ public class LaundryController {
   private MongoCollection<Document> machineCollection;
 
   private MongoCollection<Document> machinePollingCollection;
-  private MongoDatabase pullingDatabase;
+  private MongoCollection<Document> roomPollingCollection;
+  private MongoDatabase machinePullingDatabase;
+  private MongoDatabase roomPullingDatabase;
 
   /*
    * This is a switch for the E2E test
@@ -28,15 +31,20 @@ public class LaundryController {
    */
   private boolean seedLocalSource = false;
 
-  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase) {
-    this.pullingDatabase = machinePollingDatabase;
+  public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase, MongoDatabase roomPollingDatabase) {
+    this.machinePullingDatabase = machinePollingDatabase;
+    this.roomPullingDatabase = roomPollingDatabase;
     machineCollection = machineDatabase.getCollection("machines");
     roomCollection = roomDatabase.getCollection("rooms");
     if (!seedLocalSource) {
       machinePollingCollection = machinePollingDatabase.getCollection("machineDataFromPollingAPI");
+      roomPollingCollection = machinePollingDatabase.getCollection("roomDataFromPollingAPI");
     } else {
       machinePollingCollection = machineDatabase.getCollection("machines");
+      roomPollingCollection = machineDatabase.getCollection("rooms");
     }
+    this.updateRooms();
+    this.updateMachines();
   }
 
   public String getRooms() {
@@ -76,9 +84,9 @@ public class LaundryController {
   public void updateMachines() {
 
     if (!seedLocalSource) {
-      machinePollingCollection = pullingDatabase.getCollection("machineDataFromPollingAPI");
+      machinePollingCollection = machinePullingDatabase.getCollection("machineDataFromPollingAPI");
     } else {
-      machinePollingCollection = pullingDatabase.getCollection("machines");
+      machinePollingCollection = machinePullingDatabase.getCollection("machines");
     }
 
     long currentTime = System.currentTimeMillis();
@@ -141,9 +149,29 @@ public class LaundryController {
     }
 
     machineCollection.drop();
+    int n = 0;
     for (Document d : newMachines) {
       machineCollection.insertOne(d);
+      ++n;
     }
-    System.out.println("[auto-update] INFO laundry.LaundryController - Machines collection status updated time=" + currentTime);
+    System.out.println("[update] INFO laundry.LaundryController - Updated machines collection with " + n + " machines");
+ }
+
+  public void updateRooms() {
+
+    if (!seedLocalSource) {
+      roomPollingCollection = roomPullingDatabase.getCollection("roomDataFromPollingAPI");
+    } else {
+      roomPollingCollection = roomPullingDatabase.getCollection("rooms");
+    }
+
+    FindIterable<Document> newRooms = roomPollingCollection.find();
+    roomCollection.drop();
+    int n = 0;
+    for (Document d : newRooms) {
+      roomCollection.insertOne(d);
+      ++n;
+    }
+    System.out.println("[update] INFO laundry.LaundryController - Updated rooms collection with " + n + " rooms");
   }
 }
