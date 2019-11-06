@@ -12,9 +12,8 @@ import * as Chart from 'chart.js';
   styleUrls: ['./home.component.css']
 })
 
-
-
 export class HomeComponent implements OnInit {
+  private useFakePositions = true;
 
   /*
    * This is a switch for the E2E test
@@ -97,6 +96,9 @@ export class HomeComponent implements OnInit {
     this.setSelector(1);
     document.getElementById('allMachineList').style.display = 'unset';
     document.getElementById('all-rooms').style.bottom = '2%';
+    if (this.useFakePositions) {
+      this.fakePositions();
+    }
     this.scroll('mainBody');
   }
 
@@ -421,14 +423,23 @@ export class HomeComponent implements OnInit {
     document.getElementById('all-rooms').style.bottom = '-50px';
   }
 
-  getX(machine: Machine) {
-    const x = machine.position.x * 20;
-    return x + 'px';
+  fakePositions() {
+    const width = 5;
+    for (let i = 0; i < this.filteredMachines.length; ++i) {
+      this.filteredMachines[i].position.x = i % width;
+      this.filteredMachines[i].position.y = i / width;
+      console.log('x:' + this.filteredMachines[i].position.x);
+      console.log('y:' + this.filteredMachines[i].position.y);
+    }
   }
 
-  getY(machine: Machine) {
-    const y = machine.position.y * 20;
-    return y + 'px';
-  }
+  // getX(machine: Machine) {
+  //   const x = machine.position.x * 20;
+  //   return x + 'px';
+  // }
+
+  // getY(machine: Machine) {
+  //   const y = machine.position.y * 20;
+  //   return y + 'px';
+  // }
 }
-
