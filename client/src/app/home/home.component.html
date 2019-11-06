@@ -5,9 +5,9 @@
       <i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms
     </button>
 
-    <div id="scrollBox" style="display: block; position: relative; top: -70px"></div>
+    <div id="scrollBox" style="display: block; position: relative; top: -1000px"></div>
 
-    <mat-expansion-panel [expanded]="selectorState === 0" (opened)="setSelector(0); hideSelector()">
+    <mat-expansion-panel class="roomSelector" [expanded]="selectorState === 0" (opened)="setSelector(0); hideSelector()">
 
       <mat-expansion-panel-header>
         <mat-panel-title id="home-rooms-card">Please select a laundry room here</mat-panel-title>
@@ -29,85 +29,87 @@
             <button id="allRooms" mat-button style="width: 200px; height: 80px" class="rooms"
                     (click)="updateRoom('', 'All Rooms')">
               <mat-icon>store_mall_directory</mat-icon>
-              <a class="roomName" [id]="'empty'">All Room</a><br>
+              <a class="roomName" [id]="'empty'">All Rooms</a><br>
               <a class="indicator" id="{{'allRoomsAvailability'}}">{{this.numOfVacant}} / {{this.numOfAll}} vacant</a>
             </button>
 
           </mat-accordion>
           <ng-template #roomsError>
-            <div class="noRoomFoundMessage" style="color:#999">Cannot find any room currently. Please try again later.</div>
+            <div class="noRoomFoundMessage" style="padding-top: 10px; padding-bottom: 20px; color:#999">Cannot find any room currently. Please try again later.</div>
           </ng-template>
         </mat-card>
       </mat-panel-description>
 
     </mat-expansion-panel>
 
-    <mat-card>
+
+    <mat-grid-list cols="{{this.getGraphCols()}}" rowHeight="280px">
+      <mat-grid-tile >
+    <mat-card style="width: 100%; height: 80%">
       <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
-        <a style="display: unset; float: bottom">
-          <mat-select id="day-selector" [(value)]="inputDay" style="width: 90px" (selectionChange)="updateDayBySelector($event.value)">
+        <p style="display: unset; float: bottom">
+          <mat-select id="day-selector" [(value)]="inputDay" style="width: 120px" (selectionChange)="updateDayBySelector($event.value)">
             <mat-option *ngFor="let day of Days" [value]="day.value">{{day.name}}</mat-option>
           </mat-select>
-        </a>
+        </p>
       </mat-card-title>
 
       <mat-accordion *ngIf="history; else graphError">
-        <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 45%">
+        <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: -10px; top: 45%">
           <mat-icon style="margin: 5px 0">navigate_next</mat-icon>
         </button>
-        <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 45%;">
+        <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: -10px; top: 45%;">
           <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
         </button>
-        <div style="margin: 0 15px">
+        <div>
           <canvas id="myChart" [height]="100" style="display: unset"></canvas>
         </div>
       </mat-accordion>
     </mat-card>
+      </mat-grid-tile>
 
-    <div flex-gt-sm="80" flex-offset-gt-sm="10" id="roomMap">
-      <mat-accordion *ngIf="this.roomId != ''">
-        <mat-card>
-          <mat-card-title id="roomMapTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">Machines {{this.machineListTitle}}</mat-card-title>
+      <mat-grid-tile>
+      <mat-card id="roomMap" style="width: 100%; height: 80%;">
+        <mat-accordion *ngIf="this.roomId != ''; else mapError">
+          <mat-card-title id="roomMapTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">The map of machines {{this.machineListTitle}}</mat-card-title>
+            <mat-accordion *ngIf="numOfAll > 0; else machinesError">
+              <mat-card class="map" style="display: block; box-shadow: none !important; height: 120px; width: 210px">
+                <mat-accordion *ngFor="let machine of this.filteredMachines">
 
-<!--        TODO-->
-          <mat-accordion *ngIf="numOfAll > 0; else machinesError">
-            <mat-card class="map" style="display: block; box-shadow: none !important; height: 200px; margin: 0 10px">
-              <mat-accordion *ngFor="let machine of this.filteredMachines">
+                  <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == false">
+                    <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                            [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
+                      <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                      <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
+                    </button>
+                  </mat-accordion>
 
-                <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == false">
-                  <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
-                    <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
-                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
-                  </button>
-                </mat-accordion>
+                  <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == false">
+                    <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                             [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
+                      <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
+                      <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
+                    </button>
+                  </mat-accordion>
 
-                <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == false">
-                  <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'bottom': machine.position.y}">
-                    <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
-                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
-                  </button>
-                </mat-accordion>
+                  <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == true">
+                    <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                            [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
+                      <mat-progress-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
+                      <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
+                    </button>
+                  </mat-accordion>
 
-                <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == true">
-                  <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'right': machine.position.x, 'top': machine.position.y}">
-                    <mat-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{100-machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-spinner>
-                    <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
-                  </button>
-                </mat-accordion>
-
-                <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == true">
-                  <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'right': machine.position.x, 'bottom': machine.position.y}">
-                    <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
-                    <mat-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{100-machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-spinner>
-                  </button>
-                </mat-accordion>
-                <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'broken'">
-                  <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'left': machine.position.x, 'top': machine.position.y}">
+                  <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'normal' && machine.running == true">
+                    <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                            [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
+                      <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
+                      <mat-progress-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
+                    </button>
+                  </mat-accordion>
+                  <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'broken'">
+                    <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
                     <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
                   </button>
@@ -115,7 +117,7 @@
 
                 <mat-accordion *ngIf="machine.type == 'dryer' && machine.status == 'broken'">
                   <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
-                          [ngStyle]="{'right': machine.position.x, 'bottom': machine.position.y}">
+                          [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ">fireplace</mat-icon>
                     <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
                   </button>
@@ -123,150 +125,168 @@
 
               </mat-accordion>
             </mat-card>
-          </mat-accordion>
-        </mat-card>
-      </mat-accordion>
-    </div>
-
-    <div flex-gt-sm="80" flex-offset-gt-sm="10" id="allMachineList" style="display: none">
-      <mat-card>
-        <mat-card-title id="home-machines-card-washer" style="font-weight: unset; padding-left: 8px; font-size: 15px">Washers {{this.machineListTitle}}</mat-card-title>
-
-        <mat-accordion *ngIf="machines && numOfWashers > 0; else machinesError">
-          <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="washers" [id]="machine.id" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
-              <mat-expansion-panel-header>
-                <div class="visualBox"> </div>
-                <mat-panel-title class="vacant">
-                  <mat-icon>local_laundry_service</mat-icon>
-                  This {{machine.type}} has been vacant for {{machine.vacantTime}} minutes.
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
-              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description>ID: {{machine.id}}</mat-panel-description>
-              <mat-panel-description>Something wrong? &nbsp; <a href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}" target="_blank">Report Here</a></mat-panel-description>
-              <mat-panel-description>Name: {{machine.name}}</mat-panel-description>
-              <mat-panel-description>x: {{machine.position.x}}</mat-panel-description>
-              <mat-panel-description>y: {{machine.position.y}}</mat-panel-description>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </mat-accordion>
-
-        <mat-accordion *ngIf="machines">
-          <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="washers" [id]="machine.id" *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
-              <mat-expansion-panel-header>
-                <div class="visualBox"> </div>
-                <mat-panel-title class="inUse">
-                  <mat-icon>local_laundry_service</mat-icon>
-                  This {{machine.type}} will be vacant in {{machine.remainingTime}} minutes.
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
-              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
-              <mat-panel-description>Something wrong? &nbsp; <a href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}" target="_blank">Report Here</a></mat-panel-description>
-            </mat-expansion-panel>
+            <div style="display: block; text-align: center">Entrance of {{this.roomName}}</div>
           </mat-accordion>
         </mat-accordion>
       </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
 
-      <mat-card>
-        <mat-card-title id="home-machines-card-dryer" style="font-weight: unset; padding-left: 8px; font-size: 15px">
-          Dryers {{this.machineListTitle}}</mat-card-title>
+      <mat-expansion-panel class="allMachinesPanel" style="background: none; padding: 0" [expanded]="true">
+        <mat-expansion-panel-header style="background: initial">
+          <mat-panel-title>All machines within {{this.roomName}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-panel-description style="padding: 0 !important;">
+          <mat-accordion *ngIf="machines && numOfWashers > 0; else machinesError" style="width: 100%">
+            <mat-grid-list cols="{{this.getGridCols()}}" rowHeight="165px">
+              <mat-accordion *ngFor="let machine of this.filteredMachines">
+                <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
+                  <mat-card class="washer" [id]="machine.id" style="width: 100%; height: 70%">
+                    <div class="machineInfo">
+                      <mat-icon class="vacant" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
+                      <a class="machineIdentity" style="display: block">
+                        <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 90%">Washer</a>
+                      </a>
+                    </div>
+                    <div style="position: relative; top: 15px; width: 100%">
+                      <p style="bottom: 20px; top: auto; text-align: right">
+                        Last used <a class="time" style="font-size: 300%; font-weight: lighter">{{machine.vacantTime}}</a> min
+                      </p>
+                      <mat-progress-bar color="warn" mode="determinate" value="100"></mat-progress-bar>
+                    </div>
+                    <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                  </mat-card>
+                </mat-grid-tile>
+              </mat-accordion>
 
-        <mat-accordion *ngIf="machines && numOfDryers > 0; else machinesError">
-          <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="dryers" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == false">
-              <mat-expansion-panel-header>
-                <div class="visualBox"> </div>
-                <mat-panel-title class="vacant">
-                  <mat-icon>fireplace</mat-icon>
-                  This {{machine.type}} has been vacant for {{machine.vacantTime}} minutes.
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
-              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
-              <mat-panel-description>Something wrong? &nbsp; <a href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}" target="_blank">Report Here</a></mat-panel-description>
-            </mat-expansion-panel>
+              <mat-accordion *ngFor="let machine of this.filteredMachines">
+                <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
+                  <mat-card class="washer" [id]="machine.id" style="width: 100%; height: 70%">
+                    <div class="machineInfo">
+                      <mat-icon class="inUse" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
+                      <a class="machineIdentity" style="display: block">
+                        <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 90%">Washer</a>
+                      </a>
+                    </div>
+                    <div style="position: relative; top: 15px; width: 100%">
+                      <p style="bottom: 20px; top: auto; text-align: right">
+                        Time remaining <a class="time" style="font-size: 300%; font-weight: lighter">{{machine.remainingTime}}</a> min
+                      </p>
+                      <mat-progress-bar color="warn" mode="buffer" value="{{100-machine.remainingTime / 0.35}}"></mat-progress-bar>
+                    </div>
+                    <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                  </mat-card>
+                </mat-grid-tile>
+              </mat-accordion>
+
+              <mat-accordion *ngFor="let machine of this.filteredMachines">
+                <mat-grid-tile *ngIf="machine.status==='broken'&& machine.type==='washer'">
+                  <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
+                    <div class="machineInfo">
+                      <mat-icon class="broken" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
+                      <a class="machineIdentity" style="display: block">
+                        <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 90%">Washer</a>
+                      </a>
+                    </div>
+                    <div style="position: relative; top: 15px; width: 100%">
+                      <p style="bottom: 20px; top: auto; text-align: right">
+                        <a class="time" style="font-size: 200%; font-weight: lighter">Broken</a>
+                      </p>
+                      <mat-progress-bar color="warn" mode="buffer" value="100"></mat-progress-bar>
+                    </div>
+                    <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                  </mat-card>
+                </mat-grid-tile>
+              </mat-accordion>
+
+              <mat-accordion *ngFor="let machine of this.filteredMachines">
+                <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running==false">
+                  <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
+                    <div class="machineInfo">
+                      <mat-icon class="vacant" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
+                      <a class="machineIdentity" style="display: block">
+                        <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 90%">Dryer</a>
+                      </a>
+                    </div>
+                    <div style="position: relative; top: 15px; width: 100%">
+                      <p style="bottom: 20px; top: auto; text-align: right">
+                        Last used <a class="time" style="font-size: 300%; font-weight: lighter">{{machine.vacantTime}}</a> min
+                      </p>
+                      <mat-progress-bar color="warn" mode="determinate" value="100"></mat-progress-bar>
+                    </div>
+                    <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                  </mat-card>
+                </mat-grid-tile>
+              </mat-accordion>
+
+              <mat-accordion *ngFor="let machine of this.filteredMachines">
+                <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running==true">
+                  <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
+                    <div class="machineInfo">
+                      <mat-icon class="inUse" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
+                      <a class="machineIdentity" style="display: block">
+                        <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 90%">Dryer</a>
+                      </a>
+                    </div>
+                    <div style="position: relative; top: 15px; width: 100%">
+                      <p style="bottom: 20px; top: auto; text-align: right">
+                        Time remaining <a class="time" style="font-size: 300%; font-weight: lighter">{{machine.remainingTime}}</a> min
+                      </p>
+                      <mat-progress-bar color="warn" mode="buffer" value="{{100-machine.remainingTime / 0.6}}"></mat-progress-bar>
+                    </div>
+                    <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                  </mat-card>
+                </mat-grid-tile>
+              </mat-accordion>
+
+              <mat-accordion *ngFor="let machine of this.filteredMachines">
+                <mat-grid-tile *ngIf="machine.status==='broken'&& machine.type==='dryer'">
+                  <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
+                    <div class="machineInfo">
+                      <mat-icon class="broken" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
+                      <a class="machineIdentity" style="display: block">
+                        <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
+                        <a style="margin-left: 45px; font-size: 90%">Dryer</a>
+                      </a>
+                    </div>
+                    <div style="position: relative; top: 15px; width: 100%">
+                      <p style="bottom: 20px; top: auto; text-align: right">
+                        <a class="time" style="font-size: 200%; font-weight: lighter">Broken</a>
+                      </p>
+                      <mat-progress-bar color="warn" mode="buffer" value="100"></mat-progress-bar>
+                    </div>
+                    <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                  </mat-card>
+                </mat-grid-tile>
+              </mat-accordion>
+
+            </mat-grid-list>
           </mat-accordion>
-        </mat-accordion>
+        </mat-panel-description>
+      </mat-expansion-panel>
 
-        <mat-accordion *ngIf="machines">
-          <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="dryers" *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running == true">
-              <mat-expansion-panel-header>
-                <div class="visualBox"> </div>
-                <mat-panel-title class="inUse">
-                  <mat-icon>fireplace</mat-icon>
-                  This {{machine.type}} will be vacant in {{machine.remainingTime}} minutes.
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
-              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
-              <mat-panel-description>Something wrong? &nbsp; <a href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}" target="_blank">Report Here</a></mat-panel-description>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </mat-accordion>
-      </mat-card>
+    <ng-template #machinesError>
+      <div class="noMachineFoundMessage" style="padding: 20px 20px; color: #999">There is no machine to display within the section currently.</div>
+    </ng-template>
 
-      <mat-card>
-        <mat-card-title id="home-machines-card-broken" style="font-weight: unset; padding-left: 8px; font-size: 15px">
-          {{this.brokenMachineListTitle}}</mat-card-title>
+    <ng-template #graphError>
+      <div class="noMachineFoundMessage" style="padding: 20px 20px; color: #999">Cannot load history currently. Please try again later.</div>
+    </ng-template>
 
-        <mat-accordion *ngIf="machines && numOfBroken > 0; else machinesError">
-          <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="brokens" *ngIf="machine.status==='broken' && machine.type==='washer'">
-              <mat-expansion-panel-header>
-                <div class="visualBox"> </div>
-                <mat-panel-title class="unavailable">
-                  <mat-icon>local_laundry_service</mat-icon>
-                  {{machine.type}}</mat-panel-title>
-              </mat-expansion-panel-header>
-
-              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
-              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
-              <mat-panel-description>Something wrong? &nbsp; <a href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}" target="_blank">Report Here</a></mat-panel-description>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </mat-accordion>
-
-        <mat-accordion *ngIf="machines">
-          <mat-accordion *ngFor="let machine of this.filteredMachines">
-            <mat-expansion-panel #elem class="brokens" *ngIf="machine.status==='broken' && machine.type==='dryer'">
-              <mat-expansion-panel-header>
-                <div class="visualBox"> </div>
-                <mat-panel-title class="unavailable">
-                  <mat-icon>fireplace</mat-icon>
-                  {{machine.type}}</mat-panel-title>
-              </mat-expansion-panel-header>
-
-              <mat-panel-description>Status: {{machine.status}}</mat-panel-description>
-              <mat-panel-description>Room: {{machine.room_id}}</mat-panel-description>
-              <mat-panel-description>Running: {{machine.running}}</mat-panel-description>
-              <mat-panel-description><div [id]="machine.id">ID: {{machine.id}}</div></mat-panel-description>
-              <mat-panel-description>Something wrong? &nbsp; <a href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}" target="_blank">Report Here</a></mat-panel-description>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </mat-accordion>
-
-        <ng-template #machinesError>
-          <div class="noMachineFoundMessage" style="padding: 0 20px; color: #999">There is no machine to display within the section currently.</div>
-        </ng-template>
-
-        <ng-template #graphError>
-          <div class="noMachineFoundMessage" style="padding: 0 20px; color: #999">Cannot load history currently. Please try again later</div>
-        </ng-template>
-      </mat-card>
-    </div>
+    <ng-template #mapError>
+      <mat-card-title style="font-weight: unset; padding-left: 8px; font-size: 15px">Laundry room map</mat-card-title>
+      <div class="noRoomSelectedMessage" style="padding: 20px 20px; color: #999">Please select a room to load the map of machines.</div>
+    </ng-template>
   </div>
 </div>
