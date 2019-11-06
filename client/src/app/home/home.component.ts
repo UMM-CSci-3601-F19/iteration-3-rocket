@@ -91,7 +91,9 @@ export class HomeComponent implements OnInit {
     } else {
       this.inputRoom = newId;
     }
-    if (this.myChart !== undefined) { this.myChart.destroy(); }
+    if (this.myChart !== undefined) {
+      this.myChart.destroy();
+    }
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
     this.setSelector(1);
@@ -151,7 +153,9 @@ export class HomeComponent implements OnInit {
   updateDayBySelector(num: number) {
     console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
-    if (this.myChart !== undefined) {this.myChart.destroy(); }
+    if (this.myChart !== undefined) {
+      this.myChart.destroy();
+    }
     this.buildChart();
     console.log('in selector inputday is' + this.inputDay);
   }
@@ -378,7 +382,7 @@ export class HomeComponent implements OnInit {
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateCounter();
       this.updateTime();
-    }) ();
+    })();
   }
 
   updateTime(): void {
@@ -392,7 +396,7 @@ export class HomeComponent implements OnInit {
         console.log('Refresh');
         this.updateTime();
       }
-    }) ();
+    })();
   }
 
   updateCounter(): void {
@@ -410,7 +414,7 @@ export class HomeComponent implements OnInit {
   }
 
   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   scroll(id: string) {
@@ -438,15 +442,16 @@ export class HomeComponent implements OnInit {
       return "https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Clayton A. Gay&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with " + machineType + " " + machineID + ": ";
     } else if (machineRoomID == "green_prairie") {
       return "https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Green Prairie Community&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with " + machineType + " " + machineID + ": ";
-    } else if (machineRoomID == "pine"){
+    } else if (machineRoomID == "pine") {
       return "https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Pine&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with " + machineType + " " + machineID + ": ";
-    } else if (machineRoomID == "independence"){
+    } else if (machineRoomID == "independence") {
       return "https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=David C. Johnson Independence&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with " + machineType + " " + machineID + ": ";
-    } else if (machineRoomID == "spooner"){
+    } else if (machineRoomID == "spooner") {
       return "https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Spooner&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with " + machineType + " " + machineID + ": ";
     } else {
       return "https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Blakely&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with " + machineType + " " + machineID + ": ";
     }
   }
 }
+
 
