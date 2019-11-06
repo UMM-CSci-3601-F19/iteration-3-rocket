@@ -27,6 +27,7 @@ before_script:
 - ${PWD}/mongodb-linux-x86_64-${MONGODB}/bin/mongod --dbpath ${PWD}/mongodb-linux-x86_64-${MONGODB}/data --logpath ${PWD}/mongodb-linux-x86_64-${MONGODB}/mongodb.log --fork
 - nvm install --lts
 - npm install -g @angular/cli
+- npm install chart.js --save
 
 
 
