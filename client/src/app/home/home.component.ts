@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   public numOfDryers: number;
 
   public roomId = '';
-  public roomName = 'All room';
+  public roomName = 'All rooms';
   public selectorState: number;
   public numOfVacant: number;
   public numOfAll: number;
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
   public theApartmentsHistory: History;
 */
   constructor(public homeService: HomeService) {
-    this.machineListTitle = 'available within all rooms';
+    this.machineListTitle = 'within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
   }
 
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
     this.updateMachines();
     this.fakePositions();
     this.setSelector(1);
-    document.getElementById('allMachineList').style.display = 'unset';
+    // document.getElementById('allMachineList').style.display = 'unset';
     document.getElementById('all-rooms').style.bottom = '2%';
     this.scroll('mainBody');
   }
@@ -148,11 +148,11 @@ export class HomeComponent implements OnInit {
 
 
   updateDayBySelector(num: number) {
-    console.log('in selector inputday was' + this.inputDay);
+    // console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
     if (this.myChart !== undefined) {this.myChart.destroy(); }
     this.buildChart();
-    console.log('in selector inputday is' + this.inputDay);
+    // console.log('in selector inputday is' + this.inputDay);
   }
 
   getWeekDayByRoom(room, wekd): number[] {
@@ -426,9 +426,22 @@ export class HomeComponent implements OnInit {
     for (let i = 0; i < machines.length;  ++i) {
       machines[i].position.x = i % w * 50;
       machines[i].position.y = Math.floor(i / w) * 50;
-      console.log('x' + machines[i].position.x);
-      console.log('y' + machines[i].position.y);
+      // console.log('x' + machines[i].position.x);
+      // console.log('y' + machines[i].position.y);
     }
+  }
+
+  translateRoomId(roomId: string): string {
+    const room = this.rooms.filter(r => r.id === roomId)[0];
+    return room.name;
+  }
+
+  translateMachineName(name: string): string {
+    name = name.replace('-', ' ');
+    name = name.replace('-', ' ');
+    // return name.substr(0, i).toUpperCase() + ' ' + name.substr(i + 1, j).toUpperCase()
+    //   + ' ' + name.substr(j + 1).toUpperCase();
+    return name;
   }
 
   public generateCustomLink(machineRoomID: string, machineType: string, machineID: string): string {
@@ -467,4 +480,11 @@ export class HomeComponent implements OnInit {
   //   const y = machine.position.y * 20;
   //   return y + 'px';
   // }
+  getGridCols() {
+    return Math.min(window.innerWidth / 400, 4);
+  }
+
+  getGraphCols() {
+    return Math.min(window.innerWidth / 900, 2);
+  }
 }

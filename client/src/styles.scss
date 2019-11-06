@@ -150,7 +150,7 @@ mat-icon {
 }
 
 .home {
-  max-width: 900px;
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -175,4 +175,30 @@ mat-icon {
 .map.mat-card {
   margin-left: auto !important;
   margin-right: auto !important;
+}
+
+.main-content.mat-typography {
+  margin: 0 !important;
+}
+
+.allMachinesPanel .mat-expansion-panel-body {
+  padding: 0;
+}
+
+.roomSelector.mat-expansion-panel {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+}
+
+mat-grid-tile mat-card {
+  margin: 10px;
+}
+
+.reportButton {
+  position: absolute;
+  left: 0;
+  height: 30px;
+  bottom: 30px;
+  border-radius: 15px !important;
 }
