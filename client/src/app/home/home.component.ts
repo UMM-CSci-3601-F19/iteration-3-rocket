@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {Room} from './room';
 import {History} from './history';
 import {Machine} from './machine';
@@ -6,14 +6,13 @@ import {Observable} from 'rxjs';
 import {HomeService} from './home.service';
 
 import * as Chart from 'chart.js';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 @Component({
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.css']
 })
-
-
-
 export class HomeComponent implements OnInit {
 
   /*
@@ -72,9 +71,20 @@ export class HomeComponent implements OnInit {
   public pineHistory: History;
   public theApartmentsHistory: History;
 */
-  constructor(public homeService: HomeService) {
+  constructor(public homeService: HomeService, public dialog: MatDialog) {
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
+  }
+
+  openDialog(theMachine: Machine) {
+    const dialogRef = this.dialog.open(HomeDialog, {
+      width: '500px',
+      data: {machine: theMachine}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   setSelector(state: number) {
@@ -256,6 +266,9 @@ export class HomeComponent implements OnInit {
                 gridLines: {
                   display: false
                 },
+                // ticks: {
+                //   fontColor: 'white'
+                // }
               }],
               yAxes: [{
                 gridLines: {
@@ -443,3 +456,16 @@ export class HomeComponent implements OnInit {
   // }
 }
 
+@Component({
+  templateUrl: 'home.dialog.html',
+})
+export class HomeDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<HomeDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: {machine: Machine}) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}

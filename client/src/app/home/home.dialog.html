@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{data.machine.name}}</h1>
+<mat-dialog-content *ngIf="data.machine.running == true && data.machine.status == 'normal'">
+  This is a {{data.machine.type}}.
+  <br>It will be vacant in {{data.machine.remainingTime}} minutes.
+</mat-dialog-content>
+<mat-dialog-content *ngIf="data.machine.running == false && data.machine.status == 'normal'">
+  This is a {{data.machine.type}}.
+  <br>It has been vacant for {{data.machine.vacantTime}} minutes.
+</mat-dialog-content>
+<mat-dialog-content *ngIf="data.machine.status == 'broken'">
+  This is a {{data.machine.type}}.
+  <br>It has been broken.
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button id="closeDialog" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-dialog-actions>
+
