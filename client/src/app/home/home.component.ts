@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   public numOfDryers: number;
 
   public roomId = '';
-  public roomName = 'All room';
+  public roomName = 'All rooms';
   public selectorState: number;
   public numOfVacant: number;
   public numOfAll: number;
@@ -104,9 +104,9 @@ export class HomeComponent implements OnInit {
     if (this.myChart !== undefined) { this.myChart.destroy(); }
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
-    this.fakePositions(this.filteredMachines)
+    this.fakePositions();
     this.setSelector(1);
-    document.getElementById('allMachineList').style.display = 'unset';
+    // document.getElementById('allMachineList').style.display = 'unset';
     document.getElementById('all-rooms').style.bottom = '2%';
     this.scroll('mainBody');
   }
@@ -160,11 +160,11 @@ export class HomeComponent implements OnInit {
 
 
   updateDayBySelector(num: number) {
-    console.log('in selector inputday was' + this.inputDay);
+    // console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
     if (this.myChart !== undefined) {this.myChart.destroy(); }
     this.buildChart();
-    console.log('in selector inputday is' + this.inputDay);
+    // console.log('in selector inputday is' + this.inputDay);
   }
 
   getWeekDayByRoom(room, wekd): number[] {
@@ -424,7 +424,7 @@ export class HomeComponent implements OnInit {
   }
 
   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   scroll(id: string) {
@@ -435,13 +435,52 @@ export class HomeComponent implements OnInit {
     document.getElementById('all-rooms').style.bottom = '-50px';
   }
 
-  fakePositions(machines: Machine[]) {
+  fakePositions() {
     const w =  5;
+    const machines = this.filteredMachines;
     for (let i = 0; i < machines.length;  ++i) {
       machines[i].position.x = i % w * 50;
       machines[i].position.y = Math.floor(i / w) * 50;
-      console.log('x' + machines[i].position.x);
-      console.log('y' + machines[i].position.y);
+      // console.log('x' + machines[i].position.x);
+      // console.log('y' + machines[i].position.y);
+    }
+  }
+
+  translateRoomId(roomId: string): string {
+    const room = this.rooms.filter(r => r.id === roomId)[0];
+    return room.name;
+  }
+
+  translateMachineName(name: string): string {
+    name = name.replace('-', ' ');
+    name = name.replace('-', ' ');
+    // return name.substr(0, i).toUpperCase() + ' ' + name.substr(i + 1, j).toUpperCase()
+    //   + ' ' + name.substr(j + 1).toUpperCase();
+    return name;
+  }
+
+  public generateCustomLink(machineRoomID: string, machineType: string, machineID: string): string {
+    if (machineRoomID === 'the_apartments') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Apartment Community Building (Cube)&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'gay') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Clayton A. Gay&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'green_prairie') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Green Prairie Community&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'pine') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Pine&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'independence') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=David C. Johnson Independence&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'spooner') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Spooner&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Blakely&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
     }
   }
 
@@ -454,7 +493,15 @@ export class HomeComponent implements OnInit {
   //   const y = machine.position.y * 20;
   //   return y + 'px';
   // }
+  getGridCols() {
+    return Math.min(window.innerWidth / 400, 4);
+  }
+
+  getGraphCols() {
+    return Math.min(window.innerWidth / 900, 2);
+  }
 }
+
 
 @Component({
   templateUrl: 'home.dialog.html',

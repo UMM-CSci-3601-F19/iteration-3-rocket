@@ -16,6 +16,8 @@ import {HomeDialog} from './home/home.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material';
+
 
 // import {MDCRipple} from '@material/ripple';
 
@@ -33,6 +35,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatGridListModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     // MDCRipple,
     // ScrollDispatchModule,
     // CdkStepperModule,
