@@ -145,11 +145,8 @@ export class HomeComponent implements OnInit {
 
 
   updateDayBySelector(num: number) {
-    // console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
-    // if (this.myChart !== undefined) {this.myChart.destroy(); }
     this.buildChart();
-    // console.log('in selector inputday is' + this.inputDay);
   }
 
   getWeekDayByRoom(room, wekd): number[] {
@@ -368,7 +365,7 @@ export class HomeComponent implements OnInit {
 
       await this.delay(1000); // wait 1s for loading data
 
-      // this.myChart.destroy();
+      //this.myChart.destroy();
       this.buildChart();
       this.updateMachines();
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
