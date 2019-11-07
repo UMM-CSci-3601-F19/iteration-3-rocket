@@ -55,10 +55,10 @@
           </mat-card-title>
 
           <mat-accordion *ngIf="history; else graphError">
-            <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 40%">
+            <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 43%">
               <mat-icon style="margin: 5px 0">navigate_next</mat-icon>
             </button>
-            <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 40%;">
+            <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 43%;">
               <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
             </button>
             <div style="padding-right: 15px; padding-left: 15px;">
@@ -144,7 +144,7 @@
                 <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==false">
                   <mat-card class="washer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="vacant" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
+                      <mat-icon class="vacant" style="position: absolute; top: 15px; left: 12px; font-size: 275%">local_laundry_service</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 115%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
@@ -166,7 +166,7 @@
                 <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='washer' && machine.running==true">
                   <mat-card class="washer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="inUse" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
+                      <mat-icon class="inUse" style="position: absolute; top: 15px; left: 12px; font-size: 275%">local_laundry_service</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 115%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
@@ -188,7 +188,7 @@
                 <mat-grid-tile *ngIf="machine.status==='broken'&& machine.type==='washer'">
                   <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="unavailable" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
+                      <mat-icon class="unavailable" style="position: absolute; top: 15px; left: 12px; font-size: 275%">local_laundry_service</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 115%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
@@ -210,7 +210,7 @@
                 <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running==false">
                   <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="vacant" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
+                      <mat-icon class="vacant" style="position: absolute; top: 15px; left: 12px; font-size: 275%">fireplace</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 115%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
@@ -232,7 +232,7 @@
                 <mat-grid-tile *ngIf="machine.status==='normal' && machine.type==='dryer' && machine.running==true">
                   <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="inUse" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
+                      <mat-icon class="inUse" style="position: absolute; top: 15px; left: 12px; font-size: 275%">fireplace</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 115%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
@@ -254,7 +254,7 @@
                 <mat-grid-tile *ngIf="machine.status==='broken'&& machine.type==='dryer'">
                   <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="unavailable" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
+                      <mat-icon class="unavailable" style="position: absolute; top: 15px; left: 12px; font-size: 275%">fireplace</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>

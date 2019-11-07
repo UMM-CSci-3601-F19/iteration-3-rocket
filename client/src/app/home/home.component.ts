@@ -144,15 +144,11 @@ export class HomeComponent implements OnInit {
 
 
   updateDayBySelector(num: number) {
-    // console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
     this.buildChart();
-    // console.log('in selector inputday is' + this.inputDay);
   }
 
   getWeekDayByRoom(room, wekd, addition?): number[] {
-
-    console.log(wekd);
     const tempWekd: Array<number> = [];
     if (this.history !== undefined) {
       for (let i = 0; i < 48; i++) {
@@ -168,7 +164,6 @@ export class HomeComponent implements OnInit {
         }
       }
     }
-    console.log(wekd);
     return tempWekd;
   }
 
@@ -230,7 +225,6 @@ export class HomeComponent implements OnInit {
   }
 
   buildChart() {
-    this.myChart = null;
     if (this.history !== undefined) {
       this.canvas = document.getElementById(this.chart);
       this.ctx = this.canvas;
@@ -239,10 +233,10 @@ export class HomeComponent implements OnInit {
       let xlabel2;
       // this.filterGraphData();
 
-      xlabel = ['0a', null, '2a', null, '4a', null, '6a', null, '8a', null, '10a', null, '12p', null, '2p', null, '4p', null,
-        '6p', null, '8p', null, '10p', null];
+      xlabel = ['0a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p',
+        '6p', '7p', '8p', '9p', '10p', '11p'];
 
-      xlabel2 = ['0a', '3a', '6a', '9a', '12p', '3p', '6p', '9p', '12p'];
+      xlabel2 = ['0a', '3a', '6a', '9a', '12p', '3p', '6p', '9p', '12a'];
 
       if (this.inputRoom !== 'all') {
         this.myChart = new Chart(this.ctx, {
@@ -251,7 +245,7 @@ export class HomeComponent implements OnInit {
             labels: xlabel,
             datasets: [{
               data: this.modifyArray(this.getWeekDayByRoom(this.inputRoom, this.inputDay), 2),
-              backgroundColor: 'rgb(186,104,203)'
+              backgroundColor: 'rgb(176,94,193)'
             }]
           },
           options: {
@@ -275,6 +269,8 @@ export class HomeComponent implements OnInit {
                   display: false
                 },
                 ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 8,
                   fontSize: 15,
                   fontColor: 'rgb(150, 150, 150)'
                 }
@@ -365,9 +361,12 @@ export class HomeComponent implements OnInit {
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            tooltips: {
+              enabled: false,
+            },
             elements: {
               point: {
-                radius: 3
+                radius: 0
               }
             },
             scales: {
@@ -391,6 +390,10 @@ export class HomeComponent implements OnInit {
               }]
             },
             legend: {
+              labels: {
+                fontSize: 12,
+                fontColor: 'rgb(150, 150, 150)',
+              },
               position: 'right',
               display: window.innerWidth > 500,
             }
@@ -410,13 +413,19 @@ export class HomeComponent implements OnInit {
       await this.delay(500); // wait 0.5s for loading data
 
       // this.myChart.destroy();
-      this.buildChart();
       this.updateMachines();
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateCounter();
       this.updateTime();
-      await this.delay(500); // wait 1s for loading data
-      document.getElementById('loadCover').style.display = 'none';
+      await this.delay(500); // wait 0.5s for loading data
+      if (this.rooms === undefined || this.machines === undefined || this.history === undefined) {
+        await this.delay(5000); // loading error retry every 5s
+        console.log('Retry');
+        this.ngOnInit();
+      } else {
+        document.getElementById('loadCover').style.display = 'none';
+        this.buildChart();
+      }
     }) ();
   }
 
@@ -466,8 +475,6 @@ export class HomeComponent implements OnInit {
     for (let i = 0; i < machines.length;  ++i) {
       machines[i].position.x = i % w * 50;
       machines[i].position.y = Math.floor(i / w) * 50;
-      // console.log('x' + machines[i].position.x);
-      // console.log('y' + machines[i].position.y);
     }
   }
 
