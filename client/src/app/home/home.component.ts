@@ -33,6 +33,10 @@ export class HomeComponent implements OnInit {
   public numOfWashers: number;
   public numOfDryers: number;
 
+  public roomVacant: number;
+  public roomRunning: number;
+  public roomBroken: number;
+
   public roomId = '';
   public roomName = 'All rooms';
   public selectorState: number;
@@ -92,6 +96,9 @@ export class HomeComponent implements OnInit {
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
     this.delay(100);
+    this.roomVacant = this.filteredMachines.filter(m => m.running === false && m.status === 'normal').length;
+    this.roomRunning = this.filteredMachines.filter(m => m.running === true && m.status === 'normal').length;
+    this.roomBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
     this.buildChart();
     this.fakePositions();
     this.setSelector(1);
