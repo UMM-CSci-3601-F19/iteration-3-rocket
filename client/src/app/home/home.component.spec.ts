@@ -447,7 +447,7 @@ describe('Home page', () => {
 
     // query for the link (<a> tag) by CSS element selector
     de = fixture.debugElement.query(By.css('#home-rooms-card'));
-    df = fixture.debugElement.query(By.css('#prediction-graph'));
+    df = fixture.debugElement.query(By.css('#predictionGraphTitle'));
     dg = fixture.debugElement.query(By.css('#roomMap'));
     dh = fixture.debugElement.query(By.css('#machines-grid'));
     el = de.nativeElement;
@@ -463,7 +463,7 @@ describe('Home page', () => {
 
   it('displays a text of busy time\'s title', () => {
     fixture.detectChanges();
-    expect(fl.textContent).toContain('All rooms\'s busy time on');
+    expect(fl.textContent).toContain('Busy Time on ');
   });
 
   it('displays a text of the room\'s map', () => {
@@ -473,7 +473,7 @@ describe('Home page', () => {
 
   it('displays a text of broken machines', () => {
     fixture.detectChanges();
-    expect(hl.textContent).toContain('All machines within All rooms');
+    expect(hl.textContent).toContain('Machines within All rooms');
   });
 
   it('load all the machines', () => {
@@ -534,126 +534,144 @@ describe('Home page', () => {
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
       expect(component.generateCustomLink('the_apartments', 'dryer', 'the_id'))
+      // tslint:disable-next-line:max-line-length
         .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Apartment Community Building (Cube)&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
     });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
     expect(component.generateCustomLink('gay', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Clayton A. Gay&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
   });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
 
+    // tslint:disable-next-line:max-line-length
     expect(component.generateCustomLink('green_prairie', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Green Prairie Community&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
   });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
     expect(component.generateCustomLink('pine', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Pine&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
   });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
     expect(component.generateCustomLink('independence', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=David C. Johnson Independence&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
   });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
+    // tslint:disable-next-line:max-line-length
     expect(component.generateCustomLink('spooner', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Spooner&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
   });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
     expect(component.generateCustomLink('blakely', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Blakely&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
     });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
     machines.subscribe(
+      // tslint:disable-next-line:no-shadowed-variable
       machines => {
         component.machines = machines;
       });
     expect(component.generateCustomLink('test', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
   });
 
 
   it('should return the number of grid columns given different a window length', () => {
-    expect(component.getGridCols()).toEqual(Math.min((window.innerWidth / 400), 4));
+    expect(component.getGridCols()).toEqual(Math.min((window.innerWidth / 320), 4));
   });
 
   it('should return the number of graph columns given different a window length', () => {
-    expect(component.getGraphCols()).toEqual(Math.min(window.innerWidth / 900, 2));
+    expect(component.getGraphCols()).toEqual(Math.min(window.innerWidth / 600, 2));
   });
 
-  it("should return the chart day based on today's day", () => {
+  it('should return the chart day based on today\'s day', () => {
     const current = component.inputDay;
     component.updateDayByButton(1);
     let expected = (current + 1) % 7;
-    if (expected === 0) expected = 7;
+    if (expected === 0) { expected = 7; }
     expect(component.inputDay).toBe(expected);
-    for (let i = 0; i < 7; ++i) component.updateDayByButton(-1);
+    for (let i = 0; i < 7; ++i) { component.updateDayByButton(-1); }
     expect(component.inputDay).toBe(expected);
   });
 
-  it("should return the chart day based on the day selector", () => {
+  it('should return the chart day based on the day selector', () => {
     component.updateDayBySelector(4);
     expect(component.inputDay).toBe(4);
   });
 
-  it("should return the chart day based on the room selector", () => {
+  it('should return the chart day based on the room selector', () => {
     component.loadAllHistory();
     expect(component.getWeekDayByRoom('A', 2)[0]).toEqual(10);
   });
 
-  it("should update machines of selected room", () => {
+  it('should update machines of selected room', () => {
     component.loadAllRooms();
     component.loadAllMachines();
-    component.updateRoom('gay','A');
+    component.updateRoom('gay', 'A');
     expect(component.filteredMachines.length).toEqual(1);
-    component.updateRoom('','any');
+    component.updateRoom('', 'any');
     expect(component.filteredMachines.length).toEqual(2);
   });
 
-  it("should modify array", () => {
+  it('should modify array', () => {
     component.loadAllRooms();
     component.loadAllMachines();
-    component.updateRoom('gay','A');
+    component.updateRoom('gay', 'A');
     component.buildChart();
     component.modifyArray([], 2);
     expect(component.filteredMachines.length).toEqual(1);

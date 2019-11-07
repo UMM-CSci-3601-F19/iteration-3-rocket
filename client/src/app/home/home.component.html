@@ -145,7 +145,7 @@
 
       <mat-expansion-panel class="allMachinesPanel" style="background: none; padding: 0" [expanded]="true">
         <mat-expansion-panel-header style="background: initial">
-          <mat-panel-title style="font-size: 20px; font-style: italic; line-height: 1">Machines within {{this.roomName}}</mat-panel-title>
+          <mat-panel-title id="machines-grid"  style="font-size: 20px; font-style: italic; line-height: 1">Machines within {{this.roomName}}</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-panel-description style="padding: 0 !important;">
           <mat-accordion *ngIf="machines && numOfWashers > 0; else machinesError" style="width: 100%">
