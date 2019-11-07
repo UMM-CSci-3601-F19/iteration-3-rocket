@@ -44,8 +44,8 @@
 
     <mat-card *ngIf="this.roomId != ''; else welcomeMessage" style="margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
       <div class="headingCover" style="background-color: inherit; display: block; position: absolute; width: 100%; top: -10px; height: 10px; left: 0; z-index: -1;"></div>
-      <mat-card-title style="font-weight: 100; font-size: 30px; margin-bottom: 10px; line-height: 1.15">{{this.roomName}}</mat-card-title>
-      <mat-card-content style="height: 20px">
+      <mat-card-title style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}</mat-card-title>
+      <mat-card-content style="height: 20px; margin-left: 10px">
         <a class="roomStatus"><mat-icon class="vacant">check_circle_outline</mat-icon>vacant: {{this.numOfVacant}}   </a>
         <a class="roomStatus"><mat-icon class="inUse">schedule</mat-icon>running: {{this.numOfAll - this.numOfBroken - this.numOfVacant}}   </a>
         <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>broken: {{this.numOfBroken}}</a>
