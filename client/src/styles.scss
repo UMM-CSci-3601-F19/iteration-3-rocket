@@ -36,6 +36,7 @@
     background-color: mat-color($primary);
   }
 
+
   @if $is-dark {
     .mat-toolbar.mat-primary {
       background: mat-color($background, app-bar);
@@ -62,6 +63,17 @@
     .unavailable {
       color: #aaaaaa !important;
     }
+
+    .roomHeading {
+      background-color: mat-color($background, app-bar) !important;
+    }
+  }
+
+  .roomHeading {
+    background-color: mat-color($mat-blue-gray, 300);
+    border-radius: 0 !important;
+    padding-top: 5px !important;
+    margin: 0 -5px 0 -5px;
   }
 
   .drawer-list-item-active {
@@ -220,6 +232,34 @@ mat-grid-tile mat-card {
   white-space: nowrap;
 }
 
-mat-select {
-  font-size: 94%;
+.roomHeading {
+  font-style: italic;
+  border-radius: 0;
+  position: sticky !important;
+  top: 63px;
+  z-index: 1;
 }
+
+.welcomeMessage {
+  line-height: 1.15;
+  font-size: 30px;
+  font-weight: lighter;
+  font-style: italic;
+}
+
+.welcomeMessage div {
+  margin: 5px 0;
+}
+
+.roomStatus mat-icon {
+  font-size: 16px;
+  margin-right: 0;
+}
+
+.roomStatus {
+  font-style: italic;
+  font-size: 15px;
+  margin-right: 10px;
+  display: inline-block;
+}
+

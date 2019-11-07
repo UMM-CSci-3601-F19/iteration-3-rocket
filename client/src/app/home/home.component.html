@@ -42,18 +42,23 @@
 
     </mat-expansion-panel>
 
-    <mat-card style="background: red; height: 80px; margin: 0 10px;">
-
-
+    <mat-card *ngIf="this.roomId != ''; else welcomeMessage" style="margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
+      <div class="headingCover" style="background-color: inherit; display: block; position: absolute; width: 100%; top: -10px; height: 10px; left: 0; z-index: -1;"></div>
+      <mat-card-title style="font-weight: 100; font-size: 30px; margin-bottom: 10px; line-height: 1.15">{{this.roomName}}</mat-card-title>
+      <mat-card-content style="height: 20px">
+        <a class="roomStatus"><mat-icon class="vacant">check_circle_outline</mat-icon>vacant: {{this.numOfVacant}}   </a>
+        <a class="roomStatus"><mat-icon class="inUse">schedule</mat-icon>running: {{this.numOfAll - this.numOfBroken - this.numOfVacant}}   </a>
+        <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>broken: {{this.numOfBroken}}</a>
+      </mat-card-content>
 
     </mat-card>
     <mat-grid-list cols="{{this.getGraphCols()}}" rowHeight="280px">
 
       <mat-grid-tile>
         <mat-card style="max-width: 100% !important; width: 100% !important; height: 80%">
-          <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
+          <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 18px">Busy Time on
             <p style="display: unset; float: bottom">
-              <mat-select id="day-selector" [(value)]="inputDay" style="width: content-box" (selectionChange)="updateDayBySelector($event.value)">
+              <mat-select id="day-selector" [(value)]="inputDay" style="width: 150px" (selectionChange)="updateDayBySelector($event.value)">
                 <mat-option *ngFor="let day of Days" [value]="day.value">{{day.name}}</mat-option>
               </mat-select>
             </p>
@@ -77,7 +82,7 @@
       <mat-grid-tile>
       <mat-card id="roomMap" style="width: 100%; height: 80%;">
         <mat-accordion *ngIf="this.roomId != ''; else mapError">
-          <mat-card-title id="roomMapTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">The map of machines {{this.machineListTitle}}</mat-card-title>
+          <mat-card-title id="roomMapTitle" style="font-weight: unset; padding-left: 8px; font-size: 18px !important;">Machines' Map</mat-card-title>
             <mat-accordion *ngIf="numOfAll > 0; else machinesError">
               <mat-card class="map" style="display: block; box-shadow: none !important; height: 120px; width: 210px">
                 <mat-accordion *ngFor="let machine of this.filteredMachines">
@@ -140,7 +145,7 @@
 
       <mat-expansion-panel class="allMachinesPanel" style="background: none; padding: 0" [expanded]="true">
         <mat-expansion-panel-header style="background: initial">
-          <mat-panel-title>All machines within {{this.roomName}}</mat-panel-title>
+          <mat-panel-title style="font-size: 20px; font-style: italic; line-height: 1">Machines within {{this.roomName}}</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-panel-description style="padding: 0 !important;">
           <mat-accordion *ngIf="machines && numOfWashers > 0; else machinesError" style="width: 100%">
@@ -282,18 +287,25 @@
         </mat-panel-description>
       </mat-expansion-panel>
 
+    <ng-template #welcomeMessage>
+      <div class="welcomeMessage" style="padding: 10px 20px; margin-top: -10px">
+        <div>Greetings!</div>
+        <div>Welcome to Morris Laundry Facilities!</div>
+      </div>
+    </ng-template>
+
     <ng-template #machinesError>
       <div class="noMachineFoundMessage" style="padding: 20px 20px; color: #999">There is no machine to display within the section currently.</div>
     </ng-template>
 
     <ng-template #graphError>
-      <div class="noMachineFoundMessage" style="padding: 20px 20px; color: #999">Cannot load history currently. Please try again later.</div>
+      <div class="noMachineFoundMessage" style="padding: 20px 20px; color: #999; font-size: 18px">Cannot load history currently. Please try again later.</div>
     </ng-template>
 
     <ng-template #mapError>
-      <mat-card-title style="font-weight: unset; padding-left: 8px; font-size: 15px">Laundry room map</mat-card-title>
+      <mat-card-title style="font-weight: unset; padding-left: 8px; font-size: 18px">Laundry room map</mat-card-title>
       <div class="noRoomSelectedMessage" style="margin-top: 10px; display: block; text-align: center; color: #999">
-        <mat-icon style="margin: 30px 0 !important; font-size: 100px; width: 100px; height: 100px">store_mall_directory</mat-icon><br>Please select a laundry room to view.</div>
+        <mat-icon style="margin: 30px 0 !important; font-size: 100px; width: 100px; height: 100px">store_mall_directory</mat-icon><br><a style="font-size: 15px;">Please select a laundry room to view</a></div>
     </ng-template>
   </div>
 </div>
