@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.inputRoom = newId;
     }
-    if (this.myChart !== undefined) { this.myChart.destroy(); }
+    // if (this.myChart !== undefined) { this.myChart.destroy(); }
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
     this.fakePositions();
@@ -135,22 +135,19 @@ export class HomeComponent implements OnInit {
 
 
   updateDayByButton(num: number) {
-    // console.log("in button inputday was" + this.inputDay);
     this.inputDay = (+this.inputDay + +num) % 7;
-    // console.log("in button inputday is for now" + this.inputDay);
     if (this.inputDay === 0) {
       this.inputDay = 7;
     }
-    this.myChart.destroy();
+    // this.myChart.destroy();
     this.buildChart();
-    // console.log("in button inputday is" + this.inputDay);
   }
 
 
   updateDayBySelector(num: number) {
     // console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
-    if (this.myChart !== undefined) {this.myChart.destroy(); }
+    // if (this.myChart !== undefined) {this.myChart.destroy(); }
     this.buildChart();
     // console.log('in selector inputday is' + this.inputDay);
   }
@@ -463,9 +460,12 @@ export class HomeComponent implements OnInit {
     } else if (machineRoomID === 'spooner') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Spooner&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
-    } else {
+    } else if (machineRoomID === 'blakely') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Blakely&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
     }
   }
 

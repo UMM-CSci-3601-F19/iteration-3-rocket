@@ -45,7 +45,7 @@
 
     <mat-grid-list cols="{{this.getGraphCols()}}" rowHeight="280px">
       <mat-grid-tile >
-    <mat-card style="width: 100%; height: 80%">
+    <mat-card id="prediction-graph" style="width: 100%; height: 80%">
       <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
         <p style="display: unset; float: bottom">
           <mat-select id="day-selector" [(value)]="inputDay" style="width: 120px" (selectionChange)="updateDayBySelector($event.value)">
@@ -132,7 +132,7 @@
       </mat-grid-tile>
     </mat-grid-list>
 
-      <mat-expansion-panel class="allMachinesPanel" style="background: none; padding: 0" [expanded]="true">
+      <mat-expansion-panel id="machines-grid" class="allMachinesPanel" style="background: none; padding: 0" [expanded]="true">
         <mat-expansion-panel-header style="background: initial">
           <mat-panel-title>All machines within {{this.roomName}}</mat-panel-title>
         </mat-expansion-panel-header>
