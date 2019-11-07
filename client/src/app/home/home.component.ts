@@ -93,8 +93,9 @@ export class HomeComponent implements OnInit {
       vacantTime: theMachine.vacantTime
     }
     const dialogRef = this.dialog.open(HomeDialog, {
-      width: '500px',
-      data: {machine: theMachine}
+      width: '330px',
+      data: {machine: thisMachine},
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -582,28 +583,30 @@ export class HomeDialog {
   }
 
   generateCustomLink(machineRoomID: string, machineType: string, machineID: string): string {
-    if (machineRoomID === 'the_apartments') {
+    if (machineRoomID === 'The Apartments') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Apartment Community Building (Cube)&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
-    } else if (machineRoomID === 'gay') {
+    } else if (machineRoomID === 'Gay Hall') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Clayton A. Gay&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
-    } else if (machineRoomID === 'green_prairie') {
+    } else if (machineRoomID === 'Green Prairie Hall') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Green Prairie Community&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
-    } else if (machineRoomID === 'pine') {
+    } else if (machineRoomID === 'Pine Hall') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Pine&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
-    } else if (machineRoomID === 'independence') {
+    } else if (machineRoomID === 'Independence Hall') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=David C. Johnson Independence&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
-    } else if (machineRoomID === 'spooner') {
+    } else if (machineRoomID === 'Spooner Hall') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Spooner&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
-    } else {
+    } else if (machineRoomID === 'Blakely Hall') {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Blakely&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
     }
   }
-
 }
