@@ -48,6 +48,7 @@
 
     .indicator {
       color: $light-secondary-text !important;
+      bottom: 10px;
     }
 
     .vacant {
@@ -107,7 +108,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .indicator {
   font-size: 14px;
-  margin-left: 35px;
+  margin-left: 38px;
   color: $dark-secondary-text;
 }
 
@@ -133,10 +134,15 @@ mat-icon {
 }
 
 .room.mat-card {
-  margin:0;
   box-shadow: none !important;
   padding-top: 0;
   padding-bottom: 0;
+  max-width: 850px;
+  margin: 0 auto 30px;
+}
+
+.room button {
+  margin: 5px;
 }
 
 .mat-expansion-panel:not([class*='mat-elevation-z']) {
@@ -169,7 +175,6 @@ mat-icon {
 
 .unavailable {
   color: #555555;
-  font-style: italic;
 }
 
 .map.mat-card {
@@ -196,9 +201,17 @@ mat-grid-tile mat-card {
 }
 
 .reportButton {
+  padding: 0 10px !important;
+  font-style: italic;
+  font-size: 75%;
   position: absolute;
-  left: 0;
+  left: -2px;
   height: 30px;
-  bottom: 30px;
+  bottom: 32px;
   border-radius: 15px !important;
+}
+
+#predictionGraphTitle {
+  white-space: nowrap;
+  max-width: 100px;
 }

@@ -44,28 +44,29 @@
 
 
     <mat-grid-list cols="{{this.getGraphCols()}}" rowHeight="280px">
-      <mat-grid-tile >
-    <mat-card style="width: 100%; height: 80%">
-      <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
-        <p style="display: unset; float: bottom">
-          <mat-select id="day-selector" [(value)]="inputDay" style="width: 120px" (selectionChange)="updateDayBySelector($event.value)">
-            <mat-option *ngFor="let day of Days" [value]="day.value">{{day.name}}</mat-option>
-          </mat-select>
-        </p>
-      </mat-card-title>
+      <mat-grid-tile>
+        <mat-card style="max-width: 100% !important; width: 100% !important; height: 80%">
+          <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
+            <p style="display: unset; float: bottom">
+              <mat-select id="day-selector" [(value)]="inputDay" style="width: 100px" (selectionChange)="updateDayBySelector($event.value)">
+                <mat-option *ngFor="let day of Days" [value]="day.value">{{day.name}}</mat-option>
+              </mat-select>
+            </p>
+          </mat-card-title>
 
-      <mat-accordion *ngIf="history; else graphError">
-        <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: -10px; top: 45%">
-          <mat-icon style="margin: 5px 0">navigate_next</mat-icon>
-        </button>
-        <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: -10px; top: 45%;">
-          <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
-        </button>
-        <div>
-          <canvas id="myChart" [height]="100" style="display: unset"></canvas>
-        </div>
-      </mat-accordion>
-    </mat-card>
+          <mat-accordion *ngIf="history; else graphError">
+            <button mat-icon-button id="next-day" (click)="updateDayByButton(1)" style="display: unset; position: absolute; right: 0; top: 45%">
+              <mat-icon style="margin: 5px 0">navigate_next</mat-icon>
+            </button>
+            <button mat-icon-button id="previous-day" (click)="updateDayByButton(-1)" style="display: unset; position: absolute; left: 0; top: 45%;">
+              <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
+            </button>
+            <div style="padding-right: 15px; padding-left: 15px;">
+<!--              <div id="canvasCover" style="position: absolute; width: 100%; height: 280px; display: block; z-index: 2"></div>-->
+              <canvas id="myChart" [height]="100" style="display: unset; min-width: 100% !important; max-width: 100% !important ; min-height: 200px !important; max-height: 200px !important"></canvas>
+            </div>
+          </mat-accordion>
+        </mat-card>
       </mat-grid-tile>
 
       <mat-grid-tile>
@@ -80,7 +81,7 @@
                     <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                             [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                       <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
-                      <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
+                      <mat-icon color="warn" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
                     </button>
                   </mat-accordion>
 
@@ -88,14 +89,14 @@
                     <button mat-button class="vacant" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                              [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                       <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
-                      <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
+                      <mat-icon color="warn" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">done</mat-icon>
                     </button>
                   </mat-accordion>
 
                   <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == true">
                     <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                             [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
-                      <mat-progress-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
+                      <mat-progress-spinner color="warn" diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
                       <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
                     </button>
                   </mat-accordion>
@@ -104,14 +105,14 @@
                     <button mat-button class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                             [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                       <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
-                      <mat-progress-spinner diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
+                      <mat-progress-spinner color="warn" diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
                     </button>
                   </mat-accordion>
                   <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'broken'">
                     <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                           [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
-                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
+                    <mat-icon color="warn" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
                   </button>
                 </mat-accordion>
 
@@ -119,7 +120,7 @@
                   <button mat-button class="unavailable" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                           [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}">
                     <mat-icon style="margin-right: 0 ">fireplace</mat-icon>
-                    <mat-icon color="primary" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
+                    <mat-icon color="warn" style="position: absolute; left: 2px; top: 8px; font-weight: bolder">close</mat-icon>
                   </button>
                 </mat-accordion>
 
@@ -187,7 +188,7 @@
                 <mat-grid-tile *ngIf="machine.status==='broken'&& machine.type==='washer'">
                   <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="broken" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
+                      <mat-icon class="unavailable" style="position: absolute; top: 15px; left: 12px; font-size: 300%">local_laundry_service</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
@@ -253,7 +254,7 @@
                 <mat-grid-tile *ngIf="machine.status==='broken'&& machine.type==='dryer'">
                   <mat-card class="dryer" [id]="machine.id" style="width: 100%; height: 70%">
                     <div class="machineInfo">
-                      <mat-icon class="broken" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
+                      <mat-icon class="unavailable" style="position: absolute; top: 15px; left: 12px; font-size: 300%">fireplace</mat-icon>
                       <a class="machineIdentity" style="display: block">
                         <a class="machineName" style="margin-left: 45px; font-size: 105%; text-transform: capitalize; font-weight: 500">{{this.translateMachineName(machine.name)}}</a><br>
                         <a style="margin-left: 45px; font-size: 95%">{{this.translateRoomId(machine.room_id)}}</a><br>
@@ -286,7 +287,11 @@
 
     <ng-template #mapError>
       <mat-card-title style="font-weight: unset; padding-left: 8px; font-size: 15px">Laundry room map</mat-card-title>
-      <div class="noRoomSelectedMessage" style="padding: 20px 20px; color: #999">Please select a room to load the map of machines.</div>
+      <div class="noRoomSelectedMessage" style="margin-top: 175px; display: block; text-align: center; color: #aaa">Please select a room to load the map of machines.</div>
     </ng-template>
   </div>
+</div>
+
+<div id="loadCover" style="z-index: 2; position: fixed; top:0; left: 0; bottom: 0; right: 0; display: block; background: rgba(50,50,50,0.75)">
+  <mat-spinner mode="indeterminate" strokeWidth="3" style="top: 50%; margin: -65px auto auto;"></mat-spinner>
 </div>

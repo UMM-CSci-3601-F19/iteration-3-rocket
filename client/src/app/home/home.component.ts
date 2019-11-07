@@ -89,9 +89,10 @@ export class HomeComponent implements OnInit {
     } else {
       this.inputRoom = newId;
     }
-    if (this.myChart !== undefined) { this.myChart.destroy(); }
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
+    this.delay(100);
+    this.buildChart();
     this.fakePositions();
     this.setSelector(1);
     // document.getElementById('allMachineList').style.display = 'unset';
@@ -101,7 +102,6 @@ export class HomeComponent implements OnInit {
 
   private updateMachines(): void {
     // console.log(this.inputRoom);
-    this.buildChart();
     if (this.roomId == null || this.roomId === '') {
       this.filteredMachines = this.machines;
     } else {
@@ -141,7 +141,6 @@ export class HomeComponent implements OnInit {
     if (this.inputDay === 0) {
       this.inputDay = 7;
     }
-    this.myChart.destroy();
     this.buildChart();
     // console.log("in button inputday is" + this.inputDay);
   }
@@ -150,7 +149,6 @@ export class HomeComponent implements OnInit {
   updateDayBySelector(num: number) {
     // console.log('in selector inputday was' + this.inputDay);
     this.inputDay = +num;
-    if (this.myChart !== undefined) {this.myChart.destroy(); }
     this.buildChart();
     // console.log('in selector inputday is' + this.inputDay);
   }
@@ -214,6 +212,7 @@ export class HomeComponent implements OnInit {
   }
 
   buildChart() {
+    this.myChart = null;
     if (this.history !== undefined) {
       this.canvas = document.getElementById(this.chart);
       this.ctx = this.canvas;
@@ -237,6 +236,8 @@ export class HomeComponent implements OnInit {
             }]
           },
           options: {
+            responsive: true,
+            maintainAspectRatio: false,
             legend: {
               display: false,
             },
@@ -339,6 +340,8 @@ export class HomeComponent implements OnInit {
             ]
           },
           options: {
+            responsive: true,
+            maintainAspectRatio: false,
             elements: {
               point: {
                 radius: 0
@@ -356,7 +359,7 @@ export class HomeComponent implements OnInit {
               position: 'right',
               display: window.innerWidth > 500,
             }
-          }
+          },
         });
       }
     }
@@ -369,7 +372,7 @@ export class HomeComponent implements OnInit {
       this.loadAllMachines();
       this.loadAllHistory();
 
-      await this.delay(1000); // wait 1s for loading data
+      await this.delay(500); // wait 0.5s for loading data
 
       // this.myChart.destroy();
       this.buildChart();
@@ -377,6 +380,8 @@ export class HomeComponent implements OnInit {
       this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
       this.updateCounter();
       this.updateTime();
+      await this.delay(500); // wait 1s for loading data
+      document.getElementById('loadCover').style.display = 'none';
     }) ();
   }
 
@@ -481,10 +486,10 @@ export class HomeComponent implements OnInit {
   //   return y + 'px';
   // }
   getGridCols() {
-    return Math.min(window.innerWidth / 400, 4);
+    return Math.min(window.innerWidth / 320, 4);
   }
 
   getGraphCols() {
-    return Math.min(window.innerWidth / 900, 2);
+    return Math.min(window.innerWidth / 600, 2);
   }
 }
