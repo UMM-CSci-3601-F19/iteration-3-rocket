@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {Room} from './room';
 import {History} from './history';
 import {Machine} from './machine';
@@ -6,12 +6,13 @@ import {Observable} from 'rxjs';
 import {HomeService} from './home.service';
 
 import * as Chart from 'chart.js';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 @Component({
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.css']
 })
-
 export class HomeComponent implements OnInit {
 
   /*
@@ -74,9 +75,32 @@ export class HomeComponent implements OnInit {
   public pineHistory: History;
   public theApartmentsHistory: History;
 */
-  constructor(public homeService: HomeService) {
-    this.machineListTitle = 'within all rooms';
+  constructor(public homeService: HomeService, public dialog: MatDialog) {
+    this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
+  }
+
+  openDialog(theMachine: Machine) {
+    const thisMachine: Machine = {
+      id: theMachine.id,
+      name: this.translateMachineName(theMachine.name),
+      running: theMachine.running,
+      status: theMachine.status,
+      room_id: this.translateRoomId(theMachine.room_id),
+      type: theMachine.type,
+      position: theMachine.position,
+      remainingTime: theMachine.remainingTime,
+      vacantTime: theMachine.vacantTime
+    }
+    const dialogRef = this.dialog.open(HomeDialog, {
+      width: '330px',
+      data: {machine: thisMachine},
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   setSelector(state: number) {
@@ -526,8 +550,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-
-
   // getX(machine: Machine) {
   //   const x = machine.position.x * 20;
   //   return x + 'px';
@@ -543,5 +565,48 @@ export class HomeComponent implements OnInit {
 
   getGraphCols() {
     return Math.min(window.innerWidth / 600, 2);
+  }
+}
+
+
+@Component({
+  templateUrl: 'home.dialog.html',
+})
+export class HomeDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<HomeDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: {machine: Machine}) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  generateCustomLink(machineRoomID: string, machineType: string, machineID: string): string {
+    if (machineRoomID === 'The Apartments') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Apartment Community Building (Cube)&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'Gay Hall') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Clayton A. Gay&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'Green Prairie Hall') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Green Prairie Community&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'Pine Hall') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Pine&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'Independence Hall') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=David C. Johnson Independence&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'Spooner Hall') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Spooner&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else if (machineRoomID === 'Blakely Hall') {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Blakely&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    } else {
+      // tslint:disable-next-line:max-line-length
+      return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
+    }
   }
 }

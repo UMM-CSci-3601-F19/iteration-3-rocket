@@ -12,6 +12,7 @@ import {APP_BASE_HREF} from '@angular/common';
 
 import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
+import {HomeDialog} from './home/home.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -43,7 +44,8 @@ import {MatProgressBarModule} from '@angular/material';
     AppComponent,
     HomeComponent,
     UserListComponent,
-    AddUserComponent
+    AddUserComponent,
+    HomeDialog,
   ],
   providers: [
     HttpClient,
@@ -53,6 +55,7 @@ import {MatProgressBarModule} from '@angular/material';
   ],
   entryComponents: [
     AddUserComponent,
+    HomeDialog,
   ],
   bootstrap: [AppComponent]
 })
