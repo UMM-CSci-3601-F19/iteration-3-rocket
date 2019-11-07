@@ -356,5 +356,6 @@ export interface History {
       46: number,
       47: number
     };
+  _id: string,
   room_id: string;
 }
