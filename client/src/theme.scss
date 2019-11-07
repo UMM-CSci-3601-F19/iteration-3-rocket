@@ -16,8 +16,8 @@ $light-accent: mat-palette($mat-blue-grey, A200);
 $dark-accent: mat-palette($mat-blue-grey, A100);
 
 // The warn palette is optional (defaults to red).
-$light-warn: mat-palette($mat-orange, 500); // Without a hue given, it defaults to 500
-$dark-warn: mat-palette($mat-yellow, 200);
+$light-warn: mat-palette($mat-purple, 300); // Without a hue given, it defaults to 500
+$dark-warn: mat-palette($mat-purple, 300);
 
 // Create the theme object for a light theme (a Sass map containing all of the palettes).
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);

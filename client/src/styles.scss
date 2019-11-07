@@ -205,13 +205,17 @@ mat-grid-tile mat-card {
   font-style: italic;
   font-size: 80%;
   position: absolute;
-  left: -2px;
+  left: -5px;
   height: 30px;
-  bottom: 32px;
+  bottom: 30px;
   border-radius: 15px !important;
 }
 
 #predictionGraphTitle {
   white-space: nowrap;
   max-width: 100px;
+}
+
+.machineName {
+  white-space: nowrap;
 }
