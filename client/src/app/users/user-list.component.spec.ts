@@ -166,7 +166,7 @@ describe('Adding a user', () => {
     });
   }));
 
- /* it('calls UserListService.addUser', () => {
+  /*it('calls UserListService.addUser', () => {
     expect(calledUser).toBeNull();
     userList.openDialog();
     expect(calledUser).toEqual(newUser);

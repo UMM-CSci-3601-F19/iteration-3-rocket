@@ -36,6 +36,7 @@
     background-color: mat-color($primary);
   }
 
+
   @if $is-dark {
     .mat-toolbar.mat-primary {
       background: mat-color($background, app-bar);
@@ -48,6 +49,7 @@
 
     .indicator {
       color: $light-secondary-text !important;
+      bottom: 10px;
     }
 
     .vacant {
@@ -61,6 +63,17 @@
     .unavailable {
       color: #aaaaaa !important;
     }
+
+    .roomHeading {
+      background-color: mat-color($background, app-bar) !important;
+    }
+  }
+
+  .roomHeading {
+    background-color: mat-color($mat-gray, 0);
+    border-radius: 0 !important;
+    padding-top: 5px !important;
+    margin: 0 -5px 0 -5px;
   }
 
   .drawer-list-item-active {
@@ -107,7 +120,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .indicator {
   font-size: 14px;
-  margin-left: 35px;
+  margin-left: 38px;
   color: $dark-secondary-text;
 }
 
@@ -133,10 +146,15 @@ mat-icon {
 }
 
 .room.mat-card {
-  margin:0;
   box-shadow: none !important;
   padding-top: 0;
   padding-bottom: 0;
+  max-width: 850px;
+  margin: 0 auto 15px;
+}
+
+.room button {
+  margin: 5px;
 }
 
 .mat-expansion-panel:not([class*='mat-elevation-z']) {
@@ -169,7 +187,6 @@ mat-icon {
 
 .unavailable {
   color: #555555;
-  font-style: italic;
 }
 
 .map.mat-card {
@@ -178,7 +195,7 @@ mat-icon {
 }
 
 .main-content.mat-typography {
-  margin: 0 !important;
+  margin: 5px !important;
 }
 
 .allMachinesPanel .mat-expansion-panel-body {
@@ -196,9 +213,57 @@ mat-grid-tile mat-card {
 }
 
 .reportButton {
+  padding: 0 10px !important;
+  font-style: italic;
+  font-size: 85%;
   position: absolute;
-  left: 0;
+  left: -5px;
   height: 30px;
   bottom: 30px;
   border-radius: 15px !important;
 }
+
+#predictionGraphTitle {
+  white-space: nowrap;
+  max-width: 100px;
+}
+
+.machineName {
+  white-space: nowrap;
+}
+
+.roomHeading {
+  font-style: italic;
+  border-radius: 0;
+  position: sticky !important;
+  top: 63px;
+  z-index: 1;
+}
+
+.roomHeading mat-card {
+  padding: 30px 0 !important;
+}
+
+.welcomeMessage {
+  line-height: 1.15;
+  font-size: 30px;
+  font-weight: lighter;
+  font-style: italic;
+}
+
+.welcomeMessage div {
+  margin: 5px 0;
+}
+
+.roomStatus mat-icon {
+  font-size: 16px;
+  margin-right: 0;
+}
+
+.roomStatus {
+  font-style: italic;
+  font-size: 15px;
+  margin-right: 12px;
+  display: inline-block;
+}
+
