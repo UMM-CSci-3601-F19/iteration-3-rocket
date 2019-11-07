@@ -42,13 +42,18 @@
 
     </mat-expansion-panel>
 
+    <mat-card style="background: red; height: 80px; margin: 0 10px;">
 
+
+
+    </mat-card>
     <mat-grid-list cols="{{this.getGraphCols()}}" rowHeight="280px">
+
       <mat-grid-tile>
         <mat-card style="max-width: 100% !important; width: 100% !important; height: 80%">
           <mat-card-title id="predictionGraphTitle" style="font-weight: unset; padding-left: 8px; font-size: 15px">{{this.roomName}}'s busy time on
             <p style="display: unset; float: bottom">
-              <mat-select id="day-selector" [(value)]="inputDay" style="width: 100px" (selectionChange)="updateDayBySelector($event.value)">
+              <mat-select id="day-selector" [(value)]="inputDay" style="width: content-box" (selectionChange)="updateDayBySelector($event.value)">
                 <mat-option *ngFor="let day of Days" [value]="day.value">{{day.name}}</mat-option>
               </mat-select>
             </p>
@@ -62,8 +67,8 @@
               <mat-icon style="margin: 5px 0">navigate_before</mat-icon>
             </button>
             <div style="padding-right: 15px; padding-left: 15px;">
-<!--              <div id="canvasCover" style="position: absolute; width: 100%; height: 280px; display: block; z-index: 2"></div>-->
               <canvas id="myChart" [height]="100" style="display: unset; min-width: 100% !important; max-width: 100% !important ; min-height: 200px !important; max-height: 200px !important"></canvas>
+              <div id="canvasCover" style="position: absolute; width: 100%; height: 200px; display: block; left: 0"></div>
             </div>
           </mat-accordion>
         </mat-card>
@@ -199,7 +204,7 @@
                       <p style="bottom: 20px; top: auto; text-align: right">
                         <a class="time" style="font-size: 200%; font-weight: lighter">Broken</a>
                       </p>
-                      <mat-progress-bar color="warn" mode="buffer" value="100"></mat-progress-bar>
+                      <mat-progress-bar color="warn" mode="buffer" bufferValue="100" value="0"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   </mat-card>
@@ -265,7 +270,7 @@
                       <p style="bottom: 20px; top: auto; text-align: right">
                         <a class="time" style="font-size: 200%; font-weight: lighter">Broken</a>
                       </p>
-                      <mat-progress-bar color="warn" mode="buffer" value="100"></mat-progress-bar>
+                      <mat-progress-bar color="warn" mode="buffer" bufferValue="100" value="0"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   </mat-card>
@@ -293,6 +298,6 @@
   </div>
 </div>
 
-<div id="loadCover" style="z-index: 2; position: fixed; top:0; left: 0; bottom: 0; right: 0; display: block; background: rgba(50,50,50,0.75)">
+<div id="loadCover" style="z-index: 2; position: fixed; top:0; left: 0; bottom: 0; right: 0; display: block; background: rgba(30,30,30,0.75)">
   <mat-spinner mode="indeterminate" strokeWidth="3" style="top: 50%; margin: -65px auto auto;"></mat-spinner>
 </div>
