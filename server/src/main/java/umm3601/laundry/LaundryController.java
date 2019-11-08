@@ -5,7 +5,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -143,35 +142,37 @@ public class LaundryController {
           newDocument.put("remainingTime", -1);
         }
       }
-
-
       machinePollingCollection.replaceOne(originalNewDocument, newDocument);
     }
 
-    machineCollection.drop();
-    int n = 0;
-    for (Document d : newMachines) {
-      machineCollection.insertOne(d);
-      ++n;
+    if (!seedLocalSource) {
+      machineCollection.drop();
+      int n = 0;
+      for (Document d : newMachines) {
+        machineCollection.insertOne(d);
+        ++n;
+      }
+      System.out.println("[update] INFO laundry.LaundryController - Updated machines collection with " + n + " machines");
+    } else {
+      System.out.println("[update] INFO laundry.LaundryController - Updated machines collection with " + machineCollection.count() + " machines");
     }
-    System.out.println("[update] INFO laundry.LaundryController - Updated machines collection with " + n + " machines");
  }
 
   public void updateRooms() {
 
     if (!seedLocalSource) {
       roomPollingCollection = roomPullingDatabase.getCollection("roomDataFromPollingAPI");
-    } else {
-      roomPollingCollection = roomPullingDatabase.getCollection("rooms");
-    }
 
-    FindIterable<Document> newRooms = roomPollingCollection.find();
-    roomCollection.drop();
-    int n = 0;
-    for (Document d : newRooms) {
-      roomCollection.insertOne(d);
-      ++n;
+      FindIterable<Document> newRooms = roomPollingCollection.find();
+      roomCollection.drop();
+      int n = 0;
+      for (Document d : newRooms) {
+        roomCollection.insertOne(d);
+        ++n;
+      }
+      System.out.println("[update] INFO laundry.LaundryController - Updated rooms collection with " + n + " rooms");
+    } else {
+      System.out.println("[update] INFO laundry.LaundryController - Skipped updating rooms collection");
     }
-    System.out.println("[update] INFO laundry.LaundryController - Updated rooms collection with " + n + " rooms");
   }
 }
