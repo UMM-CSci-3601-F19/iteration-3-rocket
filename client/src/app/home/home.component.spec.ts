@@ -632,11 +632,11 @@ describe('Home page', () => {
 
 
   it('should return the number of grid columns given different a window length', () => {
-    expect(component.getGridCols()).toEqual(Math.min((window.innerWidth / 320), 4));
+    expect(component.getGridCols()).toEqual(Math.min((window.innerWidth / 400), 4));
   });
 
   it('should return the number of graph columns given different a window length', () => {
-    expect(component.getGraphCols()).toEqual(Math.min(window.innerWidth / 600, 2));
+    expect(component.getGraphCols()).toEqual(Math.min(window.innerWidth / 680, 2));
   });
 
   it('should return the chart day based on today\'s day', () => {

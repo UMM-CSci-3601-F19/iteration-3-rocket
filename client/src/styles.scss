@@ -70,7 +70,7 @@
   }
 
   .roomHeading {
-    background-color: mat-color($mat-gray, 0);
+    background-color: mat-color($mat-blue-gray, 300);
     border-radius: 0 !important;
     padding-top: 5px !important;
     margin: 0 -5px 0 -5px;
@@ -168,7 +168,7 @@ mat-icon {
 }
 
 .home {
-  max-width: 1280px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
 }
