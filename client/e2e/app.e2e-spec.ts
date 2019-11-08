@@ -13,6 +13,6 @@ describe('angular-spark-lab', () => {
 
   it('should get and highlight Home title attribute ', () => {
     page.navigateTo();
-    expect(page.getPageTitle()).toEqual('THE WEB APP');
+    expect(page.getPageTitle()).toEqual('Morris Laundry Facilities');
   });
 });
