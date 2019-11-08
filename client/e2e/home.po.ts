@@ -24,6 +24,11 @@ export class HomePage {
     this.highlightElement(by.id('home-rooms-card'));
     return title;
   }
+  getUniqueRoomTitle() {
+    const title = element(by.id('machines-grid')).getText();
+    this.highlightElement(by.id('machines-grid'));
+    return title;
+  }
 
   getGayHallTitleInHomePanel() {
     const title = element(by.id('gayId')).getText();
@@ -119,6 +124,12 @@ export class HomePage {
     this.click('gayId');
   }
 
+  getCardName() {
+    const title = element(by.id('{{this.translateRoomId(machine.room_id)}}')).getText();
+    this.highlightElement(by.id('{{this.translateRoomId(machine.room_id)}}'));
+    return title;
+  }
+
   getWashersTitle() {
     const title = element(by.id('home-machines-card-washer')).getText();
     this.highlightElement(by.id('home-machines-card-washer'));
@@ -132,15 +143,15 @@ export class HomePage {
   }
 
   getWashers() {
-    return element.all(by.className('washers'));
+    return element.all(by.className('washer'));
   }
 
   getDryers() {
-    return element.all(by.className('dryers'));
+    return element.all(by.className('dryer'));
   }
 
   getBrokens() {
-    return element.all(by.className('brokens'));
+    return element.all(by.className('broken'));
   }
 
   clickRoomPanel(){
