@@ -33,7 +33,7 @@
   // Define any styles affected by the theme.
 
   mat-sidenav-content {
-    background-color: mat-color($primary, 300 );
+    background-color: mat-color($primary, 200 );
   }
 
   .roomHeading, .topMenu {
@@ -85,6 +85,7 @@
     position: sticky !important;
     top: 59px;
     z-index: 1;
+    box-shadow: none !important;
   }
 
   .topMenu {
@@ -93,7 +94,7 @@
     margin-right: -5px;
     padding-left: 5px;
     padding-right: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 25px;
   }
 
   .drawer-list-item-active {
@@ -260,6 +261,11 @@ mat-grid-tile mat-card {
 
 .roomHeading mat-card {
   padding: 30px 0 !important;
+  height: auto;
+}
+
+.mat-card-content {
+  height: auto;
 }
 
 .welcomeMessage {
@@ -285,3 +291,22 @@ mat-grid-tile mat-card {
   display: inline-block;
 }
 
+mat-dialog-container {
+  border-radius: 15px !important;
+  padding: 20px !important;
+  height: 120%;
+}
+
+mat-dialog-container .mat-card-content {
+  width: 90%;
+}
+
+mat-dialog-container .machineName {
+  white-space: normal;
+  display: block;
+}
+
+mat-dialog-container .reportButton {
+  position: sticky;
+    bottom: -25px;
+}

@@ -1,13 +1,9 @@
-<mat-card style="padding: 0 !important; width: 100% !important; box-shadow: none !important">
+<mat-card style="padding: 0 !important; margin: 0 !important; width: 98% !important; box-shadow: none !important">
 <h1 mat-dialog-title Style="text-align: left; margin-bottom: 24px">Machine Information</h1>
-  <button mat-button id="closeDialog2" (click)="onNoClick()" style="position: absolute; top: 0px; right: 0px">
-    <mat-icon style="padding: 0 0px; margin: 0 0 0 0px;">close</mat-icon>
+  <button mat-icon-button id="closeDialog2" (click)="onNoClick()" style="position: absolute; top: -5px; right: -10px">
+    <mat-icon style="padding: 0 0; margin: 0 0 0 0;">close</mat-icon>
   </button>
-<!--<mat-dialog-actions>-->
-<!--  <button mat-button id="closeDialog2" (click)="onNoClick()" style="position: absolute; top: 24px; right: 24px;">-->
-<!--    <mat-icon>close</mat-icon>-->
-<!--  </button>-->
-<!--</mat-dialog-actions>-->
+
 <mat-dialog-content
   *ngIf="data.machine.running == false && data.machine.type == 'washer' && data.machine.status == 'normal'">
   <mat-card style="box-shadow: none; margin-top: 0px; padding: 0px; margin-bottom: 0px">
@@ -18,16 +14,16 @@
         <a class="machineName"
            style="margin-left: 60px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a><br>
         <a style="margin-left: 60px; font-size: 100%">{{data.machine.room_id}}</a><br>
-        <a style="margin-left: 60px; font-size: 100%">Washer</a>
+        <a class="cardType" style="margin-left: 60px; font-size: 100%">Washer</a>
       </a>
     </div>
-    <div style="position: relative; top: 15px; width: 100%">
-      <p style="bottom: 20px; top: auto; text-align: right">
+    <div style="position: relative; top: -15px; width: 100%">
+      <p style="bottom: 50px; top: auto; text-align: right">
         Last used <a class="time" style="font-size: 300%; font-weight: lighter">{{data.machine.vacantTime}}</a> min
       </p>
       <mat-progress-bar color="warn" mode="determinate" value="100"></mat-progress-bar>
     </div>
-    <a class="reportButton" mat-raised-button
+    <a class="reportButton" mat-button
        href="{{generateCustomLink(data.machine.room_id, data.machine.type, data.machine.name)}}">Report an issue</a>
   </mat-card>
 </mat-dialog-content>
@@ -42,17 +38,17 @@
         <a class="machineName"
            style="margin-left: 60px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a><br>
         <a style="margin-left: 60px; font-size: 100%">{{data.machine.room_id}}</a><br>
-        <a style="margin-left: 60px; font-size: 100%">Washer</a>
+        <a class="cardType" style="margin-left: 60px; font-size: 100%">Washer</a>
       </a>
     </div>
-    <div style="position: relative; top: 15px; width: 100%">
-      <p style="bottom: 20px; top: auto; text-align: right">
+    <div style="position: relative; top: -15px; width: 100%">
+      <p style="bottom: 50px; top: auto; text-align: right">
         Time remaining <a class="time" style="font-size: 300%; font-weight: lighter">{{data.machine.remainingTime}}</a>
         min
       </p>
       <mat-progress-bar color="warn" mode="buffer" value="{{100-data.machine.remainingTime / 0.35}}"></mat-progress-bar>
     </div>
-    <a class="reportButton" mat-raised-button
+    <a class="reportButton" mat-button
        href="{{generateCustomLink(data.machine.room_id, data.machine.type, data.machine.name)}}">Report an issue</a>
   </mat-card>
 </mat-dialog-content>
@@ -66,16 +62,16 @@
         <a class="machineName"
            style="margin-left: 60px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a><br>
         <a style="margin-left: 60px; font-size: 100%">{{data.machine.room_id}}</a><br>
-        <a style="margin-left: 60px; font-size: 100%">Washer</a>
+        <a class="cardType" style="margin-left: 60px; font-size: 100%">Washer</a>
       </a>
     </div>
-    <div style="position: relative; top: 15px; width: 100%">
-      <p style="bottom: 20px; top: auto; text-align: right">
+    <div style="position: relative; top: -15px; width: 100%">
+      <p style="bottom: 50px; top: auto; text-align: right">
         <a class="time" style="font-size: 200%; font-weight: lighter">Broken</a>
       </p>
       <mat-progress-bar color="warn" mode="buffer" value="100"></mat-progress-bar>
     </div>
-    <a class="reportButton" mat-raised-button
+    <a class="reportButton" mat-button
        href="{{generateCustomLink(data.machine.room_id, data.machine.type, data.machine.name)}}">Report an issue</a>
   </mat-card>
 </mat-dialog-content>
@@ -89,16 +85,16 @@
         <a class="machineName"
            style="margin-left: 60px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a><br>
         <a style="margin-left: 60px; font-size: 100%">{{data.machine.room_id}}</a><br>
-        <a style="margin-left: 60px; font-size: 100%">Dryer</a>
+        <a class="cardType" style="margin-left: 60px; font-size: 100%">Dryer</a>
       </a>
     </div>
-    <div style="position: relative; top: 15px; width: 100%">
-      <p style="bottom: 20px; top: auto; text-align: right">
+    <div style="position: relative; top: -15px; width: 100%">
+      <p style="bottom: 50px; top: auto; text-align: right">
         Last used <a class="time" style="font-size: 300%; font-weight: lighter">{{data.machine.vacantTime}}</a> min
       </p>
       <mat-progress-bar color="warn" mode="determinate" value="100"></mat-progress-bar>
     </div>
-    <a class="reportButton" mat-raised-button
+    <a class="reportButton" mat-button
        href="{{generateCustomLink(data.machine.room_id, data.machine.type, data.machine.name)}}">Report an issue</a>
   </mat-card>
 </mat-dialog-content>
@@ -112,17 +108,17 @@
         <a class="machineName"
            style="margin-left: 60px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a><br>
         <a style="margin-left: 60px; font-size: 100%">{{data.machine.room_id}}</a><br>
-        <a style="margin-left: 60px; font-size: 100%">Dryer</a>
+        <a class="cardType" style="margin-left: 60px; font-size: 100%">Dryer</a>
       </a>
     </div>
-    <div style="position: relative; top: 15px; width: 100%">
-      <p style="bottom: 20px; top: auto; text-align: right">
+    <div style="position: relative; top: -15px; width: 100%">
+      <p style="bottom: 50px; top: auto; text-align: right">
         Time remaining <a class="time" style="font-size: 300%; font-weight: lighter">{{data.machine.remainingTime}}</a>
         min
       </p>
       <mat-progress-bar color="warn" mode="buffer" value="{{100-data.machine.remainingTime / 0.6}}"></mat-progress-bar>
     </div>
-    <a class="reportButton" mat-raised-button
+    <a class="reportButton" mat-button
        href="{{generateCustomLink(data.machine.room_id, data.machine.type, data.machine.name)}}">Report an issue</a>
   </mat-card>
 </mat-dialog-content>
@@ -135,16 +131,16 @@
         <a class="machineName"
            style="margin-left: 60px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a><br>
         <a sstyle="margin-left: 60px; font-size: 100%">{{data.machine.room_id}}</a><br>
-        <a style="margin-left: 60px; font-size: 100%">Dryer</a>
+        <a class="cardType" style="margin-left: 60px; font-size: 100%">Dryer</a>
       </a>
     </div>
-    <div style="position: relative; top: 15px; width: 100%">
-      <p style="bottom: 20px; top: auto; text-align: right">
+    <div style="position: relative; top: -15px; width: 100%">
+      <p style="bottom: 50px; top: auto; text-align: right">
         <a class="time" style="font-size: 200%; font-weight: lighter">Broken</a>
       </p>
       <mat-progress-bar color="warn" mode="buffer" value="100"></mat-progress-bar>
     </div>
-    <a class="reportButton" mat-raised-button
+    <a class="reportButton" mat-button
        href="{{generateCustomLink(data.machine.room_id, data.machine.type, data.machine.name)}}">Report an issue</a>
   </mat-card>
 </mat-dialog-content>
