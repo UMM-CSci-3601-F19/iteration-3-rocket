@@ -15,7 +15,7 @@ import static com.mongodb.client.model.Filters.and;
 
 public class HistoryController {
   private final MongoCollection<Document> roomCollection;
-  private MongoCollection<Document> roomHistoryCollection;
+  public MongoCollection<Document> roomHistoryCollection;
   private MongoCollection<Document> machineCollection;
 
   public HistoryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase roomHistoryDatabase) {

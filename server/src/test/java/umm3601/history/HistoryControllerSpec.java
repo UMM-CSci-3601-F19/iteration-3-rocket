@@ -12,23 +12,16 @@ import org.bson.json.JsonReader;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class HistoryControllerSpec {
 
   private HistoryController historyController;
 
-  private String machineId;
-  private String roomId;
-
-  private MongoCollection<Document> roomHistoryDocuments;
-  private BasicDBObject machine;
-
+  private MongoCollection<Document> machineDocuments;
 
   @Before
   public void clearAndPopulateDB() {
@@ -37,14 +30,14 @@ public class HistoryControllerSpec {
     MongoDatabase roomDB = mongoClient.getDatabase("test");
     MongoDatabase historyDB = mongoClient.getDatabase("test");
 
-    MongoCollection<Document> machineDocuments = machineDB.getCollection("machines");
+    machineDocuments = machineDB.getCollection("machines");
     machineDocuments.drop();
     List<Document> testMachines = new ArrayList<>();
     testMachines.add(Document.parse("{\n" +
       "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
       "\t\"name\": \"Gay Hall\"\n" +
       "\t\"type\": \"Dryer\"\n" +
-      "\t\"running\": \"true\"\n" +
+      "\t\"running\": true \n" +
       "\t\"status\": \"normal\"\n" +
       "\t\"room_id\": \"gay\"\n" +
       "  }"));
@@ -52,7 +45,7 @@ public class HistoryControllerSpec {
       "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
       "\t\"name\": \"Independence Hall\"\n" +
       "\t\"type\": \"Washer\"\n" +
-      "\t\"running\": \"false\"\n" +
+      "\t\"running\": false \n" +
       "\t\"status\": \"normal\"\n" +
       "\t\"room_id\": \"independence\"\n" +
       "  }"));
@@ -62,7 +55,6 @@ public class HistoryControllerSpec {
     historyDocuments.drop();
     List<Document> testHistories = new ArrayList<>();
     testHistories.add(Document.parse("{\n" +
-        "{\n" +
       "\"1\": {\n" +
       "\t\"0\": \"10\"\n" +
       "\t\"1\": \"5\"\n" +
@@ -413,11 +405,10 @@ public class HistoryControllerSpec {
       "\t\"46\": \"6\"\n" +
       "\t\"47\": \"3\"\n" +
       "}\n" +
-      "\"_id\": \"5dbb7ca70939aeac66e29a65\",\n" +
+      "\"_id\": \"5dbb7ca7d8ba936a8e8d9e3f\",\n" +
       "\t\"room_id\": \"gay\"\n" +
       "  }"));
     testHistories.add(Document.parse("{\n" +
-      "{\n" +
       "\"1\": {\n" +
       "\t\"0\": \"10\"\n" +
       "\t\"1\": \"5\"\n" +
@@ -768,7 +759,7 @@ public class HistoryControllerSpec {
       "\t\"46\": \"6\"\n" +
       "\t\"47\": \"3\"\n" +
       "}\n" +
-      "\"_id\": \"5dbb7ca70939aeac66e29a65\",\n" +
+      "\"_id\": \"5dbb7ca758d0466a1ceccf3f\",\n" +
       "\t\"room_id\": \"independence\"\n" +
       "  }"));
     historyDocuments.insertMany(testHistories);
@@ -777,39 +768,19 @@ public class HistoryControllerSpec {
     roomDocuments.drop();
     List<Document> testRooms = new ArrayList<>();
     testRooms.add(Document.parse("{\n" +
-      "\t\"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
-      "\t\"name\": \"Independence Hall\"\n" +
-      "\t\"type\": \"dryer\"\n" +
-      "\t\"running\": \"true\"\n" +
-      "\t\"status\": \"normal\"\n" +
-      "\t\"room_id\": \"independence\"\n" +
+      "\t\"id\": \"gay\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
       "  }\n"));
     testRooms.add(Document.parse("{\n" +
-      "\t\"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
-      "\t\"name\": \"Gay Hall\"\n" +
-      "\t\"type\": \"dryer\"\n" +
-      "\t\"running\": \"false\"\n" +
-      "\t\"status\": \"normal\"\n" +
-      "\t\"room_id\": \"gay\"\n" +
+      "\t\"id\": \"independence\",\n" +
+      "\t\"name\": \"Independence Hall\"\n" +
       "  }\n"));
-//    roomId = "a_room";
-//    BasicDBObject room = new BasicDBObject("id", roomId);
-//    room = room.append("name", "Pine Hall");
     roomDocuments.insertMany(testRooms);
-//    roomDocuments.insertOne(Document.parse(room.toJson()));
 
     // It might be important to construct this _after_ the DB is set up
     // in case there are bits in the constructor that care about the state
     // of the database.
     historyController = new HistoryController(machineDB, roomDB, historyDB);
-
-//    machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
-//    machine = new BasicDBObject("id", machineId);
-//    machine = machine.append("type", "dryer")
-//      .append("running", true)
-//      .append("status", "the_status")
-//      .append("room_id", roomId);
-//    roomHistoryDocuments.insertOne(Document.parse(machine.toJson()));
   }
 
   private BsonArray parseJsonArray(String json) {
@@ -830,20 +801,13 @@ public class HistoryControllerSpec {
     return ((BsonString) doc.get("room_id")).getValue();
   }
 
-  private static String getId(BsonValue val) {
-    BsonDocument doc = val.asDocument();
-    return ((BsonString) doc.get("_id")).getValue();
-  }
-
-  private static Boolean getMonday(BsonValue val) {
-    BsonDocument doc = val.asDocument();
-    return ((BsonBoolean) doc.get("1")).getValue();
-  }
-
 
   @Test
   public void getAllHistories() {
+    historyController.roomHistoryCollection.drop();
+    historyController.updateHistory();
     String jsonResult = historyController.getAllHistory();
+    System.out.println(jsonResult);
     BsonArray docs = parseJsonArray(jsonResult);
 
     assertEquals("Should be 2 rooms histories", 2, docs.size());
@@ -858,19 +822,54 @@ public class HistoryControllerSpec {
 
   @Test
   public void updateHistory() {
+    Calendar calendar = Calendar.getInstance();
+
+    int todayBefore = calendar.get(Calendar.DAY_OF_WEEK);
+    int nowBefore = calendar.get(Calendar.HOUR_OF_DAY) * 2 + calendar.get(Calendar.MINUTE) / 30;
+
+    historyController.roomHistoryCollection.drop();
     historyController.updateHistory();
 
+    Document filterDoc = new Document();
+    filterDoc = filterDoc.append("room_id", "gay");
+    Document targetRoom = historyController.roomHistoryCollection.find(filterDoc).first();
 
-    String jsonResult = historyController.getAllHistory();
-    BsonArray docs = parseJsonArray(jsonResult);
+    Document targetDay = (Document) targetRoom.get(String.valueOf(todayBefore));
+    int beforeUsage = (int) targetDay.get(String.valueOf(nowBefore));
 
-    assertEquals("Should be 2 rooms", 2, docs.size());
-    List<String> history = docs
-      .stream()
-      .map(HistoryControllerSpec::getId)
-      .sorted()
-      .collect(Collectors.toList());
-    List<String> expectedHistory = Arrays.asList("a_room", "cee9ba33-8c10-4b40-8307-c0a8ea9f68f5");
-    assertEquals("Should match", expectedHistory, history);
+    this.machineDocuments.drop();
+    List<Document> testMachines = new ArrayList<>();
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Dryer\"\n" +
+      "\t\"running\": true \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
+      "\t\"name\": \"Independence Hall\"\n" +
+      "\t\"type\": \"Washer\"\n" +
+      "\t\"running\": true \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"independence\"\n" +
+      "  }"));
+    machineDocuments.insertMany(testMachines);
+
+    historyController.updateHistory();
+
+    targetRoom = historyController.roomHistoryCollection.find(filterDoc).first();
+    targetDay = (Document) targetRoom.get(String.valueOf(todayBefore));
+    int afterUsage = (int) targetDay.get(String.valueOf(nowBefore));
+
+    int todayEnd = calendar.get(Calendar.DAY_OF_WEEK);
+    int nowEnd = calendar.get(Calendar.HOUR_OF_DAY) * 2 + calendar.get(Calendar.MINUTE) / 30;
+
+    if (todayEnd == todayBefore && nowEnd == nowBefore) {
+      assertEquals("function should update the usage of the machine", afterUsage - beforeUsage, 24);
+    } else {
+      updateHistory();
+    }
   }
 }
