@@ -1,4 +1,3 @@
-/*
 package umm3601.history;
 
 import com.mongodb.BasicDBObject;
@@ -13,39 +12,32 @@ import org.bson.json.JsonReader;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class HistoryControllerSpec {
 
   private HistoryController historyController;
 
-  private String machineId;
-  private String roomId;
-
-  private MongoCollection<Document> roomHistoryDocuments;
-  private BasicDBObject machine;
-
+  private MongoCollection<Document> machineDocuments;
 
   @Before
   public void clearAndPopulateDB() {
     MongoClient mongoClient = new MongoClient();
     MongoDatabase machineDB = mongoClient.getDatabase("test");
     MongoDatabase roomDB = mongoClient.getDatabase("test");
-    MongoDatabase roomHistoryDB = mongoClient.getDatabase("test");
+    MongoDatabase historyDB = mongoClient.getDatabase("test");
 
-    MongoCollection<Document> machineDocuments = machineDB.getCollection("machines");
+    machineDocuments = machineDB.getCollection("machines");
     machineDocuments.drop();
     List<Document> testMachines = new ArrayList<>();
     testMachines.add(Document.parse("{\n" +
       "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
       "\t\"name\": \"Gay Hall\"\n" +
       "\t\"type\": \"Dryer\"\n" +
-      "\t\"running\": \"true\"\n" +
+      "\t\"running\": true \n" +
       "\t\"status\": \"normal\"\n" +
       "\t\"room_id\": \"gay\"\n" +
       "  }"));
@@ -53,101 +45,742 @@ public class HistoryControllerSpec {
       "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
       "\t\"name\": \"Independence Hall\"\n" +
       "\t\"type\": \"Washer\"\n" +
-      "\t\"running\": \"false\"\n" +
+      "\t\"running\": false \n" +
       "\t\"status\": \"normal\"\n" +
       "\t\"room_id\": \"independence\"\n" +
       "  }"));
     machineDocuments.insertMany(testMachines);
 
-    roomHistoryDocuments = roomHistoryDB.getCollection("roomDataFromHistoryAPI");
-    roomHistoryDocuments.drop();
-    List<Document> testHistoricRooms = new ArrayList<>();
-    testHistoricRooms.add(Document.parse("{\n" +
-      "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
-      "\t\"name\": \"Spooner Hall\"\n" +
-      "\t\"type\": \"washer\"\n" +
-      "\t\"running\": \"true\"\n" +
-      "\t\"status\": \"normal\"\n" +
-      "\t\"room_id\": \"spooner\"\n" +
-      "  }"));
-    testHistoricRooms.add(Document.parse("{\n" +
-      "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
-      "\t\"name\": \"Blakely Hall\"\n" +
-      "\t\"type\": \"washer\"\n" +
-      "\t\"running\": \"false\"\n" +
-      "\t\"status\": \"normal\"\n" +
-      "\t\"room_id\": \"blakely\"\n" +
-      "  }"));
-    testHistoricRooms.add(Document.parse("{\n" +
-      "\"id\": \"cd840548-7fd2-4a59-87a0-0afabeee0f85\",\n" +
-      "\t\"name\": \"Gay Hall\"\n" +
-      "\t\"type\": \"dryer\"\n" +
-      "\t\"running\": \"true\"\n" +
-      "\t\"status\": \"normal\"\n" +
+    MongoCollection<Document> historyDocuments = historyDB.getCollection("roomHistory");
+    historyDocuments.drop();
+    List<Document> testHistories = new ArrayList<>();
+    testHistories.add(Document.parse("{\n" +
+      "\"1\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"2\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"3\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"4\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"5\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"6\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"7\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"_id\": \"5dbb7ca7d8ba936a8e8d9e3f\",\n" +
       "\t\"room_id\": \"gay\"\n" +
       "  }"));
-    testHistoricRooms.add(Document.parse("{\n" +
-      "\"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
-      "\t\"name\": \"The Apartments\"\n" +
-      "\t\"type\": \"washer\"\n" +
-      "\t\"running\": \"true\"\n" +
-      "\t\"status\": \"normal\"\n" +
-      "\t\"room_id\": \"the_apartments\"\n" +
+    testHistories.add(Document.parse("{\n" +
+      "\"1\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"2\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"3\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"4\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"5\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"6\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"7\": {\n" +
+      "\t\"0\": \"10\"\n" +
+      "\t\"1\": \"5\"\n" +
+      "\t\"2\": \"2\"\n" +
+      "\t\"3\": \"2\"\n" +
+      "\t\"4\": \"3\"\n" +
+      "\t\"5\": \"2\"\n" +
+      "\t\"6\": \"6\"\n" +
+      "\t\"7\": \"3\"\n" +
+      "\t\"8\": \"1\"\n" +
+      "\t\"9\": \"8\"\n" +
+      "\t\"10\": \"10\"\n" +
+      "\t\"11\": \"5\"\n" +
+      "\t\"12\": \"2\"\n" +
+      "\t\"13\": \"2\"\n" +
+      "\t\"14\": \"3\"\n" +
+      "\t\"15\": \"2\"\n" +
+      "\t\"16\": \"6\"\n" +
+      "\t\"17\": \"3\"\n" +
+      "\t\"18\": \"1\"\n" +
+      "\t\"19\": \"8\"\n" +
+      "\t\"20\": \"10\"\n" +
+      "\t\"21\": \"5\"\n" +
+      "\t\"22\": \"2\"\n" +
+      "\t\"23\": \"2\"\n" +
+      "\t\"24\": \"3\"\n" +
+      "\t\"25\": \"2\"\n" +
+      "\t\"26\": \"6\"\n" +
+      "\t\"27\": \"3\"\n" +
+      "\t\"28\": \"1\"\n" +
+      "\t\"29\": \"8\"\n" +
+      "\t\"30\": \"10\"\n" +
+      "\t\"31\": \"5\"\n" +
+      "\t\"32\": \"2\"\n" +
+      "\t\"33\": \"2\"\n" +
+      "\t\"34\": \"3\"\n" +
+      "\t\"35\": \"2\"\n" +
+      "\t\"36\": \"6\"\n" +
+      "\t\"37\": \"3\"\n" +
+      "\t\"38\": \"1\"\n" +
+      "\t\"39\": \"8\"\n" +
+      "\t\"40\": \"10\"\n" +
+      "\t\"41\": \"5\"\n" +
+      "\t\"42\": \"2\"\n" +
+      "\t\"43\": \"2\"\n" +
+      "\t\"44\": \"3\"\n" +
+      "\t\"45\": \"2\"\n" +
+      "\t\"46\": \"6\"\n" +
+      "\t\"47\": \"3\"\n" +
+      "}\n" +
+      "\"_id\": \"5dbb7ca758d0466a1ceccf3f\",\n" +
+      "\t\"room_id\": \"independence\"\n" +
       "  }"));
-    roomHistoryDocuments.insertMany(testHistoricRooms);
+    historyDocuments.insertMany(testHistories);
 
     MongoCollection<Document> roomDocuments = roomDB.getCollection("rooms");
     roomDocuments.drop();
     List<Document> testRooms = new ArrayList<>();
     testRooms.add(Document.parse("{\n" +
-      "\t\"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
-      "\t\"name\": \"Independence Hall\"\n" +
-      "\t\"type\": \"dryer\"\n" +
-      "\t\"running\": \"true\"\n" +
-      "\t\"status\": \"normal\"\n" +
-      "\t\"room_id\": \"independence\"\n" +
+      "\t\"id\": \"gay\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
       "  }\n"));
     testRooms.add(Document.parse("{\n" +
-      "\t\"id\": \"cee9ba33-8c10-4b40-8307-c0a8ea9f68f5\",\n" +
-      "\t\"name\": \"Gay Hall\"\n" +
-      "\t\"type\": \"dryer\"\n" +
-      "\t\"running\": \"false\"\n" +
-      "\t\"status\": \"normal\"\n" +
-      "\t\"room_id\": \"gay\"\n" +
+      "\t\"id\": \"independence\",\n" +
+      "\t\"name\": \"Independence Hall\"\n" +
       "  }\n"));
-    roomId = "a_room";
-    BasicDBObject room = new BasicDBObject("id", roomId);
-    room = room.append("name", "Pine Hall");
     roomDocuments.insertMany(testRooms);
-    roomDocuments.insertOne(Document.parse(room.toJson()));
 
     // It might be important to construct this _after_ the DB is set up
     // in case there are bits in the constructor that care about the state
     // of the database.
-    historyController = new HistoryController(machineDB, roomDB, roomHistoryDB);
-
-    machineId = "8761b8c6-2548-43c9-9d31-ce0b84bcd160";
-    machine = new BasicDBObject("id", machineId);
-    machine = machine.append("type", "dryer")
-      .append("running", true)
-      .append("status", "the_status")
-      .append("room_id", roomId);
-    roomHistoryDocuments.insertOne(Document.parse(machine.toJson()));
-  }
-
-  private static String getId(BsonValue val) {
-    BsonDocument doc = val.asDocument();
-    return ((BsonString) doc.get("room_id")).getValue();
-  }
-
-  private static String getStatus(BsonValue val) {
-    BsonDocument doc = val.asDocument();
-    return ((BsonString) doc.get("status")).getValue();
-  }
-
-  private static Boolean getRunning(BsonValue val) {
-    BsonDocument doc = val.asDocument();
-    return ((BsonBoolean) doc.get("running")).getValue();
+    historyController = new HistoryController(machineDB, roomDB, historyDB);
   }
 
   private BsonArray parseJsonArray(String json) {
@@ -163,41 +796,80 @@ public class HistoryControllerSpec {
     return arrayReader.decode(reader, DecoderContext.builder().build());
   }
 
+  private static String getRoomId(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonString) doc.get("room_id")).getValue();
+  }
+
+
   @Test
-  public void testUpdateHistory() {
+  public void getAllHistories() {
+    historyController.roomHistoryCollection.drop();
     historyController.updateHistory();
-  }
-
-  @Test
-  public void testGetHistory() {
-    // Setup
-    String jsonResult = historyController.getHistory("a_room");
-    BsonArray docs = parseJsonArray(jsonResult);
-    List<String> room = docs
-      .stream()
-      .map(HistoryControllerSpec::getId)
-      .sorted()
-      .collect(Collectors.toList());
-    List<String> expectedResult = Arrays.asList();
-    final String result = historyController.getHistory("a_room");
-    // Verify the results
-    assertEquals(result, jsonResult);
-  }
-
-  @Test
-  public void testGetAllHistory() {
-
     String jsonResult = historyController.getAllHistory();
+    System.out.println(jsonResult);
     BsonArray docs = parseJsonArray(jsonResult);
 
-    assertEquals("Should be 2 rooms", 2, docs.size());
-    List<String> history = docs
+    assertEquals("Should be 2 rooms histories", 2, docs.size());
+    List<String> roomId = docs
       .stream()
-      .map(HistoryControllerSpec::getId)
+      .map(HistoryControllerSpec::getRoomId)
       .sorted()
       .collect(Collectors.toList());
-    List<String> expectedHistory = Arrays.asList("a_room", "cee9ba33-8c10-4b40-8307-c0a8ea9f68f5");
-    assertEquals("Should match", expectedHistory, history);
+    List<String> expectedNames = Arrays.asList("gay", "independence");
+    assertEquals("Names should match", expectedNames, roomId);
+  }
+
+  @Test
+  public void updateHistory() {
+    Calendar calendar = Calendar.getInstance();
+
+    int todayBefore = calendar.get(Calendar.DAY_OF_WEEK);
+    int nowBefore = calendar.get(Calendar.HOUR_OF_DAY) * 2 + calendar.get(Calendar.MINUTE) / 30;
+
+    historyController.roomHistoryCollection.drop();
+    historyController.updateHistory();
+
+    Document filterDoc = new Document();
+    filterDoc = filterDoc.append("room_id", "gay");
+    Document targetRoom = historyController.roomHistoryCollection.find(filterDoc).first();
+
+    Document targetDay = (Document) targetRoom.get(String.valueOf(todayBefore));
+    int beforeUsage = (int) targetDay.get(String.valueOf(nowBefore));
+
+    this.machineDocuments.drop();
+    List<Document> testMachines = new ArrayList<>();
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Dryer\"\n" +
+      "\t\"running\": true \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
+      "\t\"name\": \"Independence Hall\"\n" +
+      "\t\"type\": \"Washer\"\n" +
+      "\t\"running\": true \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"independence\"\n" +
+      "  }"));
+    machineDocuments.insertMany(testMachines);
+
+    historyController.updateHistory();
+
+    targetRoom = historyController.roomHistoryCollection.find(filterDoc).first();
+    targetDay = (Document) targetRoom.get(String.valueOf(todayBefore));
+    int afterUsage = (int) targetDay.get(String.valueOf(nowBefore));
+
+    int todayEnd = calendar.get(Calendar.DAY_OF_WEEK);
+    int nowEnd = calendar.get(Calendar.HOUR_OF_DAY) * 2 + calendar.get(Calendar.MINUTE) / 30;
+
+    if (todayEnd == todayBefore && nowEnd == nowBefore) {
+      assertEquals("function should update the usage of the machine", afterUsage - beforeUsage, 24);
+    } else {
+      updateHistory();
+    }
   }
 }
-*/
