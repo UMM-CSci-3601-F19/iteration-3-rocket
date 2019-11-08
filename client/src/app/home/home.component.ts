@@ -515,10 +515,9 @@ export class HomeComponent implements OnInit {
   }
 
   translateMachineName(name: string): string {
-    name = name.replace('-', ' ');
-    name = name.replace('-', ' ');
-    // return name.substr(0, i).toUpperCase() + ' ' + name.substr(i + 1, j).toUpperCase()
-    //   + ' ' + name.substr(j + 1).toUpperCase();
+    while (name.indexOf('-') !== -1) {
+      name = name.replace('-', ' ');
+    }
     return name;
   }
 
