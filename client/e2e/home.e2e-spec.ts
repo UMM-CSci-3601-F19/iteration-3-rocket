@@ -41,46 +41,45 @@ describe('home', () => {
     expect(page.getIndependenceHallTitleInHomePanel()).toEqual('Independence Hall');
     expect(page.getBlakelyHallTitleInHomePanel()).toEqual('Blakely Hall');
     expect(page.getSpoonerHallTitleInHomePanel()).toEqual('Spooner Hall');
-    expect(page.getGreenPrairieHallTitleInHomePanel()).toEqual('Green Prarie');
+    expect(page.getGreenPrairieHallTitleInHomePanel()).toEqual('Green Prairie Hall');
     expect(page.getPineHallTitleInHomePanel()).toEqual('Pine Hall');
-    expect(page.getApartmentHallTitleInHomePanel()).toEqual('The Appartments');
+    expect(page.getApartmentHallTitleInHomePanel()).toEqual('The Apartments');
   });
 
   it('should get and highlight each hall availability attribute', () => {
     page.navigateTo();
-    expect(page.getGayHallAvailability()).toEqual('3 / 8 vacant');
-    expect(page.getIndependenceHallAvailability()).toEqual('1 / 9 vacant');
-    expect(page.getBlakelyHallAvailability()).toEqual('5 / 6 vacant');
-    expect(page.getSpoonerHallAvailability()).toEqual('3 / 11 vacant');
-    expect(page.getGreenPrairieHallAvailability()).toEqual('2 / 9 vacant');
-    expect(page.getPineHallAvailability()).toEqual('3 / 11 vacant');
-    expect(page.getApartmentHallAvailability()).toEqual('3 / 7 vacant');
+    expect(page.getGayHallAvailability()).toEqual('7 / 9 vacant');
+    expect(page.getIndependenceHallAvailability()).toEqual('8 / 15 vacant');
+    expect(page.getBlakelyHallAvailability()).toEqual('7 / 11 vacant');
+    expect(page.getSpoonerHallAvailability()).toEqual('6 / 7 vacant');
+    expect(page.getGreenPrairieHallAvailability()).toEqual('5 / 7 vacant');
+    expect(page.getPineHallAvailability()).toEqual('5 / 5 vacant');
+    expect(page.getApartmentHallAvailability()).toEqual('2 / 5 vacant');
   });
 
-  it('should get and have correct title for all washers and dryers panel', () => {
+  it('should get and have correct title for each washer and dryer card', () => {
     page.navigateTo();
-    expect(page.getWashersTitle()).toEqual('Washers available within all rooms');
-    expect(page.getDyersTitle()).toEqual('Dryers available within all rooms');
+    page.clickGayHall();
+    expect(page.getCardName()).toEqual('Gay Hall');
   });
 
   it('should get and have specific machines', () => {
     page.navigateTo();
-    expect(page.getUniqueMachine('61382fd7-8444-4956-b951-51052f20c0e3'));
-    expect(page.getUniqueMachine('8761b8c6-2548-43c9-9d31-ce0b84bcd160'));
+    expect(page.getWashersTitle()).toEqual('Flaky Red Buffalo');
+    expect(page.getDyersTitle()).toEqual('Dorky Gamboge Dog');
   });
 
   it('should get and have correct title for gay\'s washers and dryers panel', () => {
     page.navigateTo();
     page.clickGayHall();
-    expect(page.getWashersTitle()).toEqual('Washers available within Gay Hall');
-    expect(page.getDyersTitle()).toEqual('Dryers available within Gay Hall');
+    expect(page.getUniqueRoomTitle()).toEqual('Machines within Gay Hall');
   });
 
   it('should get and have correct number of gay\'s washers', () => {
     page.navigateTo();
     page.clickGayHall();
     page.getWashers().then((washers) => {
-      expect(washers.length).toBe(4);
+      expect(washers.length).toBe(2);
     })
   });
 
@@ -88,7 +87,7 @@ describe('home', () => {
     page.navigateTo();
     page.clickGayHall();
     page.getDryers().then((dryers) => {
-      expect(dryers.length).toBe(4);
+      expect(dryers.length).toBe(7);
     })
   });
 
@@ -96,7 +95,7 @@ describe('home', () => {
     page.navigateTo();
     page.clickGayHall();
     page.getBrokens().then((brokens) => {
-      expect(brokens.length).toBe(5);
+      expect(brokens.length).toBe(0);
     })
   });
 
@@ -106,19 +105,19 @@ describe('home', () => {
     page.clickRoomPanel();
     page.clickAllRooms();
     page.getWashers().then((washers) => {
-      expect(washers.length).toBe(31);
+      expect(washers.length).toBe(28);
     })
     page.getDryers().then((dryers) => {
-      expect(dryers.length).toBe(30);
+      expect(dryers.length).toBe(32);
     })
   });
 
-  it('should change time left in panel title', () => {
+  xit('should change time left in panel title', () => {
     page.navigateTo();
-    var a = page.getUniqueMachine('f714b475-5db7-4eeb-a6e0-b17921f0c477');
+    var a = page.getUniqueMachine('69dacaa7-ee11-11e9-8256-56000218142a');
     browser.sleep(60000);
     page.navigateTo();
-    var b = page.getUniqueMachine('f714b475-5db7-4eeb-a6e0-b17921f0c477');
+    var b = page.getUniqueMachine('69dacaa7-ee11-11e9-8256-56000218142a');
     expect(a).not.toEqual(b);
   }, 70000);
 });
