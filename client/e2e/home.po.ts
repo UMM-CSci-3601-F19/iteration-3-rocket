@@ -1,5 +1,6 @@
 import {browser, element, by, promise, ElementFinder} from 'protractor';
 import {Key} from 'selenium-webdriver';
+import {getUrlScheme} from "@angular/compiler";
 
 export class HomePage {
   navigateTo(): promise.Promise<any> {
@@ -40,6 +41,29 @@ export class HomePage {
     const title = element(by.id('independenceId')).getText();
     this.highlightElement(by.id('independenceId'));
     return title;
+  }
+
+  getEntrance() {
+    const title = element(by.id('roomEntrance')).getText();
+    this.highlightElement(by.id('roomEntrance'));
+    return title;
+  }
+
+  getDialogTitle() {
+    const title = element(by.id('dTitle')).getText();
+    this.highlightElement(by.id('dTitle'));
+    return title;
+  }
+
+  getUrl(): string {
+    if (window
+      && 'location' in window
+      && 'protocol' in window.location
+      && 'pathname' in window.location
+      && 'host' in window.location) {
+      return window.location.protocol + '//' + window.location.host + window.location.pathname;
+    }
+    return null;
   }
 
   getBlakelyHallTitleInHomePanel() {
@@ -125,8 +149,8 @@ export class HomePage {
   }
 
   getCardName() {
-    const title = element(by.id('{{this.translateRoomId(machine.room_id)}}')).getText();
-    this.highlightElement(by.id('{{this.translateRoomId(machine.room_id)}}'));
+    const title = element(by.id('{{machine.room_id)}}')).getText();
+    this.highlightElement(by.id('{{machine.room_id)}}'));
     return title;
   }
 
@@ -170,6 +194,9 @@ export class HomePage {
   }
 
   elementExistsWithCss(cssOfElement: string): promise.Promise<boolean> {
+    if (element(by.id(cssOfElement)).isPresent()) {
+      this.highlightElement(by.id(cssOfElement));
+    }
     return element(by.css(cssOfElement)).isPresent();
   }
 

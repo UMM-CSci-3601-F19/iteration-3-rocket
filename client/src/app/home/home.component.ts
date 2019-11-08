@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
    * back to true in order to make
    * the functionality works.
    */
-  private autoRefresh = false;
+  private autoRefresh = true;
 
   public machineListTitle: string;
   public brokenMachineListTitle: string;
