@@ -538,10 +538,10 @@ export class HomeComponent implements OnInit {
   //   return y + 'px';
   // }
   getGridCols() {
-    return Math.min(window.innerWidth / 320, 4);
+    return Math.min(window.innerWidth / 400, 4);
   }
 
   getGraphCols() {
-    return Math.min(window.innerWidth / 600, 2);
+    return Math.min(window.innerWidth / 680, 2);
   }
 }
