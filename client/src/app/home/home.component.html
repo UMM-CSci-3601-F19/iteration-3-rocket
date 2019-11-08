@@ -167,6 +167,7 @@
                       <mat-progress-bar color="warn" mode="determinate" value="100"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                    <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px" (click)="openDialog(machine)"><mat-icon style="margin: 0">more_vert</mat-icon></a>
                   </mat-card>
                 </mat-grid-tile>
               </mat-accordion>
@@ -189,6 +190,7 @@
                       <mat-progress-bar color="warn" mode="buffer" value="{{100-machine.remainingTime / 0.35}}"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                    <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px" (click)="openDialog(machine)"><mat-icon style="margin: 0">more_vert</mat-icon></a>
                   </mat-card>
                 </mat-grid-tile>
               </mat-accordion>
@@ -211,6 +213,7 @@
                       <mat-progress-bar color="warn" mode="buffer" bufferValue="100" value="0"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                    <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px" (click)="openDialog(machine)"><mat-icon style="margin: 0">more_vert</mat-icon></a>
                   </mat-card>
                 </mat-grid-tile>
               </mat-accordion>
@@ -233,6 +236,7 @@
                       <mat-progress-bar color="warn" mode="determinate" value="100"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                    <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px" (click)="openDialog(machine)"><mat-icon style="margin: 0">more_vert</mat-icon></a>
                   </mat-card>
                 </mat-grid-tile>
               </mat-accordion>
@@ -255,6 +259,7 @@
                       <mat-progress-bar color="warn" mode="buffer" value="{{100-machine.remainingTime / 0.6}}"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                    <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px" (click)="openDialog(machine)"><mat-icon style="margin: 0">more_vert</mat-icon></a>
                   </mat-card>
                 </mat-grid-tile>
               </mat-accordion>
@@ -277,6 +282,7 @@
                       <mat-progress-bar color="warn" mode="buffer" bufferValue="100" value="0"></mat-progress-bar>
                     </div>
                     <a class="reportButton" mat-raised-button href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
+                    <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px" (click)="openDialog(machine)"><mat-icon style="margin: 0">more_vert</mat-icon></a>
                   </mat-card>
                 </mat-grid-tile>
               </mat-accordion>
