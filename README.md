@@ -5,19 +5,19 @@
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-F19/iteration-2-purple-moths.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-F19/iteration-2-purple-moths)
 
 ## Important notes about our iteration 2 project
-To run the E2E tests, because the E2E tests is based on a fixed data and the auto updating should be turn off, please set the "autoRefresh" false at line 22 of client/src/app/home/home.component.ts, and set the "seedLocalSourse" true at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
+To run the E2E tests, because the E2E tests is based on a fixed data and the auto updating should be turn off, please set the "autoRefresh" false at line 26 of client/src/app/home/home.component.ts, and set the "seedLocalSourse" true at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
 
-At client/src/app/home/home.component.ts:
+At client/src/app/home/home.component.ts:26
 ```{java}
 private autoRefresh = false;                
 ```
-At server/src/main/java/umm3601/laundry/LaundryController.java:
+At server/src/main/java/umm3601/laundry/LaundryController.java:31
 ```{java}
 private boolean seedLocalSourse = true;     
 ```
 To run other tests, please set the "autoRefresh" true and set the "seedLocalSourse" false.
 
-The MongoDB must be seed to reset the data before running any gradlew server tasks.
+The MongoDB must be seed to reset the data before running the e2e test.
 
 We did not remove the modules of users' functionalities in the client and the server because they will be helpful as a template for future iterations.
 
