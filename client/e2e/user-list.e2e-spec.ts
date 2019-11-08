@@ -9,21 +9,21 @@ import {Key} from 'selenium-webdriver';
 const origFn = browser.driver.controlFlow().execute;
 
 browser.driver.controlFlow().execute = function () {
-    let args = arguments;
+  const args = arguments;
 
-    // queue 100ms wait between test
-    // This delay is only put here so that you can watch the browser do its thing.
-    // If you're tired of it taking long you can remove this call or change the delay
-    // to something smaller (even 0).
-    origFn.call(browser.driver.controlFlow(), () => {
-        return protractor.promise.delayed(0);
-    });
+  // queue 100ms wait between test
+  // This delay is only put here so that you can watch the browser do its thing.
+  // If you're tired of it taking long you can remove this call or change the delay
+  // to something smaller (even 0).
+  origFn.call(browser.driver.controlFlow(), () => {
+    return protractor.promise.delayed(0);
+  });
 
-    return origFn.apply(browser.driver.controlFlow(), args);
+  return origFn.apply(browser.driver.controlFlow(), args);
 };
 
 
-xdescribe('User list', () => {
+describe('User list', () => {
   let page: UserPage;
 
   beforeEach(() => {
@@ -181,7 +181,7 @@ xdescribe('User list', () => {
         page.field('ageField').clear();
         page.field('ageField').sendKeys('2');
         expect(page.button('confirmAddUserButton').isEnabled()).toBe(false);
-        //clicking somewhere else will make the error appear
+        // clicking somewhere else will make the error appear
         page.field('nameField').click();
         expect(page.getTextFromField('age-error')).toBe('Age must be at least 15');
       });
@@ -190,7 +190,7 @@ xdescribe('User list', () => {
         expect(element(by.id('ageField')).isPresent()).toBeTruthy('There should be an age field');
         page.field('ageField').clear();
         expect(page.button('confirmAddUserButton').isEnabled()).toBe(false);
-        //clicking somewhere else will make the error appear
+        // clicking somewhere else will make the error appear
         page.field('nameField').click();
         expect(page.getTextFromField('age-error')).toBe('Age is required');
       });
@@ -202,7 +202,7 @@ xdescribe('User list', () => {
         // tests are run.
         page.field('nameField').sendKeys('A\b');
         expect(page.button('confirmAddUserButton').isEnabled()).toBe(false);
-        //clicking somewhere else will make the error appear
+        // clicking somewhere else will make the error appear
         page.field('ageField').click();
         expect(page.getTextFromField('name-error')).toBe('Name is required');
       });
@@ -211,7 +211,7 @@ xdescribe('User list', () => {
         expect(element(by.id('nameField')).isPresent()).toBeTruthy('There should be an name field');
         page.field('nameField').sendKeys('Don@ld Jones');
         expect(page.button('confirmAddUserButton').isEnabled()).toBe(false);
-        //clicking somewhere else will make the error appear
+        // clicking somewhere else will make the error appear
         page.field('ageField').click();
         expect(page.getTextFromField('name-error')).toBe('Name must contain only numbers and letters');
       });
@@ -220,7 +220,7 @@ xdescribe('User list', () => {
         expect(element(by.id('nameField')).isPresent()).toBeTruthy('There should be an name field');
         page.field('nameField').sendKeys('abc123');
         expect(page.button('confirmAddUserButton').isEnabled()).toBe(false);
-        //clicking somewhere else will make the error appear
+        // clicking somewhere else will make the error appear
         page.field('ageField').click();
         expect(page.getTextFromField('name-error')).toBe('Name has already been taken');
       });
@@ -231,7 +231,7 @@ xdescribe('User list', () => {
         page.field('ageField').sendKeys('30');
         page.field('emailField').sendKeys('donjones.com');
         expect(page.button('confirmAddUserButton').isEnabled()).toBe(false);
-        //clicking somewhere else will make the error appear
+        // clicking somewhere else will make the error appear
         page.field('nameField').click();
         expect(page.getTextFromField('email-error')).toBe('Email must be formatted properly');
       });
