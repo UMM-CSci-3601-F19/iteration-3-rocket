@@ -1,5 +1,6 @@
 import {browser, element, by, promise, ElementFinder} from 'protractor';
 import {Key} from 'selenium-webdriver';
+import {getUrlScheme} from "@angular/compiler";
 
 export class HomePage {
   navigateTo(): promise.Promise<any> {
@@ -24,6 +25,11 @@ export class HomePage {
     this.highlightElement(by.id('home-rooms-card'));
     return title;
   }
+  getUniqueRoomTitle() {
+    const title = element(by.id('machines-grid')).getText();
+    this.highlightElement(by.id('machines-grid'));
+    return title;
+  }
 
   getGayHallTitleInHomePanel() {
     const title = element(by.id('gayId')).getText();
@@ -35,6 +41,29 @@ export class HomePage {
     const title = element(by.id('independenceId')).getText();
     this.highlightElement(by.id('independenceId'));
     return title;
+  }
+
+  getEntrance() {
+    const title = element(by.id('roomEntrance')).getText();
+    this.highlightElement(by.id('roomEntrance'));
+    return title;
+  }
+
+  getDialogTitle() {
+    const title = element(by.id('dTitle')).getText();
+    this.highlightElement(by.id('dTitle'));
+    return title;
+  }
+
+  getUrl(): string {
+    if (window
+      && 'location' in window
+      && 'protocol' in window.location
+      && 'pathname' in window.location
+      && 'host' in window.location) {
+      return window.location.protocol + '//' + window.location.host + window.location.pathname;
+    }
+    return null;
   }
 
   getBlakelyHallTitleInHomePanel() {
@@ -119,6 +148,12 @@ export class HomePage {
     this.click('gayId');
   }
 
+  getCardName() {
+    const title = element(by.id('{{machine.room_id)}}')).getText();
+    this.highlightElement(by.id('{{machine.room_id)}}'));
+    return title;
+  }
+
   getWashersTitle() {
     const title = element(by.id('home-machines-card-washer')).getText();
     this.highlightElement(by.id('home-machines-card-washer'));
@@ -132,15 +167,15 @@ export class HomePage {
   }
 
   getWashers() {
-    return element.all(by.className('washers'));
+    return element.all(by.className('washer'));
   }
 
   getDryers() {
-    return element.all(by.className('dryers'));
+    return element.all(by.className('dryer'));
   }
 
   getBrokens() {
-    return element.all(by.className('brokens'));
+    return element.all(by.className('broken'));
   }
 
   clickRoomPanel(){
@@ -159,6 +194,9 @@ export class HomePage {
   }
 
   elementExistsWithCss(cssOfElement: string): promise.Promise<boolean> {
+    if (element(by.id(cssOfElement)).isPresent()) {
+      this.highlightElement(by.id(cssOfElement));
+    }
     return element(by.css(cssOfElement)).isPresent();
   }
 
