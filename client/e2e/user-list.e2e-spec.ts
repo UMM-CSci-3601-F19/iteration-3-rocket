@@ -23,7 +23,7 @@ browser.driver.controlFlow().execute = function () {
 };
 
 
-describe('User list', () => {
+xdescribe('User list', () => {
   let page: UserPage;
 
   beforeEach(() => {
