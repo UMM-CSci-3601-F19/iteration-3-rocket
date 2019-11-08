@@ -19,7 +19,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="accent">
+    <mat-toolbar class="topBar" color="primary" style="height: 60px">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -27,7 +27,7 @@
         (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon" class="menuLabel">menu</mat-icon>
       </button>
-      <span class="app-title" id="app-title">Morris Laundry Facilities</span>
+      <span class="app-title" id="app-title" style="font-weight: 400">Morris Laundry Facilities</span>
     </mat-toolbar>
     <div class="main-content mat-typography">
       <router-outlet></router-outlet>

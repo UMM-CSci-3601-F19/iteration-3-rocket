@@ -33,11 +33,19 @@
   // Define any styles affected by the theme.
 
   mat-sidenav-content {
-    background-color: mat-color($primary);
+    background-color: mat-color($primary, 200 );
   }
 
+  .roomHeading, .topMenu {
+    background-color: mat-color($primary) !important;
+  }
 
   @if $is-dark {
+
+    .roomHeading, .topMenu {
+      background-color: mat-color($background, app-bar) !important;
+    }
+
     .mat-toolbar.mat-primary {
       background: mat-color($background, app-bar);
       color: mat-color($foreground, text);
@@ -70,10 +78,23 @@
   }
 
   .roomHeading {
-    background-color: mat-color($mat-blue-gray, 300);
-    border-radius: 0 !important;
     padding-top: 5px !important;
-    margin: 0 -5px 0 -5px;
+    margin: 0 -5px 10px -5px !important;
+    font-style: italic;
+    border-radius: 0 !important;
+    position: sticky !important;
+    top: 59px;
+    z-index: 1;
+    box-shadow: none !important;
+  }
+
+  .topMenu {
+    margin-top: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 25px;
   }
 
   .drawer-list-item-active {
@@ -98,7 +119,6 @@
 
 // Sets up theming for our custom components with the light theme
 @include app-theming($light-theme);
-
 
 .map mat-card {
   margin-left: auto !important;
@@ -205,7 +225,6 @@ mat-icon {
 .roomSelector.mat-expansion-panel {
   margin-left: 10px;
   margin-right: 10px;
-  margin-bottom: 15px;
 }
 
 mat-grid-tile mat-card {
@@ -213,14 +232,22 @@ mat-grid-tile mat-card {
 }
 
 .reportButton {
-  padding: 0 10px !important;
+  padding: 0 0 !important;
   font-style: italic;
-  font-size: 85%;
+  font-size: 90%;
   position: absolute;
-  left: -5px;
-  height: 30px;
-  bottom: 30px;
-  border-radius: 15px !important;
+  left: 0;
+  height: 36px;
+  bottom: 28px;
+  border-radius: 18px !important;
+}
+
+.reportButton:hover {
+  text-decoration-line: underline;
+}
+.cardType {
+  font-style: italic;
+  color: #999;
 }
 
 #predictionGraphTitle {
@@ -232,16 +259,13 @@ mat-grid-tile mat-card {
   white-space: nowrap;
 }
 
-.roomHeading {
-  font-style: italic;
-  border-radius: 0;
-  position: sticky !important;
-  top: 63px;
-  z-index: 1;
-}
-
 .roomHeading mat-card {
   padding: 30px 0 !important;
+  height: auto;
+}
+
+.mat-card-content {
+  height: auto;
 }
 
 .welcomeMessage {
@@ -267,3 +291,22 @@ mat-grid-tile mat-card {
   display: inline-block;
 }
 
+mat-dialog-container {
+  border-radius: 15px !important;
+  padding: 20px !important;
+  height: 120%;
+}
+
+mat-dialog-container .mat-card-content {
+  width: 90%;
+}
+
+mat-dialog-container .machineName {
+  white-space: normal;
+  display: block;
+}
+
+mat-dialog-container .reportButton {
+  position: sticky;
+    bottom: -25px;
+}
