@@ -91,7 +91,7 @@ export class HomeComponent implements OnInit {
       position: theMachine.position,
       remainingTime: theMachine.remainingTime,
       vacantTime: theMachine.vacantTime
-    }
+    };
     const dialogRef = this.dialog.open(HomeDialog, {
       width: '330px',
       data: {machine: thisMachine},
@@ -256,6 +256,9 @@ export class HomeComponent implements OnInit {
   }
 
   buildChart() {
+    if (this.myChart != null) {
+      this.myChart.destroy();
+    }
     if (this.history !== undefined) {
       this.canvas = document.getElementById(this.chart);
       this.ctx = this.canvas;
@@ -457,7 +460,7 @@ export class HomeComponent implements OnInit {
         document.getElementById('loadCover').style.display = 'none';
         this.buildChart();
       }
-    }) ();
+    })();
   }
 
   updateTime(): void {
@@ -471,7 +474,7 @@ export class HomeComponent implements OnInit {
         console.log('Refresh');
         this.updateTime();
       }
-    }) ();
+    })();
   }
 
   updateCounter(): void {
@@ -501,9 +504,9 @@ export class HomeComponent implements OnInit {
   }
 
   fakePositions() {
-    const w =  5;
+    const w = 5;
     const machines = this.filteredMachines;
-    for (let i = 0; i < machines.length;  ++i) {
+    for (let i = 0; i < machines.length; ++i) {
       machines[i].position.x = i % w * 50;
       machines[i].position.y = Math.floor(i / w) * 50;
     }
@@ -571,11 +574,13 @@ export class HomeComponent implements OnInit {
 @Component({
   templateUrl: 'home.dialog.html',
 })
+// tslint:disable-next-line:component-class-suffix
 export class HomeDialog {
 
   constructor(
     public dialogRef: MatDialogRef<HomeDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: {machine: Machine}) {}
+    @Inject(MAT_DIALOG_DATA) public data: { machine: Machine }) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
