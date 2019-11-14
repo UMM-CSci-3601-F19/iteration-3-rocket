@@ -103,6 +103,9 @@ public class Server {
     get("api/history/:room", historyRequestHandler::getHistory);
     get("api/all_history", historyRequestHandler::getAllHistory);
 
+
+    get("api/subscribe/:email", historyRequestHandler::getAllHistory);
+
     // List users, filtered using query parameters
 
     get("api/users", userRequestHandler::getUsers);
