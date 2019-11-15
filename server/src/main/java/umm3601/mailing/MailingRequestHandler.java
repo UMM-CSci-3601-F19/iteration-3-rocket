@@ -1,6 +1,7 @@
 package umm3601.mailing;
 
 import com.google.gson.JsonParser;
+import org.bson.Document;
 import spark.Request;
 import spark.Response;
 
@@ -18,21 +19,14 @@ public class MailingRequestHandler {
 //      }
 //    }
 
-  public Object subscribe(Request req, Response res) {
-    res.type("string");
+  public String subscribe(Request req, Response res) {
+    res.type("application/json");
+    Document newSubscription = Document.parse(req.body());
+    String email = newSubscription.getString("email");
+    String type = newSubscription.getString("type");
+    String room_id = newSubscription.getString("room_id");
 
-
-
-
-
-    return null;
-
-
-
-
+    System.err.println("Adding new subscription [email=" + email + ", type=" + type + ", room_id=" + room_id + ']');
+    return mailingController.addNewSubscription(email, type, room_id);
   }
-
-
-
-
 }
