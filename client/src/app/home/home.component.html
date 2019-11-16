@@ -52,7 +52,7 @@
         <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>{{this.roomBroken}} broken</a>
       </mat-card-content>
 
-      <button class="subscribeButton" mat-stroked-button color="accent" [disabled]="roomVacant !== 0" (click)="openSubscription()">Subscribe</button>
+      <button class="subscribeButton" mat-flat-button color="warn" [disabled]="roomVacant === 0" (click)="openSubscription()">Subscribe</button>
     </mat-card>
 
     <mat-card *ngIf="this.roomId == ''" style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
