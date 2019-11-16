@@ -11,7 +11,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
-import java.lang.annotation.Documented;
 
 public class MailingController {
 
@@ -23,31 +22,8 @@ public class MailingController {
     this.machineCollection = machineDatabase.getCollection("machines");
   }
 
-  public void send(String email, String room, String name) throws IOException {
-    Email from = new Email("test@example.com");
-    String subject = "Sending with SendGrid is Fun";
-    Email to = new Email("test@example.com");
-    Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
-    Mail mail = new Mail(from, subject, to, content);
-
-    SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
-    Request request = new Request();
-    try {
-      request.setMethod(Method.POST);
-      request.setEndpoint("mail/send");
-      request.setBody(mail.build());
-      Response response = sg.api(request);
-      System.out.println(response.getStatusCode());
-      System.out.println(response.getBody());
-      System.out.println(response.getHeaders());
-    } catch (IOException ex) {
-      throw ex;
-    }
-  }
-
-  public void sendNotifications() throws IOException {
+  public void checkSubscriptions() throws IOException {
     FindIterable<Document> subscriptions = subscriptionCollection.find();
-    FindIterable<Document> machines = machineCollection.find();
 
     for (Document s : subscriptions) {
       Document filterDoc = new Document();
@@ -58,28 +34,42 @@ public class MailingController {
       Document vacantMachine = machineCollection.find(filterDoc).first();
 
       if (vacantMachine != null) {
-        String name = vacantMachine.getString("name");
-        String room = vacantMachine.getString("room_id");
-        send(s.getString("email"), room, name);
+        String machineName = transformId(vacantMachine.getString("name"));
+        String roomName = transformId(vacantMachine.getString("room_id"));
+        sendNotification(s.getString("email"), roomName, machineName);
         subscriptionCollection.deleteOne(s);
       }
     }
   }
 
+  public void sendNotification(String email, String roomName, String machineName) throws IOException {
+    Email from = new Email("test@example.com");
+    Email to = new Email(email);
+    String subject = "Sending with SendGrid is Fun";
+    Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
+    Mail mail = new Mail(from, subject, to, content);
+
+    SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+    Request request = new Request();
+    request.setMethod(Method.POST);
+    request.setEndpoint("mail/sendNotification");
+    request.setBody(mail.build());
+    Response response = sg.api(request);
+    System.out.println(response.getStatusCode());
+    System.out.println(response.getBody());
+    System.out.println(response.getHeaders());
+  }
+
   private String transformId(String str) {
     String transformed = "";
     for (int i = 0; i < str.length(); ++i) {
-      if (str.charAt(i) != '-') {
+      if (str.charAt(i) != '-' && str.charAt(i) != '_') {
         transformed += str.charAt(i);
       } else {
         transformed += ' ';
       }
     }
-
-    while (str.indexOf('_') != -1) {
-      str.replace('_', ' ');
-    }
-    return str;
+    return transformed;
   }
 
   public String addNewSubscription(String email, String type, String room_id) {

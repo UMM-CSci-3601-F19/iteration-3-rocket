@@ -1,3 +1,4 @@
+/*
 package umm3601;
 
 // using SendGrid's Java Library
@@ -17,7 +18,7 @@ public class MailingService {
     Request request = new Request();
     try {
       request.setMethod(Method.POST);
-      request.setEndpoint("mail/send");
+      request.setEndpoint("mail/sendNotification");
       request.setBody(mail.build());
       Response response = sg.api(request);
       System.out.println(response.getStatusCode());
@@ -28,3 +29,4 @@ public class MailingService {
     }
   }
 }
+*/
