@@ -45,11 +45,11 @@ public class MailingController {
   public void sendNotification(String email, String roomName, String machineName) throws IOException {
     Email from = new Email("test@example.com");
     Email to = new Email(email);
-    String subject = "Sending with SendGrid is Fun";
-    Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
+    String subject = "A vacant machine machine is found!";
+    Content content = new Content("text/plain", "some content");
     Mail mail = new Mail(from, subject, to, content);
 
-    SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+    SendGrid sg = new SendGrid("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");
     Request request = new Request();
     request.setMethod(Method.POST);
     request.setEndpoint("mail/sendNotification");
