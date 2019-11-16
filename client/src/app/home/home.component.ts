@@ -8,6 +8,10 @@ import {HomeService} from './home.service';
 import * as Chart from 'chart.js';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
+import {Subscription} from "./subscription";
+import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
+
+
 
 @Component({
   templateUrl: 'home.component.html',
@@ -47,6 +51,8 @@ export class HomeComponent implements OnInit {
   public mapWidth: number;
   public mapHeight: number;
 
+  public subscriptionDisabled: boolean = false;
+
   public history: History[];
   // public filteredHistory: History[];
   canvas: any;
@@ -75,9 +81,34 @@ export class HomeComponent implements OnInit {
   public pineHistory: History;
   public theApartmentsHistory: History;
 */
-  constructor(public homeService: HomeService, public dialog: MatDialog) {
+  constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog) {
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
+  }
+
+  openSubscription(room_id: string) {
+    const newSub: Subscription = {email: '', type: '', room_id: room_id};
+    const dialogRef = this.subscription.open(SubscriptionDialog, {
+      width: '500px',
+      data: {subscription: newSub}
+    });
+
+    dialogRef.afterClosed().subscribe(newSub => {
+      if (newSub != null) {
+        this.homeService.addNewSubscription(newSub).subscribe(
+          () => {
+            this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
+            this.updateRoom(this.roomId, this.roomName);
+          },
+          err => {
+            // This should probably be turned into some sort of meaningful response.
+            console.log('There was an error adding the subscription.');
+            console.log('The newSub or dialogResult was ' + newSub);
+            console.log('The error was ' + JSON.stringify(err));
+          });
+      }
+    });
+
   }
 
   openDialog(theMachine: Machine) {
@@ -120,9 +151,17 @@ export class HomeComponent implements OnInit {
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
     this.delay(100);
+    this.rooms.map(r => {
+      if (r.isSubscribed == undefined) {
+        r.isSubscribed = false;
+      }
+    });
     this.roomVacant = this.filteredMachines.filter(m => m.running === false && m.status === 'normal').length;
     this.roomRunning = this.filteredMachines.filter(m => m.running === true && m.status === 'normal').length;
     this.roomBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
+    if (this.roomId !== undefined && this.roomId !== '') {
+      this.subscriptionDisabled = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed || this.roomVacant !== 0;
+    }
     this.buildChart();
     this.fakePositions();
     this.setSelector(1);
@@ -568,10 +607,6 @@ export class HomeComponent implements OnInit {
   getGraphCols() {
     return Math.min(window.innerWidth / 680, 2);
   }
-
-  openSubscription() {
-
-  }
 }
 
 
@@ -617,4 +652,52 @@ export class HomeDialog {
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
     }
   }
+}
+
+
+
+@Component({
+  templateUrl: 'home.subscription.html',
+})
+// tslint:disable-next-line:component-class-suffix
+export class SubscriptionDialog {
+
+  options: FormGroup;
+  addSubForm: FormGroup;
+
+  constructor(
+    public dialogRef: MatDialogRef<SubscriptionDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: { subscription: Subscription }, private fb: FormBuilder) {
+    this.options = fb.group({
+      type: data.subscription.type,
+    });
+
+    this.ngOnInit();
+  }
+
+  add_sub_validation_messages = {
+    'email': [
+      {type: 'email', message: 'Email must be formatted properly'}
+    ]
+  };
+
+  createForms() {
+
+    // add user form validations
+    this.addSubForm = this.fb.group({
+      // We don't need a special validator just for our app here, but there is a default one for email.
+      email: new FormControl('email', Validators.email)
+    });
+
+  }
+
+  ngOnInit() {
+    this.createForms()
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
 }

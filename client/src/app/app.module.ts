@@ -13,10 +13,12 @@ import {APP_BASE_HREF} from '@angular/common';
 import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
 import {HomeDialog} from './home/home.component';
+import {SubscriptionDialog} from './home/home.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatProgressBarModule} from '@angular/material';
+import {MatProgressBarModule, MatRadioModule} from '@angular/material';
+import {MatOptionModule} from '@angular/material/core';
 
 
 // import {MDCRipple} from '@material/ripple';
@@ -36,6 +38,8 @@ import {MatProgressBarModule} from '@angular/material';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatRadioModule,
+    MatOptionModule,
     // MDCRipple,
     // ScrollDispatchModule,
     // CdkStepperModule,
@@ -46,6 +50,7 @@ import {MatProgressBarModule} from '@angular/material';
     UserListComponent,
     AddUserComponent,
     HomeDialog,
+    SubscriptionDialog,
   ],
   providers: [
     HttpClient,
@@ -56,6 +61,7 @@ import {MatProgressBarModule} from '@angular/material';
   entryComponents: [
     AddUserComponent,
     HomeDialog,
+    SubscriptionDialog,
   ],
   bootstrap: [AppComponent]
 })
