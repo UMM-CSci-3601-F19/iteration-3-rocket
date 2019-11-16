@@ -80,7 +80,7 @@ public class MailingController {
     try {
       subscriptionCollection.insertOne(newSubscription);
       ObjectId id = newSubscription.getObjectId("_id");
-      System.err.println("Successfully added new subscription [email=" + email + ", type=" + type + ", room_id=" + room_id + ']');
+      System.err.println("[subscribe] INFO mailing.MailingController - Successfully added new subscription [email=" + email + ", type=" + type + ", room_id=" + room_id + ']');
       return id.toHexString();
     } catch (MongoException me) {
       me.printStackTrace();

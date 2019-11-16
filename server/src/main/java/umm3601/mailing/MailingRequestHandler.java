@@ -26,7 +26,7 @@ public class MailingRequestHandler {
     String type = newSubscription.getString("type");
     String room_id = newSubscription.getString("room_id");
 
-    System.err.println("Adding new subscription [email=" + email + ", type=" + type + ", room_id=" + room_id + ']');
+    System.out.println("[subscribe] INFO mailing.MailingRequestHandler - Adding new subscription [email=" + email + ", type=" + type + ", room_id=" + room_id + ']');
     return mailingController.addNewSubscription(email, type, room_id);
   }
 }
