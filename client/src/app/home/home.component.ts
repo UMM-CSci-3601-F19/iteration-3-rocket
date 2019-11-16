@@ -568,6 +568,10 @@ export class HomeComponent implements OnInit {
   getGraphCols() {
     return Math.min(window.innerWidth / 680, 2);
   }
+
+  openSubscription() {
+
+  }
 }
 
 
