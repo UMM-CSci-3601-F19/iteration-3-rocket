@@ -118,7 +118,7 @@ public class Server {
     get("api/all_history", historyRequestHandler::getAllHistory);
 
     // Subscribe to a room with an email and a room id
-    get("api/subscribe/new", mailingRequestHandler::subscribe);
+    post("api/subscribe/new", mailingRequestHandler::subscribe);
 
     // List users, filtered using query parameters
     get("api/users", userRequestHandler::getUsers);
