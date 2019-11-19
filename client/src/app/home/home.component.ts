@@ -8,8 +8,8 @@ import {HomeService} from './home.service';
 import * as Chart from 'chart.js';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-import {Subscription} from "./subscription";
-import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
+import {Subscription} from './subscription';
+import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 
 
 
@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
   public mapWidth: number;
   public mapHeight: number;
 
-  public subscriptionDisabled: boolean = false;
+  public subscriptionDisabled: boolean;
 
   public history: History[];
   // public filteredHistory: History[];
@@ -82,21 +82,32 @@ export class HomeComponent implements OnInit {
   public theApartmentsHistory: History;
 */
   constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog) {
+    this.subscriptionDisabled = false;
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
   }
 
   openSubscription(room_id: string) {
+    // tslint:disable-next-line:max-line-length
+    const outOfWashers = this.machines.filter(m => m.room_id === room_id && m.status === 'normal' && m.type === 'washer' && !m.running).length === 0;
+    // tslint:disable-next-line:max-line-length
+    const outOfDryers = this.machines.filter(m => m.room_id === room_id && m.status === 'normal' && m.type === 'dryer' && !m.running).length === 0;
     const newSub: Subscription = {email: '', type: '', room_id: room_id};
     const dialogRef = this.subscription.open(SubscriptionDialog, {
       width: '500px',
-      data: {subscription: newSub}
+      data: {subscription: newSub, noWasher: outOfWashers, noDryer: outOfDryers},
     });
 
+
+    // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe(newSub => {
+      console.log('HAHAH1');
       if (newSub != null) {
+        console.log('HAHAH2');
+        console.log(newSub);
         this.homeService.addNewSubscription(newSub).subscribe(
           () => {
+            console.log('HAHAH3');
             this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
             this.updateRoom(this.roomId, this.roomName);
           },
@@ -105,10 +116,10 @@ export class HomeComponent implements OnInit {
             console.log('There was an error adding the subscription.');
             console.log('The newSub or dialogResult was ' + newSub);
             console.log('The error was ' + JSON.stringify(err));
-          });
+          }
+        );
       }
     });
-
   }
 
   openDialog(theMachine: Machine) {
@@ -129,7 +140,7 @@ export class HomeComponent implements OnInit {
       autoFocus: false
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
   }
@@ -150,9 +161,9 @@ export class HomeComponent implements OnInit {
     }
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
-    this.delay(100);
+    this.delay(100).then();
     this.rooms.map(r => {
-      if (r.isSubscribed == undefined) {
+      if (r.isSubscribed === undefined) {
         r.isSubscribed = false;
       }
     });
@@ -160,7 +171,11 @@ export class HomeComponent implements OnInit {
     this.roomRunning = this.filteredMachines.filter(m => m.running === true && m.status === 'normal').length;
     this.roomBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
     if (this.roomId !== undefined && this.roomId !== '') {
-      this.subscriptionDisabled = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed || this.roomVacant !== 0;
+      // tslint:disable-next-line:max-line-length
+      const washerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'washer' && m.status === 'normal' && m.running === false).length;
+      // tslint:disable-next-line:max-line-length
+      const dryerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'dryer' && m.status === 'normal' && m.running === false).length;
+      this.subscriptionDisabled = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed || (washerVacant !== 0 && dryerVacant !== 0);
     }
     this.buildChart();
     this.fakePositions();
@@ -654,8 +669,6 @@ export class HomeDialog {
   }
 }
 
-
-
 @Component({
   templateUrl: 'home.subscription.html',
 })
@@ -664,13 +677,32 @@ export class SubscriptionDialog {
 
   options: FormGroup;
   addSubForm: FormGroup;
+  typeIsChosen: boolean;
+  outOfWashers: boolean;
+  outOfDryers: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<SubscriptionDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { subscription: Subscription }, private fb: FormBuilder) {
+    @Inject(MAT_DIALOG_DATA) public data: { subscription: Subscription, noWasher: boolean, noDryer: boolean }, private fb: FormBuilder) {
+
+    this.outOfWashers = data.noWasher;
+    this.outOfDryers = data.noDryer;
+
+    if (this.outOfWashers) {
+      data.subscription.type = 'washer';
+    } else {
+      data.subscription.type = 'dryer';
+    }
+    // data.subscription.type = 'dryer';
+
     this.options = fb.group({
       type: data.subscription.type,
     });
+
+
+    console.log(this.outOfDryers);
+    console.log(this.outOfWashers);
+
 
     this.ngOnInit();
   }
@@ -689,15 +721,15 @@ export class SubscriptionDialog {
       email: new FormControl('email', Validators.email)
     });
 
+    console.log(this.addSubForm);
   }
 
+  // tslint:disable-next-line:use-lifecycle-interface
   ngOnInit() {
-    this.createForms()
+    this.createForms();
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
-
 }

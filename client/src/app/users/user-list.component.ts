@@ -63,7 +63,7 @@ export class UserListComponent implements OnInit {
     this.updateFilter();
   }
 
-  public updateAge(newAge:number): void {
+  public updateAge(newAge: number): void {
     this.userAge = newAge;
     this.updateFilter();
   }

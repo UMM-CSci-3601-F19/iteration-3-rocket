@@ -1,12 +1,12 @@
 <div class="add-sub">
   <form [formGroup]="addSubForm">
-    <h2 mat-dialog-title>New Sub</h2>
+    <h2 mat-dialog-title>New Subscription</h2>
 
       <form [formGroup]="options">
         <div>
           <mat-radio-group #input id="typeField" [(ngModel)]="data.subscription.type" formControlName="type" required>
-            <mat-radio-button [value]="'washer'">Washer</mat-radio-button>
-            <mat-radio-button [value]="'dryer'">Dryer</mat-radio-button>
+            <mat-radio-button [value]="'washer'" [checked]="this.outOfWashers && !this.outOfDryers" [disabled]="!this.outOfWashers">Washer</mat-radio-button>
+            <mat-radio-button [value]="'dryer'" [checked]="!this.outOfWashers && this.outOfDryers" [disabled]="!this.outOfDryers">Dryer</mat-radio-button>
           </mat-radio-group>
         </div>
       </form>
@@ -14,7 +14,7 @@
     <mat-dialog-content layout="row">
       <mat-form-field flex>
         <input matInput #input id="emailField" placeholder="Email" [(ngModel)]="data.subscription.email"
-               formControlName="email">
+               formControlName="email" required>
         <mat-error *ngFor="let validation of add_sub_validation_messages.email">
           <mat-error class="error-message" id='email-error'
                      *ngIf="addSubForm.get('email').hasError(validation.type) && (addSubForm.get('email').dirty || addSubForm.get('email').touched)">
@@ -26,8 +26,8 @@
     <mat-dialog-actions layout="row">
 
       <!-- [mat-dialog-close]="data.user" causes the data.user object to be returned when the dialog is closed. -->
-      <button mat-raised-button id="confirmAddSubButton" [mat-dialog-close]="data.subscription" type="button" color="primary"
-              [disabled]="!addSubForm.valid">Subscribe
+      <button mat-raised-button id="confirmAddSubButton" [mat-dialog-close]="data.subscription" type="button" color="warn"
+              [disabled]="!addSubForm.valid || data.subscription.type === '' ">Subscribe
       </button>
       <!-- [mat-dialog-close]="null" causes null to be returned when the dialog is closed. -->
       <button mat-raised-button id="exitWithoutAddingButton" [mat-dialog-close]="null" type="button">Cancel</button>

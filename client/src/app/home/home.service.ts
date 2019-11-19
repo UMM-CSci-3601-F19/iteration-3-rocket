@@ -76,6 +76,6 @@ export class HomeService {
     };
 
     // Send post request to add a new user with the user data as the body with specified headers.
-    return this.http.post<string>(this.baseUrl + '/subscribe/new', newSub, httpOptions);
+    return this.http.post<string>(this.baseUrl + 'subscribe/new', newSub, httpOptions);
   }
 }
