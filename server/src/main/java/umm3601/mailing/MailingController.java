@@ -49,15 +49,19 @@ public class MailingController {
     Content content = new Content("text/plain", "some content");
     Mail mail = new Mail(from, subject, to, content);
 
-    SendGrid sg = new SendGrid("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");
+    SendGrid sg = new SendGrid("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");
     Request request = new Request();
-    request.setMethod(Method.POST);
-    request.setEndpoint("mail/sendNotification");
-    request.setBody(mail.build());
-    Response response = sg.api(request);
-    System.out.println(response.getStatusCode());
-    System.out.println(response.getBody());
-    System.out.println(response.getHeaders());
+    try {
+      request.setMethod(Method.POST);
+      request.setEndpoint("mail/send");
+      request.setBody(mail.build());
+      Response response = sg.api(request);
+      System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " with code " + response.getStatusCode());
+//      System.out.println(response.getBody());
+//      System.out.println(response.getHeaders());
+    } catch (IOException ex) {
+      throw ex;
+    }
   }
 
   private String transformId(String str) {
