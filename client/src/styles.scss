@@ -33,11 +33,7 @@
   // Define any styles affected by the theme.
 
   mat-sidenav-content {
-    background-color: mat-color($primary, 200 );
-  }
-
-  .roomHeading, .topMenu {
-    background-color: mat-color($primary) !important;
+    background-color: mat-color($primary, 25);
   }
 
   @if $is-dark {
@@ -79,22 +75,23 @@
 
   .roomHeading {
     padding-top: 5px !important;
-    margin: 0 -5px 10px -5px !important;
+    margin: -10px -5px 10px -5px !important;
     font-style: italic;
     border-radius: 0 !important;
     position: sticky !important;
     top: 59px;
     z-index: 1;
     box-shadow: none !important;
+    max-height: min-content;
+    background-color: mat-color($primary, 25) !important;
   }
 
   .topMenu {
-    margin-top: -5px;
-    margin-left: -5px;
-    margin-right: -5px;
+    margin: -5px, -5px, 0px, -5px;
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 25px;
+    background-color: mat-color($primary, 25) !important;
   }
 
   .drawer-list-item-active {
