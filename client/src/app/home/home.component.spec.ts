@@ -8,6 +8,8 @@ import {Machine} from './machine';
 import {Room} from './room';
 import {History} from './history';
 import {Observable} from 'rxjs';
+import {CookieService} from 'ngx-cookie-service';
+
 
 describe('Home page', () => {
 
@@ -29,8 +31,16 @@ describe('Home page', () => {
     updateRunningStatus;
   };
 
+  let cookieServiceMock: {
+    getName: () => Observable<String[]>;
+  };
+
   // @ts-ignore
   beforeEach(() => {
+    cookieServiceMock = {
+      getName: () => Observable.of([''])
+    };
+
     homeServiceStub = {
       getMachines: () => Observable.of([
         {
@@ -442,7 +452,10 @@ describe('Home page', () => {
     TestBed.configureTestingModule({
       imports: [CustomModule],
       declarations: [HomeComponent], // declare the test component
-      providers: [{provide: HomeService, useValue: homeServiceStub}]
+      providers: [
+        {provide: HomeService, useValue: homeServiceStub},
+        {provide: CookieService, useValue: cookieServiceMock}
+        ]
     });
 
     fixture = TestBed.createComponent(HomeComponent);

@@ -5,6 +5,8 @@ import {Machine} from './machine';
 import {Observable} from 'rxjs';
 import {HomeService} from './home.service';
 
+import {CookieService} from 'ngx-cookie-service';
+
 import * as Chart from 'chart.js';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
@@ -81,7 +83,7 @@ export class HomeComponent implements OnInit {
   public pineHistory: History;
   public theApartmentsHistory: History;
 */
-  constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog) {
+  constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog, private cookieService: CookieService) {
     this.subscriptionDisabled = false;
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
@@ -140,6 +142,11 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
+  }
+
+  public updateCookies(id: string, name: string): void {
+    this.cookieService.set('room_id', id);
+    this.cookieService.set('room_name', name);
   }
 
   setSelector(state: number) {
@@ -496,6 +503,8 @@ export class HomeComponent implements OnInit {
       this.loadAllHistory();
 
       await this.delay(500); // wait 0.5s for loading data
+
+      this.updateRoom(this.cookieService.get('room_id'), this.cookieService.get('room_name'));
 
       // this.myChart.destroy();
       this.updateMachines();

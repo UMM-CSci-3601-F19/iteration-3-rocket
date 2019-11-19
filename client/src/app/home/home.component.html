@@ -50,6 +50,7 @@
         <a class="roomStatus"><mat-icon class="vacant">check_circle_outline</mat-icon>{{this.roomVacant}} vacant</a>
         <a class="roomStatus"><mat-icon class="inUse">schedule</mat-icon>{{this.roomRunning}} running</a>
         <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>{{this.roomBroken}} broken</a>
+        <button mat-button id = "defaultRoomButton" (click)="updateCookies(roomId,roomName)">Make Default</button>
       </mat-card-content>
 
       <button class="subscribeButton" mat-flat-button color="warn" [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">Subscribe</button>

@@ -20,6 +20,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule, MatRadioModule} from '@angular/material';
 import {MatOptionModule} from '@angular/material/core';
 
+import {CookieService} from "ngx-cookie-service";
 
 // import {MDCRipple} from '@material/ripple';
 
@@ -56,6 +57,7 @@ import {MatOptionModule} from '@angular/material/core';
     HttpClient,
     UserListService,
     HomeService,
+    CookieService,
     {provide: APP_BASE_HREF, useValue: '/'},
   ],
   entryComponents: [
