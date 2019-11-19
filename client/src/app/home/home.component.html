@@ -52,6 +52,8 @@
         <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>{{this.roomBroken}} broken</a>
         <button mat-button id = "defaultRoomButton" (click)="updateCookies(roomId,roomName)">Make Default</button>
       </mat-card-content>
+
+      <button class="subscribeButton" mat-flat-button color="warn" [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">Subscribe</button>
     </mat-card>
 
     <mat-card *ngIf="this.roomId == ''" style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
@@ -115,7 +117,7 @@
                 <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'normal' && machine.running == true">
                   <button mat-button [id]="machine.name" class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                           [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}" (click)="openDialog(machine)">
-                    <mat-progress-spinner color="warn" diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.35}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
+                    <mat-progress-spinner color="warn" diameter="20" strokeWidth="4" mode="determinate" value="{{100-machine.remainingTime/0.35}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
                     <mat-icon style="margin-right: 0 ">local_laundry_service</mat-icon>
                   </button>
                 </mat-accordion>
@@ -124,7 +126,7 @@
                   <button mat-button [id]="machine.name" class="inUse" style="padding: 10px; min-width: unset; display: unset; position: absolute"
                           [ngStyle]="{'left': machine.position.x + 'px', 'top': machine.position.y + 'px'}" (click)="openDialog(machine)">
                     <mat-icon style="margin-right: 0 ;">fireplace</mat-icon>
-                    <mat-progress-spinner color="warn" diameter="20" strokeWidth="4" mode="determinate" value="{{machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
+                    <mat-progress-spinner color="warn" diameter="20" strokeWidth="4" mode="determinate" value="{{100-machine.remainingTime/0.6}}" style="position: absolute; left: 2px; top: 8px; color: unset"></mat-progress-spinner>
                   </button>
                 </mat-accordion>
                 <mat-accordion *ngIf="machine.type == 'washer' && machine.status == 'broken'">

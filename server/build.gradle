@@ -16,6 +16,7 @@ dependencies {
   compile 'org.slf4j:slf4j-simple:1.7.26'
   compile 'com.google.code.gson:gson:2.8.5'
   compile 'org.mongodb:mongodb-driver:3.10.1'
+  compile 'com.sendgrid:sendgrid-java:4.0.1'
 
   testCompile 'junit:junit:4.12'
 }

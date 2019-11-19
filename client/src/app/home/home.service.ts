@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 
@@ -7,12 +7,14 @@ import {Room} from './room';
 import {Machine} from './machine';
 import {History} from './history';
 import {environment} from '../../environments/environment';
+import {Subscription} from './subscription';
 
 @Injectable()
 export class HomeService {
   readonly baseUrl: string = environment.API_URL ;
   private roomURL: string = this.baseUrl + 'rooms';
   private machineURL: string = this.baseUrl + 'machines';
+  private subURL: string = this.baseUrl + 'subscribe';
   // private historyURL: string = this.baseUrl + 'history';
 
   constructor(private http: HttpClient) {
@@ -38,7 +40,7 @@ export class HomeService {
   //   return this.http.get<History[]>(this.historyURL + '/' + room);
   // }
 
-  getAllHistory(): Observable<History[]>{
+  getAllHistory(): Observable<History[]> {
     return this.http.get<History[]>(this.baseUrl + '/all_history');
   }
 
@@ -60,5 +62,22 @@ export class HomeService {
         machine.running = machines.filter(m => m.id === machine.id)[0].running;
       });
     }
+  }
+
+  addNewSubscription(newSub: Subscription): Observable<string> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        // We're sending JSON
+        'Content-Type': 'application/json'
+      }),
+      // But we're getting a simple (text) string in response
+      // The server sends the hex version of the new user back
+      // so we know how to find/access that user again later.
+      responseType: 'text' as 'json'
+    };
+
+    console.log(httpOptions);
+    // Send post request to add a new user with the user data as the body with specified headers.
+    return this.http.post<string>(this.subURL + '/new', newSub, httpOptions);
   }
 }

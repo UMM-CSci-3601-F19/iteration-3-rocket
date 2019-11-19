@@ -10,6 +10,10 @@ import {CookieService} from 'ngx-cookie-service';
 import * as Chart from 'chart.js';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
+import {Subscription} from './subscription';
+import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
+
+
 
 @Component({
   templateUrl: 'home.component.html',
@@ -49,6 +53,8 @@ export class HomeComponent implements OnInit {
   public mapWidth: number;
   public mapHeight: number;
 
+  public subscriptionDisabled: boolean;
+
   public history: History[];
   // public filteredHistory: History[];
   canvas: any;
@@ -77,9 +83,43 @@ export class HomeComponent implements OnInit {
   public pineHistory: History;
   public theApartmentsHistory: History;
 */
-  constructor(public homeService: HomeService, public dialog: MatDialog, private cookieService: CookieService) {
+  // tslint:disable-next-line:max-line-length
+  constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog, private cookieService: CookieService) {
+    this.subscriptionDisabled = false;
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
+  }
+
+  openSubscription(room_id: string) {
+    // tslint:disable-next-line:max-line-length
+    const outOfWashers = this.machines.filter(m => m.room_id === room_id && m.status === 'normal' && m.type === 'washer' && !m.running).length === 0;
+    // tslint:disable-next-line:max-line-length
+    const outOfDryers = this.machines.filter(m => m.room_id === room_id && m.status === 'normal' && m.type === 'dryer' && !m.running).length === 0;
+    const newSub: Subscription = {email: '', type: '', room_id: room_id};
+    const dialogRef = this.subscription.open(SubscriptionDialog, {
+      width: '500px',
+      data: {subscription: newSub, noWasher: outOfWashers, noDryer: outOfDryers, roomName: this.translateRoomId(this.roomId)},
+    });
+
+
+    // tslint:disable-next-line:no-shadowed-variable
+    dialogRef.afterClosed().subscribe(newSub => {
+      if (newSub != null) {
+        console.log(newSub);
+        this.homeService.addNewSubscription(newSub).subscribe(
+          () => {
+            this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
+            this.updateRoom(this.roomId, this.roomName);
+          },
+          err => {
+            // This should probably be turned into some sort of meaningful response.
+            console.log('There was an error adding the subscription.');
+            console.log('The newSub or dialogResult was ' + newSub);
+            console.log('The error was ' + JSON.stringify(err));
+          }
+        );
+      }
+    });
   }
 
   openDialog(theMachine: Machine) {
@@ -100,7 +140,7 @@ export class HomeComponent implements OnInit {
       autoFocus: false
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
   }
@@ -126,10 +166,22 @@ export class HomeComponent implements OnInit {
     }
     this.inputDay = this.today.getDay() + 1;
     this.updateMachines();
-    this.delay(100);
+    this.delay(100).then();
+    this.rooms.map(r => {
+      if (r.isSubscribed === undefined) {
+        r.isSubscribed = false;
+      }
+    });
     this.roomVacant = this.filteredMachines.filter(m => m.running === false && m.status === 'normal').length;
     this.roomRunning = this.filteredMachines.filter(m => m.running === true && m.status === 'normal').length;
     this.roomBroken = this.filteredMachines.filter(m => m.status === 'broken').length;
+    if (this.roomId !== undefined && this.roomId !== '') {
+      // tslint:disable-next-line:max-line-length
+      const washerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'washer' && m.status === 'normal' && m.running === false).length;
+      // tslint:disable-next-line:max-line-length
+      const dryerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'dryer' && m.status === 'normal' && m.running === false).length;
+      this.subscriptionDisabled = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed || (washerVacant !== 0 && dryerVacant !== 0);
+    }
     this.buildChart();
     this.fakePositions();
     this.setSelector(1);
@@ -621,5 +673,68 @@ export class HomeDialog {
       // tslint:disable-next-line:max-line-length
       return 'https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with ' + machineType + ' ' + machineID + ': ';
     }
+  }
+}
+
+@Component({
+  templateUrl: 'home.subscription.html',
+})
+// tslint:disable-next-line:component-class-suffix
+export class SubscriptionDialog {
+
+  options: FormGroup;
+  addSubForm: FormGroup;
+  name: string;
+  outOfWashers: boolean;
+  outOfDryers: boolean;
+
+  constructor(
+    public dialogRef: MatDialogRef<SubscriptionDialog>,
+    // tslint:disable-next-line:max-line-length
+    @Inject(MAT_DIALOG_DATA) public data: { subscription: Subscription, noWasher: boolean, noDryer: boolean, roomName: string }, private fb: FormBuilder) {
+
+    this.outOfWashers = data.noWasher;
+    this.outOfDryers = data.noDryer;
+    this.name = data.roomName;
+
+    if (this.outOfWashers) {
+      data.subscription.type = 'washer';
+    } else {
+      data.subscription.type = 'dryer';
+    }
+    // data.subscription.type = 'dryer';
+
+    this.options = fb.group({
+      type: data.subscription.type,
+    });
+
+
+    // console.log(this.outOfDryers);
+    // console.log(this.outOfWashers);
+
+
+    this.ngOnInit();
+  }
+
+  add_sub_validation_messages = {
+    'email': [
+      {type: 'email', message: 'Email must be formatted properly'}
+    ]
+  };
+
+  createForms() {
+
+    // add user form validations
+    this.addSubForm = this.fb.group({
+      // We don't need a special validator just for our app here, but there is a default one for email.
+      email: new FormControl('email', Validators.email)
+    });
+
+    console.log(this.addSubForm);
+  }
+
+  // tslint:disable-next-line:use-lifecycle-interface
+  ngOnInit() {
+    this.createForms();
   }
 }

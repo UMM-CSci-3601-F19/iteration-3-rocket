@@ -76,11 +76,15 @@ describe('Home page', () => {
           id: 'gay',
           name: 'A',
 
+          isSubscribed: false,
+
           numberOfAllMachines: 1,
           numberOfAvailableMachines: 1,
         }, {
           id: 'room_b',
           name: 'B',
+
+          isSubscribed: false,
 
           numberOfAllMachines: 1,
           numberOfAvailableMachines: 0,
