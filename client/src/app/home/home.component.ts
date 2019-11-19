@@ -83,6 +83,7 @@ export class HomeComponent implements OnInit {
   public pineHistory: History;
   public theApartmentsHistory: History;
 */
+  // tslint:disable-next-line:max-line-length
   constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog, private cookieService: CookieService) {
     this.subscriptionDisabled = false;
     this.machineListTitle = 'available within all rooms';
