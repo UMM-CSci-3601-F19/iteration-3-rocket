@@ -95,19 +95,16 @@ export class HomeComponent implements OnInit {
     const newSub: Subscription = {email: '', type: '', room_id: room_id};
     const dialogRef = this.subscription.open(SubscriptionDialog, {
       width: '500px',
-      data: {subscription: newSub, noWasher: outOfWashers, noDryer: outOfDryers},
+      data: {subscription: newSub, noWasher: outOfWashers, noDryer: outOfDryers, roomName: this.translateRoomId(this.roomId)},
     });
 
 
     // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe(newSub => {
-      console.log('HAHAH1');
       if (newSub != null) {
-        console.log('HAHAH2');
         console.log(newSub);
         this.homeService.addNewSubscription(newSub).subscribe(
           () => {
-            console.log('HAHAH3');
             this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
             this.updateRoom(this.roomId, this.roomName);
           },
@@ -677,16 +674,18 @@ export class SubscriptionDialog {
 
   options: FormGroup;
   addSubForm: FormGroup;
-  typeIsChosen: boolean;
+  name: string;
   outOfWashers: boolean;
   outOfDryers: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<SubscriptionDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { subscription: Subscription, noWasher: boolean, noDryer: boolean }, private fb: FormBuilder) {
+    // tslint:disable-next-line:max-line-length
+    @Inject(MAT_DIALOG_DATA) public data: { subscription: Subscription, noWasher: boolean, noDryer: boolean, roomName: string }, private fb: FormBuilder) {
 
     this.outOfWashers = data.noWasher;
     this.outOfDryers = data.noDryer;
+    this.name = data.roomName;
 
     if (this.outOfWashers) {
       data.subscription.type = 'washer';
@@ -700,8 +699,8 @@ export class SubscriptionDialog {
     });
 
 
-    console.log(this.outOfDryers);
-    console.log(this.outOfWashers);
+    // console.log(this.outOfDryers);
+    // console.log(this.outOfWashers);
 
 
     this.ngOnInit();
@@ -727,9 +726,5 @@ export class SubscriptionDialog {
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnInit() {
     this.createForms();
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

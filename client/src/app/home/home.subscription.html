@@ -1,7 +1,7 @@
 <div class="add-sub">
   <form [formGroup]="addSubForm">
-    <h2 mat-dialog-title>New Subscription</h2>
-
+    <h2 mat-dialog-title>New Subscription to {{this.name}}</h2>
+      Notify me when a
       <form [formGroup]="options">
         <div>
           <mat-radio-group #input id="typeField" [(ngModel)]="data.subscription.type" formControlName="type" required>
@@ -10,10 +10,11 @@
           </mat-radio-group>
         </div>
       </form>
+    in {{this.name}} is vacant.
 
     <mat-dialog-content layout="row">
       <mat-form-field flex>
-        <input matInput #input id="emailField" placeholder="Email" [(ngModel)]="data.subscription.email"
+        <input matInput #input id="emailField" placeholder="Leave your email" [(ngModel)]="data.subscription.email"
                formControlName="email" required>
         <mat-error *ngFor="let validation of add_sub_validation_messages.email">
           <mat-error class="error-message" id='email-error'
