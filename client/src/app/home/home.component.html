@@ -40,13 +40,12 @@
           </ng-template>
         </mat-card>
       </mat-panel-description>
-
     </mat-expansion-panel>
 
     </div>
     <mat-card *ngIf="this.roomId != ''" class="roomHeading">
-      <mat-card-title style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}</mat-card-title>
-      <mat-card-content style="height: 20px; margin-left: 10px">
+      <mat-card-title>{{this.roomName}}</mat-card-title>
+      <mat-card-content>
         <a class="roomStatus"><mat-icon class="vacant">check_circle_outline</mat-icon>{{this.roomVacant}} vacant</a>
         <a class="roomStatus"><mat-icon class="inUse">schedule</mat-icon>{{this.roomRunning}} running</a>
         <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>{{this.roomBroken}} broken</a>
@@ -54,9 +53,9 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card *ngIf="this.roomId == ''" class="roomHeading">
-      <mat-card-title style="font-weight: 100; font-size: 35px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">Greetings!</mat-card-title>
-      <mat-card-content style="height: 20px; margin-left: 10px; font-size: 18px;">
+    <mat-card class="roomHeading">
+      <mat-card-title>Greetings!</mat-card-title>
+      <mat-card-content>
         Welcome to Morris Laundry Facilities!
       </mat-card-content>
     </mat-card>

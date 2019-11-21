@@ -31,10 +31,7 @@
   $is-dark: map-get($theme, is-dark);
 
   // Define any styles affected by the theme.
-
-  mat-sidenav-content {
-    background-color: mat-color($primary, 25);
-  }
+  // dark theme
 
   @if $is-dark {
 
@@ -73,25 +70,60 @@
     }
   }
 
-  .roomHeading {
-    padding-top: 5px !important;
-    margin: -10px -5px 10px -5px !important;
-    font-style: italic;
-    border-radius: 0 !important;
-    position: sticky !important;
-    top: 59px;
-    z-index: 1;
-    box-shadow: none !important;
-    max-height: min-content;
-    background-color: mat-color($primary, 25) !important;
+  // light theme and general styling
+
+  mat-sidenav-content {
+    background-color: mat-color($primary, 40);
   }
 
   .topMenu {
-    margin: -5px, -5px, 0px, -5px;
+    margin: 0, -5px, 0px, -5px;
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 25px;
-    background-color: mat-color($primary, 25) !important;
+    background-color: mat-color($primary, 900);
+  }
+
+  .topMenu mat-expansion-panel-header {
+    background-color: mat-color($primary, 900);
+  }
+
+  .topMenu mat-panel-title {
+    font-size: 120%;
+    font-style: mat-color($mat-umn-gold);
+  }
+
+  .roomHeading {
+    // layout
+    padding-top: 5px;
+    margin: -10px -5px 10px -5px;
+    border-radius: 0;
+    position: sticky;
+    top: 59px;
+    z-index: 1;
+    max-height: min-content;
+    line-height: 1.15;
+    //font
+    font-style: italic;
+    font-weight: 100;
+    font-size: 35px;
+    // color
+    background-color: mat-color($primary, 40);
+  }
+
+  .roomHeading mat-card {
+    padding: 30px 0;
+    height: auto;
+  }
+
+  .roomHeading mat-card-title {
+    font-size: 35px;
+  }
+
+  .roomHeading mat-card-content {
+    height: 20px;
+    margin-left: 10px;
+    font-size: 18px;
   }
 
   .drawer-list-item-active {
@@ -256,11 +288,6 @@ mat-grid-tile mat-card {
   white-space: nowrap;
 }
 
-.roomHeading mat-card {
-  padding: 30px 0 !important;
-  height: auto;
-}
-
 .mat-card-content {
   height: auto;
 }
@@ -289,7 +316,6 @@ mat-grid-tile mat-card {
 }
 
 mat-dialog-container {
-  border-radius: 15px !important;
   padding: 20px !important;
   height: 120%;
 }

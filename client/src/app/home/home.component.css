@@ -6,10 +6,6 @@
   scroll-behavior: smooth;
 }
 
-.mat-expansion-panel-header-description {
-  margin-right: 0;
-}
-
 .visualBox {
   position: absolute;
   height: 40px;
@@ -24,20 +20,14 @@
   bottom: -50px;
   left: auto;
   position: fixed;
-  border-radius: 20px;
   z-index: 1;
   transition: bottom 1s;
-}
-
-.mat-expansion-panel, .mat-card {
-  border-radius: 20px;
 }
 
 @media screen and (min-width: 720px) {
   #all-rooms {
     font-size: 110%;
     height: 50px;
-    border-radius: 25px;
     right: 40px;
     bottom: 25px;
   }
