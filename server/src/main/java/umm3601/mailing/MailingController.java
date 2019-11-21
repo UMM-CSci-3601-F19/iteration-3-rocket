@@ -58,8 +58,6 @@ public class MailingController {
     request.setBody(mail.build());
     Response response = sg.api(request);
     System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " with code " + response.getStatusCode());
-//  System.out.println(response.getBody());
-//  System.out.println(response.getHeaders());
   }
 
   private String transformId(String str) {
