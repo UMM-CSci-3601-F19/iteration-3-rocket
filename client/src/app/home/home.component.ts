@@ -504,12 +504,15 @@ export class HomeComponent implements OnInit {
       this.loadAllHistory();
 
       await this.delay(500); // wait 0.5s for loading data
-      this.updateMachines();
-      this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
-      this.updateCounter();
-      this.updateTime();
-      if (this.cookieService.get('room_id') !== '') {
-        this.updateRoom(this.cookieService.get('room_id'), this.cookieService.get('room_name'));
+
+      if (this.rooms !== undefined && this.machines !== undefined && this.history !== undefined) {
+        this.updateMachines();
+        this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
+        this.updateCounter();
+        this.updateTime();
+        if (this.cookieService.get('room_id') !== '') {
+          this.updateRoom(this.cookieService.get('room_id'), this.cookieService.get('room_name'));
+        }
       }
 
       await this.delay(500); // wait 0.5s for loading data
