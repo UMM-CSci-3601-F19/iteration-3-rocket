@@ -834,10 +834,11 @@ public class HistoryControllerSpec {
     filterDoc = filterDoc.append("room_id", "gay");
     Document targetRoom = historyController.roomHistoryCollection.find(filterDoc).first();
 
+    assert targetRoom != null;
     Document targetDay = (Document) targetRoom.get(String.valueOf(todayBefore));
     int beforeUsage = (int) targetDay.get(String.valueOf(nowBefore));
 
-    this.machineDocuments.drop();
+    machineDocuments.drop();
     List<Document> testMachines = new ArrayList<>();
     testMachines.add(Document.parse("{\n" +
       "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
@@ -860,6 +861,7 @@ public class HistoryControllerSpec {
     historyController.updateHistory();
 
     targetRoom = historyController.roomHistoryCollection.find(filterDoc).first();
+    assert targetRoom != null;
     targetDay = (Document) targetRoom.get(String.valueOf(todayBefore));
     int afterUsage = (int) targetDay.get(String.valueOf(nowBefore));
 
