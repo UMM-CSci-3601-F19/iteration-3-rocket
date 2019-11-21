@@ -80,3 +80,4 @@ gradle-app.setting
 *.prefs
 /node_modules/
 sendgrid.env
+sendgrid.env

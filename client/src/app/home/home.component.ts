@@ -505,13 +505,16 @@ export class HomeComponent implements OnInit {
 
       await this.delay(500); // wait 0.5s for loading data
 
-      this.updateRoom(this.cookieService.get('room_id'), this.cookieService.get('room_name'));
+      if (this.rooms !== undefined && this.machines !== undefined && this.history !== undefined) {
+        this.updateMachines();
+        this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
+        this.updateCounter();
+        this.updateTime();
+        if (this.cookieService.get('room_id') !== '') {
+          this.updateRoom(this.cookieService.get('room_id'), this.cookieService.get('room_name'));
+        }
+      }
 
-      // this.myChart.destroy();
-      this.updateMachines();
-      this.homeService.updateAvailableMachineNumber(this.rooms, this.machines);
-      this.updateCounter();
-      this.updateTime();
       await this.delay(500); // wait 0.5s for loading data
       if (this.rooms === undefined || this.machines === undefined || this.history === undefined) {
         await this.delay(5000); // loading error retry every 5s

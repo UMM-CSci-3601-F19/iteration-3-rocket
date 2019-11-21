@@ -33,8 +33,9 @@ public class Server {
   private static final String roomHistoryDatabaseName = "dev";
   private static final int serverPort = 4567;
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
 
+    System.out.println(System.getenv("SENDGRID_API_KEY"));
     MongoClient mongoClient = new MongoClient();
 
     MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
