@@ -147,7 +147,7 @@ public class MailingControllerSpec {
       t = e;
     }
     assertNotNull(t);
-    assertEquals("should receive a 401 error due to the fake test key", "Request returned status Code 401Body:{\"errors\":[{\"message\":\"The provided authorization grant is invalid, expired, or revoked\",\"field\":null,\"help\":null}]}",
-      t.getMessage());
+    assertNotEquals("should receive a 401 error due to the fake test key", -1,
+      t.getMessage().indexOf("401"));
   }
 }
