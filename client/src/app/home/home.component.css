@@ -1,7 +1,3 @@
-#home-page-card {
-  margin-top: 10px;
-}
-
 .home {
   scroll-behavior: smooth;
 }
@@ -11,24 +7,4 @@
   height: 40px;
   width: 100%;
   left: 0;
-}
-
-#all-rooms {
-  height: 40px;
-  top: auto;
-  right: 15px;
-  bottom: -50px;
-  left: auto;
-  position: fixed;
-  z-index: 1;
-  transition: bottom 1s;
-}
-
-@media screen and (min-width: 720px) {
-  #all-rooms {
-    font-size: 110%;
-    height: 50px;
-    right: 40px;
-    bottom: 25px;
-  }
 }

@@ -76,28 +76,90 @@
     background-color: mat-color($primary, 40);
   }
 
+  // Styling for the room selection button that lives at bottom of screen
+  @media screen and (min-width: 720px) {
+    #all-rooms {
+      font-size: 110%;
+      font-style: $light-primary-text;
+
+      height: 50px;
+      right: 40px;
+      bottom: 25px;
+      top: auto;
+      left: auto;
+      position: fixed;
+      z-index: 1;
+      transition: bottom 1s;
+      margin-right: 10px;
+
+      background-color: mat-color($primary);
+    }
+  }
+
+  #scrollBox {
+    display: block;
+    position: relative;
+    top: -1000px;
+  }
+
+  // "Please select a laundry room here" styling
   .topMenu {
+    background-color: mat-color($primary, 900);
+
     margin: 0, -5px, 0px, -5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-bottom: 25px;
-    background-color: mat-color($primary, 900);
+    padding: 5px;
+    width: 100%;
+    mat-expansion-panel-header {
+      background-color: mat-color($primary, 900);
+      mat-panel-title {
+        font-size: 120%;
+        font-style: $light-primary-text !important;
+      }
+    }
+
+    mat-panel-description {
+      background-color: mat-color($primary, 900);
+      button {
+        width: 200px;
+        height: 80px;
+        mat-icon {
+          width: 20px;
+          height: 20px;
+          color: white;
+        }
+      }
+    }
   }
 
-  .topMenu mat-expansion-panel-header {
-    background-color: mat-color($primary, 900);
-  }
+  //.roomSelector {
+  //  margin: 0, -5px, 0px, -5px;
+  //  padding-left: 5px;
+  //  padding-right: 5px;
+  //  padding-bottom: 25px;
+  //  background-color: mat-color($primary, 900);
+  //}
+  //
+  //#home-rooms-card {
+  //  font-size: 120%;
+  //  font-style: mat-color($mat-umn-gold, 500);
+  //
+  //  background-color: mat-color($primary, 900);
+  //}
+  //
+  //
+  //
+  //
+  //#roomSelector {
+  //  width: 200px;
+  //  height: 80px;
+  //}
 
-  .topMenu mat-panel-title {
-    font-size: 120%;
-    font-style: mat-color($mat-umn-gold);
-  }
+  // Component that Names Room and provides greeting:
 
   .roomHeading {
     // layout
     padding-top: 5px;
     margin: -10px -5px 10px -5px;
-    border-radius: 0;
     position: sticky;
     top: 59px;
     z-index: 1;
