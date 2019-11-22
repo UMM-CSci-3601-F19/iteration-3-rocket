@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, async} from '@angular/core/testing';
 import {HomeComponent} from './home.component';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
@@ -10,6 +10,11 @@ import {History} from './history';
 import {Observable} from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
 
+import {Subscription} from "./subscription";
+import {NgForm} from "@angular/forms";
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {SubscriptionDialog} from './home.component';
+import {AddUserComponent} from "../users/add-user.component";
 
 describe('Home page', () => {
 
@@ -693,4 +698,63 @@ describe('Home page', () => {
     component.modifyArray([], 2);
     expect(component.filteredMachines.length).toEqual(1);
   });
+
+  describe('Add subscription cdialog', () => {
+
+    let subscriptionDialog: SubscriptionDialog;
+    let fixture: ComponentFixture<SubscriptionDialog>;
+
+    let calledClose: boolean;
+    const mockMatDialogRef = {
+      close() {
+        calledClose = true;
+      }
+    };
+
+
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [CustomModule],
+        declarations: [SubscriptionDialog],
+        providers: [
+          {provide: MatDialogRef, useValue: mockMatDialogRef},
+          {provide: MAT_DIALOG_DATA, useValue: null}]
+      }).compileComponents().catch(error => {
+        expect(error).toBeNull();
+      });
+    }));
+
+    beforeEach(() => {
+      calledClose = false;
+      fixture = TestBed.createComponent(SubscriptionDialog);
+      subscriptionDialog = fixture.componentInstance;
+    });
+
+    it('should not allow to subscribe with an invalid form of email'), async(() => {
+      let fixture = TestBed.createComponent(SubscriptionDialog);
+      let debug = fixture.debugElement;
+      let input = debug.query(By.css('[name=email]'));
+
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        input.nativeElement.value = 'bad@email.com';
+        dispatchEvent(input.nativeElement);
+        fixture.detectChanges();
+
+        let form: NgForm = debug.children[0].injector.get(NgForm);
+        let control = form.control.get('email');
+        expect(control.hasError('notPeeskillet')).toBe(true);
+        expect(form.control.valid).toEqual(false);
+        expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(true);
+
+        input.nativeElement.value = 'peeskillet@stackoverflow.com';
+        dispatchEvent(input.nativeElement);
+        fixture.detectChanges();
+
+        expect(control.hasError('notPeeskillet')).toBe(false);
+        expect(form.control.valid).toEqual(true);
+        expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
+      });
+    });
+  })
 });
