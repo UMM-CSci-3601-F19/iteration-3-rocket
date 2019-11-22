@@ -2,6 +2,7 @@ import {Room} from './room';
 import {Machine} from './machine';
 import {History} from './history'
 import {HomeService} from './home.service';
+import {Subscription} from "./subscription";
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
@@ -72,7 +73,6 @@ describe('Home list Service', () => {
       numberOfAvailableMachines: null,
     },
   ];
-
   const testHistory: History[] = [
     {
       "1": {
@@ -564,5 +564,25 @@ describe('Home list Service', () => {
     expect(req.request.method).toEqual('GET');
 
     req.flush(testHistory);
+  });
+
+  it('adding a sub calls api/subscribe/new', () => {
+    const test_email = 'test@example.com';
+    const newSub: Subscription = {
+      email: 'test@example.com',
+      room_id: 'gay',
+      type: 'washer'
+    };
+
+    homeService.addNewSubscription(newSub).subscribe(
+      ()=> {
+        expect(newSub.email).toBe(test_email);
+      }
+    );
+
+    const expectedUrl: string = homeService.baseUrl + 'subscribe/new';
+    const req = httpTestingController.expectOne(expectedUrl);
+    expect(req.request.method).toEqual('POST');
+    req.flush(test_email);
   });
 });
