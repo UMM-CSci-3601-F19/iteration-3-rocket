@@ -52,6 +52,8 @@
         <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>{{this.roomBroken}} broken</a>
         <button *ngIf="!defaultSet()" mat-button id = "defaultRoomButton" (click)="updateCookies(roomId,roomName)">Make Default</button>
         <button *ngIf="defaultSet()" mat-button id = "unsetDefaultRoomButton" (click)="updateCookies('','')">Unset Default</button>
+        <span *ngIf="defaultSet()">room is currently set to:   <b>{{this.cookieService.get("room_name")}}</b></span>
+        <span *ngIf="!defaultSet()">Default room is currently unset!</span>
       </mat-card-content>
 
       <button class="subscribeButton" mat-flat-button color="warn" [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">Subscribe</button>
