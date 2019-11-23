@@ -728,7 +728,8 @@ export class SubscriptionDialog {
 
   add_sub_validation_messages = {
     'email': [
-      {type: 'email', message: 'Email must be formatted properly'}
+      {type: 'required', message: 'Email is required'},
+      {type: 'email', message: 'Email must be formatted properly'},
     ]
   };
 
@@ -737,7 +738,11 @@ export class SubscriptionDialog {
     // add user form validations
     this.addSubForm = this.fb.group({
       // We don't need a special validator just for our app here, but there is a default one for email.
-      email: new FormControl('email', Validators.email)
+      email: new FormControl('email', Validators.compose([
+        Validators.required,
+        Validators.email
+      ])),
+
     });
 
     console.log(this.addSubForm);

@@ -1,6 +1,7 @@
 import {HomePage} from './home.po';
-import {browser, protractor} from 'protractor';
+import {browser, by, element, protractor} from 'protractor';
 import {Key} from 'selenium-webdriver';
+// import {CookieService} from "ngx-cookie-service";
 
 // This line (combined with the function that follows) is here for us
 // to be able to see what happens (part of slowing things down)
@@ -25,6 +26,7 @@ browser.driver.controlFlow().execute = function () {
 
 describe('home', () => {
   let page: HomePage;
+  // let cookieService: CookieService;
 
   beforeEach(() => {
     page = new HomePage();
@@ -32,6 +34,7 @@ describe('home', () => {
 
   afterEach(() => {
     browser.executeScript('window.sessionStorage.clear();');
+    // cookieService.deleteAll()
   });
 
   it('should get and highlight Home panel title attribute', () => {
@@ -136,7 +139,7 @@ describe('home', () => {
     expect(page.click('reportId'));
   });
 
-  it('should change time left in panel title', () => {
+  xit('should change time left in panel title', () => {
     page.navigateTo();
     const a = page.getUniqueMachine('69dacaa7-ee11-11e9-8256-56000218142a');
     browser.sleep(60000);
@@ -144,12 +147,6 @@ describe('home', () => {
     const b = page.getUniqueMachine('69dacaa7-ee11-11e9-8256-56000218142a');
     expect(a).not.toEqual(b);
   }, 100000);
-
-  it('should have a subscribe button when you select a specific room', () => {
-    page.navigateTo();
-    page.clickGayHall();
-    expect(page.elementExistsWithId('subscribeButton'));
-  });
 
   it('should have a make default button when you select a specific room', () => {
     page.navigateTo();
@@ -184,7 +181,86 @@ describe('home', () => {
     page.click('all-rooms');
     page.clickGayHall();
     page.click('unsetDefaultRoomButton');
-  })
+  });
+
+  it('should have a subscribe button when you select a specific room', () => {
+    page.navigateTo();
+    page.clickApartment();
+    expect(page.elementExistsWithId('subscribeButton'));
+  });
+
+  it('should have a disabled subscribe button when click gay hall', () => {
+    page.navigateTo();
+    page.clickGayHall();
+    expect(page.buttonClickable('subscribeButton')).toBe(false);
+  });
+
+  it('should have an enabled subscribe button when click the apartments', () => {
+    page.navigateTo();
+    page.clickApartment();
+    expect(page.buttonClickable('subscribeButton')).toBe(true);
+  });
+
+  describe('Subscribe',() => {
+
+    beforeEach(() => {
+      page.navigateTo();
+      page.clickApartment();
+      page.click('subscribeButton');
+    });
+
+    it('should open a dialog when click an enabled subscribe button in the apartment', () => {
+      expect(page.elementExistsWithId('sub-title'));
+    });
+
+    it('should have correct title for the opened dialog when click an enabled subscribe button in the apartment', () => {
+      expect(page.getTextWithID('sub-title')).toEqual('New Subscription to The Apartments');
+    });
+
+    xit('should have correct checked field for the opened dialog when click an enabled subscribe button in the apartment', () => {
+      // expect(page.boxChecked('sub-dryer').checked).toBe(true);
+      // expect(page.boxChecked('sub-type').isSelected()).toBe(true);
+      expect(page.field('sub-dryer').getAttribute('[checked]')).toBe(true);
+    });
+
+    xit('should have a disabled check box for washer in the apartment', () => {
+      // expect(page.buttonClickable('sub-washer')).toBe(false);
+      expect(element(by.id('sub-dryer')).isEnabled()).toBe(true);
+      // expect(page.field('sub-washer').isEnabled()).toBe(false);
+      expect(page.getTextFromField('sub-washer-true')).toBe('washer');
+      expect(page.getTextFromField('sub-dryer-false')).toBe('dryer');
+    });
+
+    describe('Subscribe (Validation)', () => {
+
+      afterEach(() => {
+        page.click('exitWithoutAddingButton');
+      });
+
+      it('Should show the validation error message about email being required', () => {
+        expect(element(by.id('emailField')).isPresent()).toBeTruthy('There should be an email field');
+        page.field('emailField').clear();
+        expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
+        // clicking somewhere else will make the error appear
+        browser.actions().sendKeys(Key.TAB).perform();
+        browser.actions().sendKeys(Key.TAB).perform();
+        expect(page.getTextFromField('email-error')).toEqual('Email is required');
+      });
+
+      it('Should show the validation error message about email format', () => {
+        expect(element(by.id('emailField')).isPresent()).toBeTruthy('There should be an email field');
+        page.field('emailField').clear();
+        page.field('emailField').sendKeys('donjones.com');
+        expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
+        // clicking somewhere else will make the error appear
+        browser.actions().sendKeys(Key.TAB).perform();
+        expect(page.getTextFromField('email-error')).toEqual('Email must be formatted properly');
+      });
+
+    });
+  });
+
+
 
   // it('should not have a subscribe button when you select all room', () => {
   //   page.navigateTo();
