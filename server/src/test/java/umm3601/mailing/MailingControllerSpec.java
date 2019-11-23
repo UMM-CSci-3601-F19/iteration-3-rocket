@@ -55,7 +55,7 @@ public class MailingControllerSpec {
     List<Document> testSubs = new ArrayList<>();
     testSubs.add(Document.parse("{\n" +
       "\t\"email\": \"test@example.com\",\n" +
-      "\t\"room_id\": \"gay\",\n" +
+      "\t\"id\": \"gay\",\n" +
       "\t\"type\": \"Dryer\"\n" +
       "  }\n"));
     subDocuments.insertMany(testSubs);
@@ -92,7 +92,7 @@ public class MailingControllerSpec {
 
 
   @Test
-  public void getSubTest() {
+  public void addNewSubscription() {
     String newSub = mailingController.addNewSubscription("test_1@example.com", "Washer", "gay");
 
     assertNotNull("Add new sub should return true when user is added,", newSub);
@@ -147,7 +147,7 @@ public class MailingControllerSpec {
       t = e;
     }
     assertNotNull(t);
-    assertNotEquals("should receive a 401 error due to the fake test key", -1,
+    assertNotEquals("should receive a not authorized error due to the test key", -1,
       t.getMessage().indexOf("401"));
   }
 }
