@@ -17,8 +17,6 @@ import java.io.IOException;
 public class MailingController {
 
   private final String EMAIL_FROM = "laundry_service@morrisfacility.com";
-  private final String SEND_KEY = "put_the_key_here";
-//  private final String SEND_KEY = System.getenv("SENDGRID_API_KEY");
 
   public final MongoCollection<Document> subscriptionCollection;
   private final MongoCollection<Document> machineCollection;
@@ -38,7 +36,7 @@ public class MailingController {
 
       Document vacantMachine = machineCollection.find(filterDoc).first();
       if (vacantMachine != null
-        && vacantMachine.getBoolean("running")
+        && !vacantMachine.getBoolean("running")
         && vacantMachine.getString("status").equals("normal")) {
 
         String machineName = transformId(vacantMachine.getString("name"));
@@ -83,18 +81,19 @@ public class MailingController {
     Content content = new Content("text/plain", "some content");
 
     Mail mail = new Mail(new Email(EMAIL_FROM), subject, new Email(email), content);
-    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email);
-    send(mail);
+    System.out.print("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
   }
 
-  private void send(Mail mail) throws IOException {
-    SendGrid sg = new SendGrid(SEND_KEY);
+  private int send(Mail mail) throws IOException {
+    String key = "put_your_key_here";
+//  String key = System.getenv("SENDGRID_API_KEY");
+    SendGrid sg = new SendGrid(key);
     Request request = new Request();
     request.setMethod(Method.POST);
     request.setEndpoint("mail/send");
     request.setBody(mail.build());
     Response response = sg.api(request);
-    System.out.print(" with code " + response.getStatusCode());
+    return response.getStatusCode();
   }
 
   private String transformId(String str) {
