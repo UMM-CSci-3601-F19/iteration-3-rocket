@@ -3,7 +3,7 @@
     "id": "69dacaa6-ee11-11e9-8256-56000218142a",
     "name": "dorky-gamboge-dog",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -27,7 +27,7 @@
     "id": "69dacaa8-ee11-11e9-8256-56000218142a",
     "name": "pasty-tomato-collie",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "broken",
     "position": {
       "x": 0,
@@ -39,7 +39,7 @@
     "id": "69dacaa9-ee11-11e9-8256-56000218142a",
     "name": "flaky-red-buffalo",
     "type": "washer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -51,7 +51,7 @@
     "id": "69dacaaa-ee11-11e9-8256-56000218142a",
     "name": "sloppy-olive-squirt",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "broken",
     "position": {
       "x": 0,
@@ -99,7 +99,7 @@
     "id": "69dacaae-ee11-11e9-8256-56000218142a",
     "name": "lanky-maroon-kangaroo",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -111,7 +111,7 @@
     "id": "69dacaaf-ee11-11e9-8256-56000218142a",
     "name": "crappy-chartreuse-grouse",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -195,7 +195,7 @@
     "id": "69dacab6-ee11-11e9-8256-56000218142a",
     "name": "squirrely-champagne-donkey",
     "type": "washer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -207,7 +207,7 @@
     "id": "69dacab7-ee11-11e9-8256-56000218142a",
     "name": "muggy-malachite-ibis",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -219,7 +219,7 @@
     "id": "69dacab8-ee11-11e9-8256-56000218142a",
     "name": "muzzy-xanthic-beagle",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -231,7 +231,7 @@
     "id": "69dacab9-ee11-11e9-8256-56000218142a",
     "name": "skimpy-black-fox",
     "type": "washer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -279,7 +279,7 @@
     "id": "69dacabd-ee11-11e9-8256-56000218142a",
     "name": "queasy-black-swan",
     "type": "dryer",
-    "running": true,
+    "running": false,
     "status": "normal",
     "position": {
       "x": 0,
@@ -351,7 +351,7 @@
     "id": "69dacac3-ee11-11e9-8256-56000218142a",
     "name": "tacky-firebrick-clam",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -363,7 +363,7 @@
     "id": "69dacac4-ee11-11e9-8256-56000218142a",
     "name": "boozy-ochre-vole",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -459,7 +459,7 @@
     "id": "69dacacc-ee11-11e9-8256-56000218142a",
     "name": "shaky-eggplant-monster",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -519,7 +519,7 @@
     "id": "69dacad1-ee11-11e9-8256-56000218142a",
     "name": "cloudy-puce-salamander",
     "type": "washer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -543,7 +543,7 @@
     "id": "69dacad3-ee11-11e9-8256-56000218142a",
     "name": "surly-charcoal-scorpion",
     "type": "washer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -555,7 +555,7 @@
     "id": "69dacad4-ee11-11e9-8256-56000218142a",
     "name": "scummy-aquamarine-macaque",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -579,7 +579,7 @@
     "id": "69dacad6-ee11-11e9-8256-56000218142a",
     "name": "wimpy-charcoal-vulture",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -591,7 +591,7 @@
     "id": "69dacad7-ee11-11e9-8256-56000218142a",
     "name": "squirrely-vermilion-zorse",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -651,7 +651,7 @@
     "id": "69dacadc-ee11-11e9-8256-56000218142a",
     "name": "cloudy-dandelion-squirrel",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -663,7 +663,7 @@
     "id": "69dacadd-ee11-11e9-8256-56000218142a",
     "name": "lousy-sangria-spaniel",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -675,7 +675,7 @@
     "id": "69dacade-ee11-11e9-8256-56000218142a",
     "name": "slimy-lavender-javanese",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
@@ -699,7 +699,7 @@
     "id": "69dacae0-ee11-11e9-8256-56000218142a",
     "name": "wheezy-lime-whippet",
     "type": "dryer",
-    "running": false,
+    "running": true,
     "status": "normal",
     "position": {
       "x": 0,
