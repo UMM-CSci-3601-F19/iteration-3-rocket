@@ -150,6 +150,13 @@ export class HomeComponent implements OnInit {
     this.cookieService.set('room_name', name);
   }
 
+  public defaultSet(): boolean {
+    if (this.cookieService.check('room_id')){
+      return this.cookieService.get('room_id')!='';
+    }
+    return this.cookieService.check('room_id');
+  }
+
   setSelector(state: number) {
     this.selectorState = state;
   }

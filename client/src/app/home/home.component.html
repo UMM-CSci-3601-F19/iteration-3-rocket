@@ -45,15 +45,18 @@
 
     </div>
     <mat-card *ngIf="this.roomId != ''" style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
-      <mat-card-title style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}</mat-card-title>
+      <mat-card-title id="roomTitle" style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}</mat-card-title>
       <mat-card-content style="height: 20px; margin-left: 10px">
         <a class="roomStatus"><mat-icon class="vacant">check_circle_outline</mat-icon>{{this.roomVacant}} vacant</a>
         <a class="roomStatus"><mat-icon class="inUse">schedule</mat-icon>{{this.roomRunning}} running</a>
         <a class="roomStatus"><mat-icon class="unavailable">highlight_off</mat-icon>{{this.roomBroken}} broken</a>
-        <button mat-button id = "defaultRoomButton" (click)="updateCookies(roomId,roomName)">Make Default</button>
+        <button *ngIf="!defaultSet()" mat-button id = "defaultRoomButton" (click)="updateCookies(roomId,roomName)">Make Default</button>
+        <button *ngIf="defaultSet()" mat-button id = "unsetDefaultRoomButton" (click)="updateCookies('','')">Unset Default</button>
+        <span id="defaultRoomIndicator" *ngIf="defaultSet()">room is currently set to:   <b>{{this.cookieService.get("room_name")}}</b></span>
+        <span *ngIf="!defaultSet()">Default room is currently unset!</span>
       </mat-card-content>
 
-      <button class="subscribeButton" mat-flat-button color="warn" [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">Subscribe</button>
+      <button id="subscribeButton" class="subscribeButton" mat-flat-button color="warn" [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">Subscribe</button>
     </mat-card>
 
     <mat-card *ngIf="this.roomId == ''" style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
