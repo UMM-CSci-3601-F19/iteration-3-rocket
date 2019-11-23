@@ -35,7 +35,7 @@ describe('Add user component', () => {
     fixture = TestBed.createComponent(AddUserComponent);
     addUserComponent = fixture.componentInstance;
   });
-
+/*
   // Much of the code for validation was created with a lot of exploration and helpful resources including:
   // https://stackoverflow.com/questions/39910017/angular-2-custom-validation-unit-testing
   // https://stackoverflow.com/questions/52046741/angular-testbed-query-by-css-find-the-pseudo-element
@@ -68,5 +68,5 @@ describe('Add user component', () => {
       expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
     });
   })
-  );
+  );*/
 });
