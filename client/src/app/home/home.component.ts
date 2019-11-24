@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
   public mapWidth: number;
   public mapHeight: number;
 
+  public isSubscribed: boolean;
   public subscriptionDisabled: boolean;
 
   public history: History[];
@@ -183,7 +184,8 @@ export class HomeComponent implements OnInit {
       const washerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'washer' && m.status === 'normal' && m.running === false).length;
       // tslint:disable-next-line:max-line-length
       const dryerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'dryer' && m.status === 'normal' && m.running === false).length;
-      this.subscriptionDisabled = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed || (washerVacant !== 0 && dryerVacant !== 0);
+      this.isSubscribed = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed;
+      this.subscriptionDisabled = this.isSubscribed || (washerVacant !== 0 && dryerVacant !== 0);
     }
     this.buildChart();
     this.fakePositions();

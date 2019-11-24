@@ -75,8 +75,11 @@
         <span *ngIf="!defaultSet()">Default room is currently unset!</span>
       </mat-card-content>
 
-      <button id="subscribeButton" class="subscribeButton" mat-flat-button color="warn"
-              [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">Subscribe
+      <button id="subscribeButton" class="subscribeButton" mat-stroked-button color="warn"
+              [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
+
+        <mat-accordion *ngIf="!isSubscribed">Subscribe</mat-accordion>
+        <mat-accordion *ngIf="isSubscribed">Subscribed</mat-accordion>
       </button>
     </mat-card>
 
