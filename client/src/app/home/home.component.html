@@ -6,6 +6,13 @@
       <i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms
     </button>
 
+    <button id="subscribeButton" class="subscribeButton" mat-stroked-button color="warn"
+            [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
+
+      <mat-accordion *ngIf="!isSubscribed">Subscribe</mat-accordion>
+      <mat-accordion *ngIf="isSubscribed">Subscribed</mat-accordion>
+    </button>
+
     <div id="scrollBox" style="display: block; position: relative; top: -1000px"></div>
 
     <div class="topMenu">
@@ -53,7 +60,8 @@
     <mat-card *ngIf="this.roomId != ''"
               style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
       <mat-card-title id="roomTitle"
-                      style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}</mat-card-title>
+                      style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}
+      </mat-card-title>
       <mat-card-content style="height: 20px; margin-left: 10px">
         <a class="roomStatus">
           <mat-icon class="vacant">check_circle_outline</mat-icon>
@@ -74,13 +82,6 @@
               *ngIf="defaultSet()">room is currently set to:   <b>{{this.cookieService.get("room_name")}}</b></span>
         <span *ngIf="!defaultSet()">Default room is currently unset!</span>
       </mat-card-content>
-
-      <button id="subscribeButton" class="subscribeButton" mat-stroked-button color="warn"
-              [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
-
-        <mat-accordion *ngIf="!isSubscribed">Subscribe</mat-accordion>
-        <mat-accordion *ngIf="isSubscribed">Subscribed</mat-accordion>
-      </button>
     </mat-card>
 
     <mat-card *ngIf="this.roomId == ''"

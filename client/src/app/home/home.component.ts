@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog, private cookieService: CookieService) {
-    this.subscriptionDisabled = false;
+    this.subscriptionDisabled = true;
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
   }

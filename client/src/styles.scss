@@ -316,8 +316,11 @@ mat-dialog-container .reportButton {
 }
 
 .subscribeButton {
-  left: 12px;
-  top: 10px;
+  z-index: 2;
+  position: fixed !important;
+  top: 12px !important;
+  right: 14px !important;
+  left: auto !important;
   border-radius: 18px !important;
 }
 
