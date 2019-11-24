@@ -683,7 +683,7 @@ export class HomeDialog {
         }
       );
     }
-    this.dialogRef.close();
+    this.ngOnInit();
   }
 
   generateCustomLink(machineRoomID: string, machineType: string, machineID: string): string {
