@@ -118,8 +118,8 @@ public class MailingController {
       ObjectId _id = newSubscription.getObjectId("_id");
       System.err.println("[subscribe] INFO mailing.MailingController - Successfully added new subscription [email=" + email + ", type=" + type + ", id=" + id + ']');
       return _id.toHexString();
-    } catch (MongoException me) {
-      me.printStackTrace();
+    } catch (MongoException e) {
+      e.printStackTrace();
       return null;
     }
   }
