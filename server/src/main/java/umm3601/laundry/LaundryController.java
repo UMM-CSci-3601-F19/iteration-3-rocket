@@ -12,13 +12,6 @@ import java.util.stream.StreamSupport;
 import static com.mongodb.client.model.Filters.eq;
 
 public class LaundryController {
-  private final MongoCollection<Document> roomCollection;
-  private MongoCollection<Document> machineCollection;
-
-  private MongoCollection<Document> machinePollingCollection;
-  private MongoCollection<Document> roomPollingCollection;
-  private MongoDatabase machinePullingDatabase;
-  private MongoDatabase roomPullingDatabase;
 
   /*
    * This is a switch for the E2E test
@@ -28,7 +21,15 @@ public class LaundryController {
    * back to true in order to make
    * the functionality works.
    */
-  private boolean seedLocalSource = true;
+  private final boolean seedLocalSource = true;
+
+  private final MongoCollection<Document> roomCollection;
+  private MongoCollection<Document> machineCollection;
+
+  private MongoCollection<Document> machinePollingCollection;
+  private MongoCollection<Document> roomPollingCollection;
+  private MongoDatabase machinePullingDatabase;
+  private MongoDatabase roomPullingDatabase;
 
   public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase, MongoDatabase roomPollingDatabase) {
     this.machinePullingDatabase = machinePollingDatabase;
