@@ -40,10 +40,6 @@
     background-color: mat-color($primary) !important;
   }
 
-  .sub-detail {
-    color: $light-secondary-text
-  }
-
   @if $is-dark {
 
     .roomHeading, .topMenu {
@@ -251,7 +247,7 @@ mat-grid-tile mat-card {
 }
 .cardType {
   font-style: italic;
-  color: #999;
+  color: #888;
 }
 
 #predictionGraphTitle {
@@ -351,6 +347,7 @@ mat-dialog-container .reportButton {
 
 .sub-detail {
   font-size: 90%;
+  color: #888
 }
 
 #app-title {

@@ -28,7 +28,7 @@ public class LaundryController {
    * back to true in order to make
    * the functionality works.
    */
-  private boolean seedLocalSource = false;
+  private boolean seedLocalSource = true;
 
   public LaundryController(MongoDatabase machineDatabase, MongoDatabase roomDatabase, MongoDatabase machinePollingDatabase, MongoDatabase roomPollingDatabase) {
     this.machinePullingDatabase = machinePollingDatabase;
