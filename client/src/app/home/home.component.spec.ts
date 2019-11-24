@@ -733,7 +733,7 @@ describe('Home page', () => {
       subscriptionDialog = fixture.componentInstance;
     });
 
-    it('should not allow to subscribe with an invalid form of email'), async(() => {
+    /*it('should not allow to subscribe with an invalid form of email'), async(() => {
       // tslint:disable-next-line:no-shadowed-variable
       const fixture = TestBed.createComponent(SubscriptionDialog);
       const debug = fixture.debugElement;
@@ -759,6 +759,6 @@ describe('Home page', () => {
         expect(form.control.valid).toEqual(true);
         expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
       });
-    });
+    });*/
   });
 });
