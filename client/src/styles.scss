@@ -334,7 +334,7 @@ mat-dialog-container .reportButton {
   top: -5px;
 }
 
-#confirmAddSubButton {
+#confirmAddSubButton, #disabledConfirmAddSubButton {
   z-index: 5;
   padding: 0 15px;
   margin-left: auto;
@@ -356,4 +356,11 @@ mat-dialog-container .reportButton {
 #app-title {
   padding: 12px;
   font-style: italic;
+}
+
+#machineIsSubscribed {
+  margin-top: 15px;
+}
+.machineIdentity a {
+  padding-bottom: 5px;
 }
