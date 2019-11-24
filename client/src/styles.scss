@@ -40,6 +40,10 @@
     background-color: mat-color($primary) !important;
   }
 
+  .sub-detail {
+    color: $light-secondary-text
+  }
+
   @if $is-dark {
 
     .roomHeading, .topMenu {
@@ -313,5 +317,35 @@ mat-dialog-container .reportButton {
 
 .subscribeButton {
   left: 12px;
-  top: -2px;
+  top: 10px;
+  border-radius: 18px !important;
+}
+
+.subTypeButton {
+  margin-right: 15px;
+}
+
+#exitWithoutAddingButton {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+}
+
+#confirmAddSubButton {
+  z-index: 5;
+  padding: 0 15px;
+  margin-left: auto;
+  position: absolute;
+  margin-right: -3px;
+  right: 0;
+  margin-top: 11px;
+  border-radius: 18px
+}
+
+.sub-title {
+  margin-bottom: 10px;
+}
+
+.sub-detail {
+  font-size: 90%;
 }
