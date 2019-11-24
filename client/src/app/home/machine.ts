@@ -1,4 +1,5 @@
 export interface Machine {
+  isSubscribed: boolean;
   id: string;
   name: string;
   running: boolean;

@@ -12,8 +12,8 @@ browser.driver.controlFlow().execute = function () {
   const args = arguments;
 
   // queue 100ms wait between test
-  // This delay is only put here so that you can watch the browser do its thing.
-  // If you're tired of it taking long you can remove this call or change the delay
+  // This delay is only put here so that you can watch the browser do xits thing.
+  // If you're tired of xit taking long you can remove this call or change the delay
   // to something smaller (even 0).
   origFn.call(browser.driver.controlFlow(), () => {
     return protractor.promise.delayed(0);
@@ -30,6 +30,10 @@ describe('home', () => {
     page = new HomePage();
   });
 
+  afterEach(() => {
+    browser.executeScript('window.sessionStorage.clear();');
+  });
+
   it('should get and highlight Home panel title attribute', () => {
     page.navigateTo();
     expect(page.getHomePanelTitle()).toEqual('Please select a laundry room here');
@@ -41,7 +45,7 @@ describe('home', () => {
     expect(page.getIndependenceHallTitleInHomePanel()).toEqual('Independence Hall');
     expect(page.getBlakelyHallTitleInHomePanel()).toEqual('Blakely Hall');
     expect(page.getSpoonerHallTitleInHomePanel()).toEqual('Spooner Hall');
-    expect(page.getGreenPrairieHallTitleInHomePanel()).toEqual('Green Prairie');
+    expect(page.getGreenPrairieHallTitleInHomePanel()).toEqual('Green Prairie Hall');
     expect(page.getPineHallTitleInHomePanel()).toEqual('Pine Hall');
     expect(page.getApartmentHallTitleInHomePanel()).toEqual('The Apartments');
   });
@@ -140,5 +144,52 @@ describe('home', () => {
     const b = page.getUniqueMachine('69dacaa7-ee11-11e9-8256-56000218142a');
     expect(a).not.toEqual(b);
   }, 100000);
+
+  it('should have a subscribe button when you select a specific room', () => {
+    page.navigateTo();
+    page.clickGayHall();
+    expect(page.elementExistsWithId('subscribeButton'));
+  });
+
+  it('should have a make default button when you select a specific room', () => {
+    page.navigateTo();
+    page.clickGayHall();
+    expect(page.elementExistsWithId('defaultRoomButton'));
+  });
+
+  it('should have an unset default button when you set a room to be default', () => {
+    page.navigateTo();
+    page.clickGayHall();
+    page.click('defaultRoomButton');
+    expect(page.elementExistsWithId('unsetDefaultRoomButton'));
+    page.click('unsetDefaultRoomButton');
+  });
+
+  it('should set gay hall as default room', () => {
+    page.navigateTo();
+    page.clickGayHall();
+    page.click('defaultRoomButton');
+    page.navigateTo();
+    expect(page.getRoomTitle()).toEqual('Gay Hall');
+    page.click('unsetDefaultRoomButton');
+  });
+
+  it('should set gay hall as default room, and get correct message', () => {
+    page.navigateTo();
+    page.clickGayHall();
+    page.click('defaultRoomButton');
+    page.click('all-rooms');
+    page.clickPineHall();
+    expect(page.getTextWithID('defaultRoomIndicator')).toEqual('room is currently set to: Gay Hall');
+    page.click('all-rooms');
+    page.clickGayHall();
+    page.click('unsetDefaultRoomButton');
+  })
+
+  // it('should not have a subscribe button when you select all room', () => {
+  //   page.navigateTo();
+  //   page.clickAllRooms()
+  //   expect(('subscribeButton'));
+  // })
 });
 

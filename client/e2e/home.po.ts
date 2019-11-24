@@ -25,6 +25,7 @@ export class HomePage {
     this.highlightElement(by.id('home-rooms-card'));
     return title;
   }
+
   getUniqueRoomTitle() {
     const title = element(by.id('machines-grid')).getText();
     this.highlightElement(by.id('machines-grid'));
@@ -52,6 +53,11 @@ export class HomePage {
   getDialogTitle() {
     const title = element(by.id('dTitle')).getText();
     this.highlightElement(by.id('dTitle'));
+    return title;
+  }
+
+  getRoomTitle() {
+    const title = element(by.id('roomTitle')).getText();
     return title;
   }
 
@@ -146,6 +152,15 @@ export class HomePage {
 
   clickGayHall(){
     this.click('gayId');
+  }
+
+  clickPineHall(){
+    this.click('pineId');
+  }
+
+  getTextWithID(Id: string){
+    const text = element(by.id(Id)).getText();
+    return text;
   }
 
   getCardName() {

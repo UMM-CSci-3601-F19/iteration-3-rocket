@@ -76,6 +76,7 @@ export class HomeService {
       responseType: 'text' as 'json'
     };
 
+    console.log(newSub);
     console.log(httpOptions);
     // Send post request to add a new user with the user data as the body with specified headers.
     return this.http.post<string>(this.subURL + '/new', newSub, httpOptions);

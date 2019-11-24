@@ -1,5 +1,5 @@
 export interface Subscription {
   email: string;
-  room_id: string;
+  id: string;
   type: string;
 }

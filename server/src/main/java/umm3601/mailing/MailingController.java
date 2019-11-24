@@ -2,10 +2,12 @@ package umm3601.mailing;
 
 // using SendGrid's Java Library
 // https://github.com/sendgrid/sendgrid-java
+
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.sendgrid.*;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -13,6 +15,8 @@ import org.bson.types.ObjectId;
 import java.io.IOException;
 
 public class MailingController {
+
+  private final String EMAIL_FROM = "laundry_service@morrisfacility.com";
 
   public final MongoCollection<Document> subscriptionCollection;
   private final MongoCollection<Document> machineCollection;
@@ -23,41 +27,73 @@ public class MailingController {
   }
 
   public void checkSubscriptions() throws IOException {
-    FindIterable<Document> subscriptions = subscriptionCollection.find();
+    Document filterDoc = new Document();
+    filterDoc.append("type", "machine");
+    FindIterable<Document> subscriptionsForMachines = subscriptionCollection.find().filter(filterDoc);
+    for (Document s : subscriptionsForMachines) {
+      filterDoc = new Document();
+      filterDoc.append("id", s.get("id"));
 
-    for (Document s : subscriptions) {
-      Document filterDoc = new Document();
-      filterDoc.append("room_id", s.get("room_id"));
+      Document vacantMachine = machineCollection.find(filterDoc).first();
+      if (vacantMachine != null
+        && !vacantMachine.getBoolean("running")
+        && vacantMachine.getString("status").equals("normal")) {
+
+        String machineName = transformId(vacantMachine.getString("name"));
+        String roomName = transformId(vacantMachine.getString("room_id"));
+        String type = vacantMachine.getString("type");
+        sendMachineNotification(s.getString("email"), roomName, machineName, type);
+        subscriptionCollection.deleteOne(s);
+      }
+    }
+
+    FindIterable<Document> subscriptionsForRooms = subscriptionCollection.find(Filters.not(filterDoc));
+    for (Document s : subscriptionsForRooms) {
+      filterDoc = new Document();
+      filterDoc.append("room_id", s.get("id"));
       filterDoc.append("type", s.get("type"));
       filterDoc.append("status", "normal");
       filterDoc.append("running", false);
-      Document vacantMachine = machineCollection.find(filterDoc).first();
 
+      Document vacantMachine = machineCollection.find(filterDoc).first();
       if (vacantMachine != null) {
+
         String machineName = transformId(vacantMachine.getString("name"));
         String roomName = transformId(vacantMachine.getString("room_id"));
-        sendNotification(s.getString("email"), roomName, machineName);
+        String type = vacantMachine.getString("type");
+        sendRoomNotification(s.getString("email"), roomName, machineName, type);
         subscriptionCollection.deleteOne(s);
       }
     }
   }
 
-  private void sendNotification(String email, String roomName, String machineName) throws IOException {
-    Email from = new Email("test@example.com");
-    Email to = new Email(email);
-    String subject = "A vacant machine machine is found!";
+  private void sendMachineNotification(String email, String roomName, String machineName, String type) throws IOException {
+    String subject = "Your subscribed " + type + " " + machineName + " in room " + roomName + " is vacant!";
     Content content = new Content("text/plain", "some content");
-    Mail mail = new Mail(from, subject, to, content);
 
-//    SendGrid sg = new SendGrid("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");
-    SendGrid sg = new SendGrid("fake-key");
-//    SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+    Mail mail = new Mail(new Email(EMAIL_FROM), subject, new Email(email), content);
+    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email);
+    send(mail);
+  }
+
+  private void sendRoomNotification(String email, String roomName, String machineName, String type) throws IOException {
+    String subject = "A vacant " + type + " " + machineName + " is found in " + roomName + "!";
+    Content content = new Content("text/plain", "some content");
+
+    Mail mail = new Mail(new Email(EMAIL_FROM), subject, new Email(email), content);
+    System.out.print("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
+  }
+
+  private int send(Mail mail) throws IOException {
+    String key = "put_your_key_here";
+//  String key = System.getenv("SENDGRID_API_KEY");
+    SendGrid sg = new SendGrid(key);
     Request request = new Request();
     request.setMethod(Method.POST);
     request.setEndpoint("mail/send");
     request.setBody(mail.build());
     Response response = sg.api(request);
-    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " with code " + response.getStatusCode());
+    return response.getStatusCode();
   }
 
   private String transformId(String str) {
@@ -72,16 +108,16 @@ public class MailingController {
     return transformed;
   }
 
-  public String addNewSubscription(String email, String type, String room_id) {
+  public String addNewSubscription(String email, String type, String id) {
     Document newSubscription = new Document();
     newSubscription.append("email", email);
     newSubscription.append("type", type);
-    newSubscription.append("room_id", room_id);
+    newSubscription.append("id", id);
     try {
       subscriptionCollection.insertOne(newSubscription);
-      ObjectId id = newSubscription.getObjectId("_id");
-      System.err.println("[subscribe] INFO mailing.MailingController - Successfully added new subscription [email=" + email + ", type=" + type + ", room_id=" + room_id + ']');
-      return id.toHexString();
+      ObjectId _id = newSubscription.getObjectId("_id");
+      System.err.println("[subscribe] INFO mailing.MailingController - Successfully added new subscription [email=" + email + ", type=" + type + ", id=" + id + ']');
+      return _id.toHexString();
     } catch (MongoException me) {
       me.printStackTrace();
       return null;
