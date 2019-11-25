@@ -86,12 +86,12 @@
       <button *ngIf="!defaultSet(roomName)" mat-button id="defaultRoomButton" class="defaultRoomButton"
               (click)="updateCookies(roomId,roomName)">
         <mat-icon style="margin-top: 8px">check_box_outline_blank</mat-icon>
-        <a class="default-selector-text">remember current room on next visit</a>
+        <a class="default-selector-text">Remember current room on your next visit</a>
       </button>
       <button *ngIf="defaultSet(roomName)" mat-button id="unsetDefaultRoomButton" class="defaultRoomButton"
               (click)="updateCookies('','All Rooms')">
         <mat-icon style="margin-top: 8px">check_box</mat-icon>
-        <a class="default-selector-text">remember current room on next visit</a>
+        <a class="default-selector-text">Remember current room on your next visit</a>
       </button>
     </div>
 
