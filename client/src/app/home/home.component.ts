@@ -101,7 +101,8 @@ export class HomeComponent implements OnInit {
         this.homeService.addNewSubscription(newSub).subscribe(
           () => {
             this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
-            this.updateRoom(this.roomId, this.roomName);
+            this.isSubscribed = true;
+            this.subscriptionDisabled = true;
           },
           err => {
             // This should probably be turned into some sort of meaningful response.

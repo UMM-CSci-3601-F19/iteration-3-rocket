@@ -21,7 +21,7 @@ public class LaundryController {
    * back to true in order to make
    * the functionality works.
    */
-  private final boolean seedLocalSource = true;
+  private final boolean seedLocalSource = false;
 
   private final MongoCollection<Document> roomCollection;
   private MongoCollection<Document> machineCollection;

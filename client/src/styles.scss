@@ -312,18 +312,18 @@ mat-dialog-container .reportButton {
 }
 
 .subscribeButton {
-  z-index: 2;
   position: absolute !important;
-  top: 0 !important;
-  right: 14px !important;
+  top: 5px !important;
+  right: 5px !important;
   left: auto !important;
   border-radius: 18px !important;
   min-width: 36px !important;
   padding: 0 !important;
+  margin-left: 10px;
 }
 
-#roomTitle {
-  max-width: 85%;
+#roomSubHolder {
+  margin-left: 10px;
 }
 
 .subTypeButton {
@@ -353,7 +353,8 @@ mat-dialog-container .reportButton {
 
 .sub-detail {
   font-size: 90%;
-  color: #888
+  color: #888;
+  font-style: italic;
 }
 
 #app-title {

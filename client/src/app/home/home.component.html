@@ -54,22 +54,8 @@
               style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
       <mat-card-title id="roomTitle"
                       style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}
-      </mat-card-title>
 
-      <mat-accordion *ngIf="!subscriptionDisabled || isSubscribed">
-        <button mat-stroked-button id="subscribeButton" class="subscribeButton"
-                [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
-          <mat-icon style="margin: 0">
-            <mat-accordion *ngIf="!isSubscribed || isSubscribed === undefined">
-              notifications_none
-            </mat-accordion>
-            <mat-accordion *ngIf="isSubscribed"
-                           matTooltip="Successfully subscribed to {{this.roomName}}. You will receive an message when there is an available machine">
-              notifications_active
-            </mat-accordion>
-          </mat-icon>
-        </button>
-      </mat-accordion>
+      </mat-card-title>
 
       <mat-card-content style="height: 20px; margin-left: 10px">
         <a class="roomStatus">
@@ -141,7 +127,28 @@
           <mat-accordion *ngIf="this.roomId != ''; else mapError">
             <mat-card-title id="roomMapTitle"
                             style="font-weight: unset; padding-left: 8px; font-size: 18px !important;">Machines' Map
+
+                <a id="roomSubHolder">
+                  <button mat-icon-button id="subscribeButton" class="subscribeButton"
+                          [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
+                    <mat-icon style="margin: 0">
+                      <mat-accordion *ngIf="(!isSubscribed || isSubscribed === undefined) && !subscriptionDisabled"
+                                     matTooltip="Click to subscribe when there is an available machine.">
+                        notifications_none
+                      </mat-accordion>
+                      <mat-accordion *ngIf="isSubscribed"
+                                     matTooltip="You will receive an message when there is an available machine.">
+                        notifications_active
+                      </mat-accordion>
+                      <mat-accordion *ngIf="(!isSubscribed || isSubscribed === undefined) && subscriptionDisabled"
+                                     matTooltip="Cannot subscribe when there is available dryers and washers.">
+                        notifications_none
+                      </mat-accordion>
+                    </mat-icon>
+                  </button>
+                </a>
             </mat-card-title>
+
             <mat-accordion *ngIf="numOfAll > 0; else machinesError">
               <mat-card class="map" style="display: block; box-shadow: none !important; height: 120px; width: 210px">
                 <mat-accordion *ngFor="let machine of this.filteredMachines">
@@ -222,7 +229,7 @@
                 </mat-accordion>
               </mat-card>
               <div id="roomEntrance" style="display: block; text-align: center; font-size: 15px">Entrance
-                of {{this.roomName}}</div>
+                to {{this.roomName}}</div>
             </mat-accordion>
           </mat-accordion>
         </mat-card>
