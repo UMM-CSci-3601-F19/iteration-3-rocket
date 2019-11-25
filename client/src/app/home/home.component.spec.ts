@@ -482,7 +482,7 @@ describe('Home page', () => {
 
   it('displays a text of rooms', () => {
     fixture.detectChanges();
-    expect(el.textContent).toContain('Please select a laundry room here');
+    expect(el.textContent).toContain('Select a Laundry Room to View');
   });
 
   it('displays a text of busy time\'s title', () => {
@@ -497,7 +497,7 @@ describe('Home page', () => {
 
   it('displays a text of broken machines', () => {
     fixture.detectChanges();
-    expect(hl.textContent).toContain('Machines within All rooms');
+    expect(hl.textContent).toContain('Machines at All rooms');
   });
 
   it('load all the machines', () => {
