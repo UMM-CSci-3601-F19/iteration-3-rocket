@@ -250,4 +250,9 @@ export class HomePage {
     return element(by.id(idOfField)).getText();
   }
 
+  getTextFromClassName(cssOfElement: string) {
+    this.highlightElement(by.className(cssOfElement));
+    return element(by.className(cssOfElement)).getText();
+  }
+
 }
