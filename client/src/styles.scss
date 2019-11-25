@@ -279,15 +279,16 @@ mat-grid-tile mat-card {
   margin: 5px 0;
 }
 
-.roomStatus mat-icon {
+.roomStatus mat-icon, #default-selector mat-icon {
   font-size: 16px;
   margin-right: 0;
+  text-align: end;
 }
 
 .roomStatus {
   font-style: italic;
-  font-size: 15px;
-  margin-right: 12px;
+  font-size: 16px;
+  margin-right: 5px;
   display: inline-block;
 }
 
@@ -371,4 +372,27 @@ mat-dialog-container .reportButton {
 
 .machineIdentity a {
   padding-bottom: 5px;
+}
+
+.defaultRoomButton {
+  padding: 0 !important;
+  font-style: italic;
+  top: -6px;
+  margin-right: 15px;
+}
+
+#default-selector {
+  height: 20px;
+  margin-left: 13px;
+  margin-bottom: 5px;
+  padding-right: 14px;
+}
+
+.default-selector-text {
+  margin: 0 7px;
+  font-weight: 400;
+}
+
+#default-selector .mat-ripple-element {
+  display: none;
 }
