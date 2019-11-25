@@ -136,8 +136,10 @@
                             style="font-weight: unset; padding-left: 8px; font-size: 18px !important;">Laundry Room Map
 
               <a id="roomSubHolder">
-                <button mat-icon-button id="subscribeButton" class="subscribeButton"
+                <button mat-button id="subscribeButton" class="subscribeButton"
                         [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
+                  <mat-accordion class="subscribeButtonText" *ngIf="isSubscribed">Subscribed </mat-accordion>
+                  <mat-accordion class="subscribeButtonText" *ngIf="!isSubscribed">Subscribe </mat-accordion>
                   <mat-icon style="margin: 0">
                     <mat-accordion *ngIf="(!isSubscribed || isSubscribed === undefined) && !subscriptionDisabled"
                                    matTooltip="Click to subscribe when there is an available machine.">
