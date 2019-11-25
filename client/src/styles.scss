@@ -27,18 +27,30 @@
   $is-dark: map-get($theme, is-dark);
 
   // Define any styles affected by the theme.
-
   mat-sidenav-content {
-    background-color: mat-color($primary, 200);
+    background-color: #fdf5f2;
   }
 
-  .roomHeading, .topMenu {
-    background-color: mat-color($primary) !important;
+  .roomHeading.mat-card {
+    background: #fdf5f2;
+    //color: $light-primary-text !important;
+  }
+
+  #default-mark {
+    color: mat-color($warn);
   }
 
   @if $is-dark {
+    mat-sidenav-content {
+      background-color: mat-color($background, 1000);
+    }
 
-    .roomHeading, .topMenu {
+    .roomHeading.mat-card {
+      background: unset;
+      //color: $light-primary-text !important;
+    }
+
+    .topMenu, .roomHeading {
       background-color: mat-color($background, app-bar) !important;
     }
 
@@ -67,10 +79,6 @@
     .unavailable {
       color: #aaaaaa !important;
     }
-
-    .roomHeading {
-      background-color: mat-color($background, app-bar) !important;
-    }
   }
 
   .roomHeading {
@@ -85,12 +93,12 @@
   }
 
   .topMenu {
-    margin-top: -5px;
+    margin-top: 15px;
     margin-left: -5px;
     margin-right: -5px;
     padding-left: 5px;
     padding-right: 5px;
-    padding-bottom: 25px;
+    padding-bottom: 12px;
   }
 
   .drawer-list-item-active {
@@ -182,7 +190,7 @@ mat-icon {
   margin: 5px;
 }
 
-.mat-expansion-panel:not([class*='mat-elevation-z']) {
+.allMachinesPanel.mat-expansion-panel {
   box-shadow: none;
 }
 
@@ -407,4 +415,8 @@ mat-dialog-container .reportButton {
 
 #default-selector .mat-ripple-element {
   display: none;
+}
+
+.mat-card, .mat-expansion-panel, #all-rooms {
+  box-shadow: none !important;
 }
