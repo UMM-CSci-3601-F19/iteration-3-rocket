@@ -85,8 +85,8 @@ public class MailingController {
   }
 
   private int send(Mail mail) throws IOException {
-    String key = "put_your_key_here";
 //  String key = System.getenv("SENDGRID_API_KEY");
+    final String key = "put_your_key_here";
     SendGrid sg = new SendGrid(key);
     Request request = new Request();
     request.setMethod(Method.POST);
