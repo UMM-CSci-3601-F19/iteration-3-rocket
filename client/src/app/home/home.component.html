@@ -253,7 +253,14 @@
                      href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px"
                      (click)="openDialog(machine)">
-                    <mat-icon style="margin: 0">more_vert</mat-icon>
+                    <mat-icon style="margin: 0">
+                      <mat-accordion *ngIf="!machine.isSubscribed || machine.isSubscribed === undefined">
+                        more_vert
+                      </mat-accordion>
+                      <mat-accordion *ngIf="machine.isSubscribed">
+                        notifications_active
+                      </mat-accordion>
+                    </mat-icon>
                   </a>
                 </mat-card>
               </mat-grid-tile>
@@ -285,7 +292,14 @@
                      href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px"
                      (click)="openDialog(machine)">
-                    <mat-icon style="margin: 0">more_vert</mat-icon>
+                    <mat-icon style="margin: 0">
+                      <mat-accordion *ngIf="!machine.isSubscribed || machine.isSubscribed === undefined">
+                        more_vert
+                      </mat-accordion>
+                      <mat-accordion *ngIf="machine.isSubscribed">
+                        notifications_active
+                      </mat-accordion>
+                    </mat-icon>
                   </a>
                 </mat-card>
               </mat-grid-tile>
@@ -315,7 +329,14 @@
                      href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px"
                      (click)="openDialog(machine)">
-                    <mat-icon style="margin: 0">more_vert</mat-icon>
+                    <mat-icon style="margin: 0">
+                      <mat-accordion *ngIf="!machine.isSubscribed || machine.isSubscribed === undefined">
+                        more_vert
+                      </mat-accordion>
+                      <mat-accordion *ngIf="machine.isSubscribed">
+                        notifications_active
+                      </mat-accordion>
+                    </mat-icon>
                   </a>
                 </mat-card>
               </mat-grid-tile>
@@ -346,7 +367,14 @@
                      href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px"
                      (click)="openDialog(machine)">
-                    <mat-icon style="margin: 0">more_vert</mat-icon>
+                    <mat-icon style="margin: 0">
+                      <mat-accordion *ngIf="!machine.isSubscribed || machine.isSubscribed === undefined">
+                        more_vert
+                      </mat-accordion>
+                      <mat-accordion *ngIf="machine.isSubscribed">
+                        notifications_active
+                      </mat-accordion>
+                    </mat-icon>
                   </a>
                 </mat-card>
               </mat-grid-tile>
@@ -378,7 +406,14 @@
                      href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px"
                      (click)="openDialog(machine)">
-                    <mat-icon style="margin: 0">more_vert</mat-icon>
+                    <mat-icon style="margin: 0">
+                      <mat-accordion *ngIf="!machine.isSubscribed || machine.isSubscribed === undefined">
+                        more_vert
+                      </mat-accordion>
+                      <mat-accordion *ngIf="machine.isSubscribed">
+                        notifications_active
+                      </mat-accordion>
+                    </mat-icon>
                   </a>
                 </mat-card>
               </mat-grid-tile>
@@ -408,7 +443,14 @@
                      href="{{generateCustomLink(machine.room_id, machine.type, machine.name)}}">Report an issue</a>
                   <a class="detailButton" mat-icon-button style="position: absolute; top: 5px; right: 5px"
                      (click)="openDialog(machine)">
-                    <mat-icon style="margin: 0">more_vert</mat-icon>
+                    <mat-icon style="margin: 0">
+                      <mat-accordion *ngIf="!machine.isSubscribed || machine.isSubscribed === undefined">
+                        more_vert
+                      </mat-accordion>
+                      <mat-accordion *ngIf="machine.isSubscribed">
+                        notifications_active
+                      </mat-accordion>
+                    </mat-icon>
                   </a>
                 </mat-card>
               </mat-grid-tile>
