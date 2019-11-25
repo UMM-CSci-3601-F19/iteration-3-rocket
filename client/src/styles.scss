@@ -313,11 +313,17 @@ mat-dialog-container .reportButton {
 
 .subscribeButton {
   z-index: 2;
-  position: fixed !important;
-  top: 12px !important;
+  position: absolute !important;
+  top: 0 !important;
   right: 14px !important;
   left: auto !important;
   border-radius: 18px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+}
+
+#roomTitle {
+  max-width: 85%;
 }
 
 .subTypeButton {

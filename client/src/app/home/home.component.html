@@ -6,13 +6,6 @@
       <i class="material-icons" style="margin-right: 10px !important;">store_mall_directory</i>Select Rooms
     </button>
 
-    <button id="subscribeButton" class="subscribeButton" mat-stroked-button color="warn"
-            [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
-
-      <mat-accordion *ngIf="!isSubscribed">Subscribe</mat-accordion>
-      <mat-accordion *ngIf="isSubscribed">Subscribed</mat-accordion>
-    </button>
-
     <div id="scrollBox" style="display: block; position: relative; top: -1000px"></div>
 
     <div class="topMenu">
@@ -62,6 +55,22 @@
       <mat-card-title id="roomTitle"
                       style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}
       </mat-card-title>
+
+      <mat-accordion *ngIf="!subscriptionDisabled || isSubscribed">
+        <button mat-stroked-button id="subscribeButton" class="subscribeButton"
+                [disabled]="subscriptionDisabled" (click)="openSubscription(this.roomId)">
+          <mat-icon style="margin: 0">
+            <mat-accordion *ngIf="!isSubscribed || isSubscribed === undefined">
+              notifications_none
+            </mat-accordion>
+            <mat-accordion *ngIf="isSubscribed"
+                           matTooltip="Successfully subscribed to {{this.roomName}}. You will receive an message when there is an available machine">
+              notifications_active
+            </mat-accordion>
+          </mat-icon>
+        </button>
+      </mat-accordion>
+
       <mat-card-content style="height: 20px; margin-left: 10px">
         <a class="roomStatus">
           <mat-icon class="vacant">check_circle_outline</mat-icon>
