@@ -29,30 +29,23 @@
   $foreground: map-get($theme, foreground);
 
   $is-dark: map-get($theme, is-dark);
-
   // Define any styles affected by the theme.
 
-  mat-sidenav-content {
-    background-color: mat-color($primary, 200 );
-  }
-
-  .roomHeading, .topMenu {
-    background-color: mat-color($primary) !important;
-  }
-
+  // dark theming
   @if $is-dark {
-
-    .roomHeading, .topMenu {
-      background-color: mat-color($background, app-bar) !important;
-    }
 
     .mat-toolbar.mat-primary {
       background: mat-color($background, app-bar);
       color: mat-color($foreground, text);
     }
 
-    mat-sidenav-content {
-      background: mat-color($background, app-bar);
+    mat-sidenav-content, .roomHeading {
+      background-color: mat-color($background, app-bar);
+    }
+
+    .roomSelector, .room, #all-rooms {
+      background-color: mat-color($background, app-bar) !important;
+      color: mat-color($accent) !important;
     }
 
     .indicator {
@@ -71,32 +64,9 @@
     .unavailable {
       color: #aaaaaa !important;
     }
-
-    .roomHeading {
-      background-color: mat-color($background, app-bar) !important;
-    }
   }
 
-  .roomHeading {
-    padding-top: 5px !important;
-    margin: 0 -5px 10px -5px !important;
-    font-style: italic;
-    border-radius: 0 !important;
-    position: sticky !important;
-    top: 59px;
-    z-index: 1;
-    box-shadow: none !important;
-  }
-
-  .topMenu {
-    margin-top: -5px;
-    margin-left: -5px;
-    margin-right: -5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-bottom: 25px;
-  }
-
+  // colors
   .drawer-list-item-active {
     background-color: mat-color($background, hover) !important;
     color: mat-color($primary) !important;
@@ -111,9 +81,36 @@
       margin-right: 16px;
     }
   }
+
+  mat-sidenav-content, .roomHeading {
+    background-color: mat-color($primary, 40);
+  }
+
+  .topMenu, .roomSelector, .room, #all-rooms {
+    background-color: mat-color($primary, 900) !important;
+    color: mat-color($accent) !important;
+  }
+
+  .indicator, #home-rooms-card {
+    color: $light-primary-text;
+  }
+
+  .vacant {
+    color: darkgreen;
+  }
+
+  .inUse {
+    color: goldenrod;
+  }
+
+  .unavailable {
+    color: grey;
+  }
+  .cardType {
+    font-style: italic;
+    color: #999;
+  }
 }
-
-
 // Sets up the theming for built in material components with the light theme
 @include angular-material-theme($light-theme);
 
@@ -138,10 +135,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   @include app-theming($dark-theme);
 }
 
+// class "top menu" and all subclasses
+
+.topMenu {
+  margin-top: -5px;
+  margin-left: -5px;
+  margin-right: -5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 25px;
+  width: 100%;
+}
+
+#roomSelector, #allRooms {
+  text-align: left;
+}
+
 .indicator {
   font-size: 14px;
   margin-left: 38px;
-  color: $dark-secondary-text;
 }
 
 .roomName {
@@ -155,10 +167,6 @@ mat-card {
 
 mat-icon {
   margin-right: 25px;
-}
-
-#roomSelector, #allRooms {
-  text-align: left;
 }
 
 .room mat-icon {
@@ -195,59 +203,6 @@ mat-icon {
 
 .menuLabel.mat-icon.notranslate.material-icons.mat-icon-no-color{
   margin-left: 9px;
-}
-
-.vacant {
-  color: #007700;
-}
-
-.inUse {
-  color: #999900;
-}
-
-.unavailable {
-  color: #555555;
-}
-
-.map.mat-card {
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-.main-content.mat-typography {
-  margin: 5px !important;
-}
-
-.allMachinesPanel .mat-expansion-panel-body {
-  padding: 0;
-}
-
-.roomSelector.mat-expansion-panel {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-mat-grid-tile mat-card {
-  margin: 10px;
-}
-
-.reportButton {
-  padding: 0 0 !important;
-  font-style: italic;
-  font-size: 90%;
-  position: absolute;
-  left: 0;
-  height: 36px;
-  bottom: 28px;
-  border-radius: 18px !important;
-}
-
-.reportButton:hover {
-  text-decoration-line: underline;
-}
-.cardType {
-  font-style: italic;
-  color: #999;
 }
 
 #predictionGraphTitle {
@@ -314,4 +269,53 @@ mat-dialog-container .reportButton {
 .subscribeButton {
   left: 12px;
   top: -2px;
+}
+
+
+.map.mat-card {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.main-content.mat-typography {
+  margin: 5px !important;
+}
+
+.allMachinesPanel .mat-expansion-panel-body {
+  padding: 0;
+}
+
+.roomSelector.mat-expansion-panel {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+mat-grid-tile mat-card {
+  margin: 10px;
+}
+
+.reportButton {
+  padding: 0 0 !important;
+  font-style: italic;
+  font-size: 90%;
+  position: absolute;
+  left: 0;
+  height: 36px;
+  bottom: 28px;
+  border-radius: 18px !important;
+}
+
+.reportButton:hover {
+  text-decoration-line: underline;
+}
+
+.roomHeading {
+  padding-top: 5px !important;
+  margin: 0 -5px 10px -5px !important;
+  font-style: italic;
+  border-radius: 0 !important;
+  position: sticky !important;
+  top: 59px;
+  z-index: 1;
+  box-shadow: none !important;
 }
