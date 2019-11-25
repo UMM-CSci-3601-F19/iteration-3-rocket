@@ -36,15 +36,10 @@ describe('Home page', () => {
     updateRunningStatus;
   };
 
-  let cookieServiceMock: {
-    getName: () => Observable<String[]>;
-  };
+  let spyCookieService = jasmine.createSpyObj({ CookieService });
 
   // @ts-ignore
   beforeEach(() => {
-    cookieServiceMock = {
-      getName: () => Observable.of([''])
-    };
 
     homeServiceStub = {
       getMachines: () => Observable.of([
@@ -461,7 +456,7 @@ describe('Home page', () => {
       declarations: [HomeComponent], // declare the test component
       providers: [
         {provide: HomeService, useValue: homeServiceStub},
-        {provide: CookieService, useValue: cookieServiceMock}
+        {provide: CookieService, useValue: spyCookieService}
         ]
     });
 
@@ -699,6 +694,11 @@ describe('Home page', () => {
     component.buildChart();
     component.modifyArray([], 2);
     expect(component.filteredMachines.length).toEqual(1);
+  });
+
+  it('should set a cookie', () => {
+    component.updateCookies('gay', 'Gay Hall');
+
   });
 
   describe('Add subscription dialog', () => {
