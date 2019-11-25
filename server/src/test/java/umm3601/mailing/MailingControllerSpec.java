@@ -248,4 +248,115 @@ public class MailingControllerSpec {
     }
     assertNull("should not send the notification again", t);
   }
+
+  @Test
+  public void sendNotificationForMachine() {
+    subDocuments.drop();
+    List<Document> testSubs = new ArrayList<>();
+    testSubs.add(Document.parse("{\n" +
+      "\t\"email\": \"test@example.com\",\n" +
+      "\t\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
+      "\t\"type\": \"machine\"\n" +
+      "  }\n"));
+    subDocuments.insertMany(testSubs);
+
+    Throwable t = null;
+    try {
+      mailingController.checkSubscriptions();
+    } catch (IOException e) {
+      t = e;
+    }
+    assertNull("should not send the notification when the machine is running", t);
+
+    machineDocuments.drop();
+    List<Document> testMachines = new ArrayList<>();
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Dryer\"\n" +
+      "\t\"running\": true \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Washer\"\n" +
+      "\t\"running\": false \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    machineDocuments.insertMany(testMachines);
+    t = null;
+    try {
+      mailingController.checkSubscriptions();
+    } catch (IOException e) {
+      t = e;
+    }
+    assertNull("should not send the notification when another machine is vacant", t);
+
+    machineDocuments.drop();
+    testMachines = new ArrayList<>();
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Dryer\"\n" +
+      "\t\"running\": false \n" +
+      "\t\"status\": \"broken\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Washer\"\n" +
+      "\t\"running\": false \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    machineDocuments.insertMany(testMachines);
+    t = null;
+    try {
+      mailingController.checkSubscriptions();
+    } catch (IOException e) {
+      t = e;
+    }
+    assertNull("should not send the notification when the machine is vacant but non-normal", t);
+
+    machineDocuments.drop();
+    testMachines = new ArrayList<>();
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"ba9111e9-113f-4bdb-9580-fb098540afa3\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Dryer\"\n" +
+      "\t\"running\": false \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    testMachines.add(Document.parse("{\n" +
+      "\"id\": \"bee93873-85c5-48a8-9bba-f0f27ffea3d5\",\n" +
+      "\t\"name\": \"Gay Hall\"\n" +
+      "\t\"type\": \"Washer\"\n" +
+      "\t\"running\": false \n" +
+      "\t\"status\": \"normal\"\n" +
+      "\t\"room_id\": \"gay\"\n" +
+      "  }"));
+    machineDocuments.insertMany(testMachines);
+
+    try {
+      mailingController.checkSubscriptions();
+    } catch (IOException e) {
+      t = e;
+    }
+    assertNotNull(t);
+    assertNotEquals("should receive a unauthorized code when the machine is vacant", -1,
+      t.getMessage().indexOf("401"));
+
+    t = null;
+    try {
+      mailingController.checkSubscriptions();
+    } catch (IOException e) {
+      t = e;
+    }
+    assertNull("should not send the notification again", t);
+  }
 }
