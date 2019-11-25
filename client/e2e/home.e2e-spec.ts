@@ -1,7 +1,8 @@
 import {HomePage} from './home.po';
 import {browser, by, element, protractor} from 'protractor';
 import {Key} from 'selenium-webdriver';
-// import {CookieService} from "ngx-cookie-service";
+import {CookieService} from "ngx-cookie-service";
+import {findAll} from "@angular/compiler-cli/ngcc/src/utils";
 
 // This line (combined with the function that follows) is here for us
 // to be able to see what happens (part of slowing things down)
@@ -26,14 +27,17 @@ browser.driver.controlFlow().execute = function () {
 
 describe('home', () => {
   let page: HomePage;
-  // let cookieService: CookieService;
+  let cookieService: CookieService;
 
   beforeEach(() => {
     page = new HomePage();
+    // cookieService = new CookieService(page, );
   });
 
   afterEach(() => {
-    browser.executeScript('window.sessionStorage.clear();');
+    // browser.executeScript('window.sessionStorage.clear();');
+    // browser.executeScript('window.localStorage.clear();');
+    browser.manage().deleteAllCookies();
     // cookieService.deleteAll()
   });
 
@@ -159,7 +163,7 @@ describe('home', () => {
     page.clickGayHall();
     page.click('defaultRoomButton');
     expect(page.elementExistsWithId('unsetDefaultRoomButton'));
-    page.click('unsetDefaultRoomButton');
+    // page.click('unsetDefaultRoomButton');
   });
 
   it('should set gay hall as default room', () => {
@@ -168,7 +172,7 @@ describe('home', () => {
     page.click('defaultRoomButton');
     page.navigateTo();
     expect(page.getRoomTitle()).toEqual('Gay Hall');
-    page.click('unsetDefaultRoomButton');
+    // page.click('unsetDefaultRoomButton');
   });
 
   it('should set gay hall as default room, and get correct message', () => {
@@ -178,9 +182,9 @@ describe('home', () => {
     page.click('all-rooms');
     page.clickPineHall();
     expect(page.getTextWithID('defaultRoomIndicator')).toEqual('room is currently set to: Gay Hall');
-    page.click('all-rooms');
-    page.clickGayHall();
-    page.click('unsetDefaultRoomButton');
+    // page.click('all-rooms');
+    // page.clickGayHall();
+    // page.click('unsetDefaultRoomButton');
   });
 
   it('should have a subscribe button when you select a specific room', () => {
@@ -217,18 +221,28 @@ describe('home', () => {
       expect(page.getTextWithID('sub-title')).toEqual('New Subscription to The Apartments');
     });
 
-    xit('should have correct checked field for the opened dialog when click an enabled subscribe button in the apartment', () => {
+    xit('should have correct checked field for the opened dialog when click an enabled subscribe button in the apartment', async() => {
       // expect(page.boxChecked('sub-dryer').checked).toBe(true);
       // expect(page.boxChecked('sub-type').isSelected()).toBe(true);
-      expect(page.field('sub-dryer').getAttribute('[checked]')).toBe(true);
+      const subDryer = element(by.css('mat-radio-button[id=sub-dryer]'));
+      expect(subDryer.getAttribute('class')).toContain('checked');
+      expect(subDryer.attributes.length).toContain('disabled');
+      // const subDryerAttri = subDryer.getAttribute('mat-radio-checked');
+      // expect(subDryerAttri).not.toBe(null);
+      // expect(await subDryerAttri).toBeTruthy();
     });
 
     xit('should have a disabled check box for washer in the apartment', () => {
       // expect(page.buttonClickable('sub-washer')).toBe(false);
-      expect(element(by.id('sub-dryer')).isEnabled()).toBe(true);
+      const subWasher = element(by.css('mat-radio-button[id=sub-washer]'));
+      expect(subWasher.getAttribute('class')).toContain('disabled');
+      // const subWasherAttri = subWasher.getAttribute('[disabled]');
+      // expect(subWasherAttri).not.toBe(null);
+      // expect(element(by.css('mat-radio-button[id=sub-washer]')).getAttribute('disabled')).toBeTruthy();
+      // expect(element(by.id('sub-washer')).getAttribute('disabled')).toBe('disabled');
       // expect(page.field('sub-washer').isEnabled()).toBe(false);
-      expect(page.getTextFromField('sub-washer-true')).toBe('washer');
-      expect(page.getTextFromField('sub-dryer-false')).toBe('dryer');
+      // expect(page.getTextFromField('sub-washer-true')).toBe('washer');
+      // expect(page.getTextFromField('sub-dryer-false')).toBe('dryer');
     });
 
     describe('Subscribe (Validation)', () => {

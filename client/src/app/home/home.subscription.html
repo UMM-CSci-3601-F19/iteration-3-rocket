@@ -5,8 +5,8 @@
       <form [formGroup]="options">
         <div>
           <mat-radio-group #input id="typeField" [(ngModel)]="data.subscription.type" formControlName="type" required>
-            <mat-radio-button id="sub-washer" name="sub-type" [value]="'washer'" [checked]="this.outOfWashers && !this.outOfDryers" [disabled]="!this.outOfWashers">Washer</mat-radio-button>
-            <mat-radio-button id="sub-dryer" name="sub-type" [value]="'dryer'" [checked]="!this.outOfWashers && this.outOfDryers" [disabled]="!this.outOfDryers">Dryer</mat-radio-button>
+            <mat-radio-button [id]="'sub-washer'" name="sub-type" [value]="'washer'" [checked]="this.outOfWashers && !this.outOfDryers" [disabled]="!this.outOfWashers">Washer</mat-radio-button>
+            <mat-radio-button [id]="'sub-dryer'" name="sub-type" [value]="'dryer'" [checked]="!this.outOfWashers && this.outOfDryers" [disabled]="!this.outOfDryers">Dryer</mat-radio-button>
           </mat-radio-group>
         </div>
       </form>
