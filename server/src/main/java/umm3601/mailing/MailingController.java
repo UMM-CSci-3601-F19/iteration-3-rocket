@@ -42,8 +42,8 @@ public class MailingController {
         String machineName = transformId(vacantMachine.getString("name"));
         String roomName = transformId(vacantMachine.getString("room_id"));
         String type = vacantMachine.getString("type");
-        sendMachineNotification(s.getString("email"), roomName, machineName, type);
         subscriptionCollection.deleteOne(s);
+        sendMachineNotification(s.getString("email"), roomName, machineName, type);
       }
     }
 
@@ -61,8 +61,8 @@ public class MailingController {
         String machineName = transformId(vacantMachine.getString("name"));
         String roomName = transformId(vacantMachine.getString("room_id"));
         String type = vacantMachine.getString("type");
-        sendRoomNotification(s.getString("email"), roomName, machineName, type);
         subscriptionCollection.deleteOne(s);
+        sendRoomNotification(s.getString("email"), roomName, machineName, type);
       }
     }
   }
