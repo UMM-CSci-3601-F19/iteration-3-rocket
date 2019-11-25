@@ -247,7 +247,7 @@ mat-grid-tile mat-card {
 }
 .cardType {
   font-style: italic;
-  color: #999;
+  color: #888;
 }
 
 #predictionGraphTitle {
@@ -312,6 +312,63 @@ mat-dialog-container .reportButton {
 }
 
 .subscribeButton {
-  left: 12px;
-  top: -2px;
+  position: absolute !important;
+  top: 5px !important;
+  right: 5px !important;
+  left: auto !important;
+  border-radius: 18px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  margin-left: 10px;
+}
+
+#roomSubHolder {
+  margin-left: 10px;
+}
+
+.subTypeButton {
+  margin-right: 15px;
+}
+
+#exitWithoutAddingButton {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+}
+
+#confirmAddSubButton, #disabledConfirmAddSubButton {
+  z-index: 5;
+  padding: 0 15px;
+  margin-left: auto;
+  position: absolute;
+  margin-right: -3px;
+  right: 0;
+  margin-top: 11px;
+  border-radius: 18px
+}
+
+.sub-title {
+  margin-bottom: 10px;
+}
+
+.sub-detail {
+  font-size: 90%;
+  color: #888;
+  font-style: italic;
+}
+
+#app-title {
+  padding: 12px;
+  font-style: italic;
+}
+
+#machineIsSubscribed {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  text-align: center;
+  padding-right: 10px
+}
+
+.machineIdentity a {
+  padding-bottom: 5px;
 }

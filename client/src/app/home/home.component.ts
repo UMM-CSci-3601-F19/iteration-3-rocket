@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
   public mapWidth: number;
   public mapHeight: number;
 
+  public isSubscribed: boolean;
   public subscriptionDisabled: boolean;
 
   public history: History[];
@@ -76,7 +77,7 @@ export class HomeComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(public homeService: HomeService, public dialog: MatDialog, public subscription: MatDialog, private cookieService: CookieService) {
-    this.subscriptionDisabled = false;
+    this.subscriptionDisabled = true;
     this.machineListTitle = 'available within all rooms';
     this.brokenMachineListTitle = 'Unavailable machines within all rooms';
   }
@@ -100,7 +101,8 @@ export class HomeComponent implements OnInit {
         this.homeService.addNewSubscription(newSub).subscribe(
           () => {
             this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
-            this.updateRoom(this.roomId, this.roomName);
+            this.isSubscribed = true;
+            this.subscriptionDisabled = true;
           },
           err => {
             // This should probably be turned into some sort of meaningful response.
@@ -183,7 +185,8 @@ export class HomeComponent implements OnInit {
       const washerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'washer' && m.status === 'normal' && m.running === false).length;
       // tslint:disable-next-line:max-line-length
       const dryerVacant = this.machines.filter(m => m.room_id === this.roomId && m.type === 'dryer' && m.status === 'normal' && m.running === false).length;
-      this.subscriptionDisabled = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed || (washerVacant !== 0 && dryerVacant !== 0);
+      this.isSubscribed = this.rooms.filter(r => r.id === this.roomId)[0].isSubscribed;
+      this.subscriptionDisabled = this.isSubscribed || (washerVacant !== 0 && dryerVacant !== 0);
     }
     this.buildChart();
     this.fakePositions();
@@ -681,7 +684,7 @@ export class HomeDialog {
         }
       );
     }
-    this.dialogRef.close();
+    this.ngOnInit();
   }
 
   generateCustomLink(machineRoomID: string, machineType: string, machineID: string): string {
