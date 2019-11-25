@@ -28,11 +28,11 @@
 
   // Define any styles affected by the theme.
   mat-sidenav-content {
-    background-color: #fdf5f2;
+    background-color: #f8f0ed;
   }
 
   .roomHeading.mat-card {
-    background: #fdf5f2;
+    background: #f8f0ed;
     //color: $light-primary-text !important;
   }
 
@@ -41,6 +41,11 @@
   }
 
   @if $is-dark {
+    #app-title {
+      font-style: italic;
+      font-weight: 400;
+    }
+
     mat-sidenav-content {
       background-color: mat-color($background, 1000);
     }
@@ -87,7 +92,7 @@
     font-style: italic;
     border-radius: 0 !important;
     position: sticky !important;
-    top: 59px;
+    top: 60px;
     z-index: 1;
     box-shadow: none !important;
   }
@@ -379,7 +384,6 @@ mat-dialog-container .reportButton {
 
 #app-title {
   padding: 12px;
-  font-style: italic;
 }
 
 #machineIsSubscribed {
