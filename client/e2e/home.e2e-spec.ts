@@ -43,7 +43,7 @@ describe('home', () => {
 
   it('should get and highlight Home panel title attribute', () => {
     page.navigateTo();
-    expect(page.getHomePanelTitle()).toEqual('Please select a laundry room here');
+    expect(page.getHomePanelTitle()).toEqual('Select a Laundry Room to View');
   });
 
   it('should get and highlight each hall title attribute', () => {
@@ -59,12 +59,12 @@ describe('home', () => {
 
   it('should get and highlight each hall availability attribute', () => {
     page.navigateTo();
-    expect(page.getGayHallAvailability()).toEqual('7 / 9 vacant');
-    expect(page.getIndependenceHallAvailability()).toEqual('8 / 15 vacant');
-    expect(page.getBlakelyHallAvailability()).toEqual('7 / 11 vacant');
-    expect(page.getSpoonerHallAvailability()).toEqual('5 / 6 vacant');
-    expect(page.getGreenPrairieHallAvailability()).toEqual('5 / 7 vacant');
-    expect(page.getPineHallAvailability()).toEqual('4 / 5 vacant');
+    expect(page.getGayHallAvailability()).toEqual('2 / 9 vacant');
+    expect(page.getIndependenceHallAvailability()).toEqual('5 / 15 vacant');
+    expect(page.getBlakelyHallAvailability()).toEqual('5 / 11 vacant');
+    expect(page.getSpoonerHallAvailability()).toEqual('0 / 6 vacant');
+    expect(page.getGreenPrairieHallAvailability()).toEqual('3 / 7 vacant');
+    expect(page.getPineHallAvailability()).toEqual('2 / 5 vacant');
     expect(page.getApartmentHallAvailability()).toEqual('1 / 5 vacant');
   });
 
@@ -178,10 +178,12 @@ describe('home', () => {
   it('should set gay hall as default room, and get correct message', () => {
     page.navigateTo();
     page.clickGayHall();
+    expect(page.field('defaultIndicator').isPresent()).toBeFalsy();
     page.click('defaultRoomButton');
     page.click('all-rooms');
     page.clickPineHall();
-    expect(page.getTextWithID('defaultRoomIndicator')).toEqual('room is currently set to: Gay Hall');
+    expect(page.elementExistsWithId('defaultIndicator'));
+    expect(page.getTextFromField('defaultIndicator')).toEqual('default');
     // page.click('all-rooms');
     // page.clickGayHall();
     // page.click('unsetDefaultRoomButton');
@@ -193,16 +195,16 @@ describe('home', () => {
     expect(page.elementExistsWithId('subscribeButton'));
   });
 
-  it('should have a disabled subscribe button when click gay hall', () => {
+  it('should have a disabled subscribe button when click blakely hall', () => {
     page.navigateTo();
-    page.clickGayHall();
-    expect(page.buttonClickable('subscribeButton')).toBe(false);
+    page.click('blakelyId');
+    expect(page.button('subscribeButton').isEnabled()).toBe(false);
   });
 
   it('should have an enabled subscribe button when click the apartments', () => {
     page.navigateTo();
     page.clickApartment();
-    expect(page.buttonClickable('subscribeButton')).toBe(true);
+    expect(page.button('subscribeButton').isEnabled()).toBe(true);
   });
 
   describe('Subscribe',() => {
@@ -218,7 +220,7 @@ describe('home', () => {
     });
 
     it('should have correct title for the opened dialog when click an enabled subscribe button in the apartment', () => {
-      expect(page.getTextWithID('sub-title')).toEqual('New Subscription to The Apartments');
+      expect(page.getTextWithID('sub-title')).toEqual('New Subscription');
     });
 
     xit('should have correct checked field for the opened dialog when click an enabled subscribe button in the apartment', async() => {
@@ -252,7 +254,7 @@ describe('home', () => {
       });
 
       it('Should show the validation error message about email being required', () => {
-        expect(element(by.id('emailField')).isPresent()).toBeTruthy('There should be an email field');
+        expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
         page.field('emailField').clear();
         expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
         // clicking somewhere else will make the error appear
@@ -262,7 +264,7 @@ describe('home', () => {
       });
 
       it('Should show the validation error message about email format', () => {
-        expect(element(by.id('emailField')).isPresent()).toBeTruthy('There should be an email field');
+        expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
         page.field('emailField').clear();
         page.field('emailField').sendKeys('donjones.com');
         expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
