@@ -1,14 +1,10 @@
 @import '../node_modules/@angular/material/theming';
 // @import "@material/fab/mdc-fab";
-
 // General themes for across the app and those that need access to theming go here
 // Styles that affect only things in an individual component should go in that component's scss/css file.
 // For more information about Angular Material theming: https://material.angular.io/guide/theming
-
-
 // The theme.scss file contains variables for theme colors, this allows you to use them in other scss files across the project
 @import 'theme';
-
 
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -33,7 +29,7 @@
   // Define any styles affected by the theme.
 
   mat-sidenav-content {
-    background-color: mat-color($primary, 200 );
+    background-color: mat-color($primary, 200);
   }
 
   .roomHeading, .topMenu {
@@ -100,6 +96,7 @@
   .drawer-list-item-active {
     background-color: mat-color($background, hover) !important;
     color: mat-color($primary) !important;
+
     .mat-list-icon {
       color: mat-color($primary) !important;
     }
@@ -124,8 +121,16 @@
   margin-left: auto !important;
   margin-right: auto !important;
 }
-html, body { height: 100%; scroll-behavior: smooth}
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body {
+  height: 100%;
+  scroll-behavior: smooth
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
 // This media query detects if the user has dark-mode turned on on their OS or browser
@@ -193,7 +198,7 @@ mat-icon {
   margin-right: auto;
 }
 
-.menuLabel.mat-icon.notranslate.material-icons.mat-icon-no-color{
+.menuLabel.mat-icon.notranslate.material-icons.mat-icon-no-color {
   margin-left: 9px;
 }
 
@@ -202,7 +207,7 @@ mat-icon {
 }
 
 .inUse {
-  color: #999900;
+  color: red;
 }
 
 .unavailable {
@@ -245,9 +250,10 @@ mat-grid-tile mat-card {
 .reportButton:hover {
   text-decoration-line: underline;
 }
+
 .cardType {
   font-style: italic;
-  color: #999;
+  color: #888;
 }
 
 #predictionGraphTitle {
@@ -279,15 +285,16 @@ mat-grid-tile mat-card {
   margin: 5px 0;
 }
 
-.roomStatus mat-icon {
+.roomStatus mat-icon, #default-selector mat-icon {
   font-size: 16px;
   margin-right: 0;
+  text-align: end;
 }
 
 .roomStatus {
   font-style: italic;
-  font-size: 15px;
-  margin-right: 12px;
+  font-size: 16px;
+  margin-right: 5px;
   display: inline-block;
 }
 
@@ -312,6 +319,92 @@ mat-dialog-container .reportButton {
 }
 
 .subscribeButton {
-  left: 12px;
-  top: -2px;
+  position: absolute !important;
+  top: 8px !important;
+  right: 5px !important;
+  left: auto !important;
+  border-radius: 18px !important;
+  min-width: 36px !important;
+  padding: 0 7px !important;
+  margin-left: 10px;
+}
+
+.subscribeButtonText {
+  font-size: 115%;
+  font-weight: 400;
+}
+
+#roomSubHolder {
+  margin-left: 10px;
+}
+
+.subTypeButton {
+  margin-right: 15px;
+}
+
+#exitWithoutAddingButton {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+}
+
+#confirmAddSubButton, #disabledConfirmAddSubButton {
+  z-index: 5;
+  padding: 0 15px;
+  margin-left: auto;
+  position: absolute;
+  margin-right: -3px;
+  right: 0;
+  margin-top: 11px;
+  border-radius: 18px
+}
+
+.sub-title {
+  margin-bottom: 10px;
+}
+
+.sub-detail {
+  font-size: 90%;
+  color: #888;
+  font-style: italic;
+}
+
+#app-title {
+  padding: 12px;
+  font-style: italic;
+}
+
+#machineIsSubscribed {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  text-align: center;
+  padding-right: 10px
+}
+
+.machineIdentity a {
+  padding-bottom: 5px;
+}
+
+.defaultRoomButton {
+  padding: 0 !important;
+  font-style: italic;
+  top: -6px;
+  margin-right: 15px;
+  border-radius: 10px !important;
+}
+
+#default-selector {
+  height: 20px;
+  margin-left: 13px;
+  margin-bottom: 5px;
+  padding-right: 14px;
+}
+
+.default-selector-text {
+  margin: 0 7px;
+  font-weight: 400;
+}
+
+#default-selector .mat-ripple-element {
+  display: none;
 }

@@ -1,20 +1,26 @@
-<div class="add-sub">
+<mat-card class="add-sub"
+          style="padding: 0 !important; margin: 0 !important; width: 98.75% !important; height: 98.75% !important; box-shadow: none !important">
   <form [formGroup]="addSubForm">
-    <h2 id="sub-title" mat-dialog-title>New Subscription to {{this.name}}</h2>
-      Notify me when a
-      <form [formGroup]="options">
-        <div>
-          <mat-radio-group #input id="typeField" [(ngModel)]="data.subscription.type" formControlName="type" required>
-            <mat-radio-button [id]="'sub-washer'" name="sub-type" [value]="'washer'" [checked]="this.outOfWashers && !this.outOfDryers" [disabled]="!this.outOfWashers">Washer</mat-radio-button>
-            <mat-radio-button [id]="'sub-dryer'" name="sub-type" [value]="'dryer'" [checked]="!this.outOfWashers && this.outOfDryers" [disabled]="!this.outOfDryers">Dryer</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </form>
-    in {{this.name}} is vacant.
+    <h2 id="sub-title" mat-dialog-title>New Subscription</h2>
+    <p class="sub-title">
+      Notify me when one type of the machines in {{this.name}} is available
+    </p>
+    <form [formGroup]="options" style="display: inline">
+      <mat-radio-group #input id="typeField" [(ngModel)]="data.subscription.type" formControlName="type" required>
+        <mat-radio-button [id]="'sub-washer'" class="subTypeButton" [value]="'washer'" [checked]="this.outOfWashers && !this.outOfDryers"
+                          [disabled]="!this.outOfWashers" color="warn">Washer
+        </mat-radio-button>
+        <mat-radio-button [id]="'sub-dryer'" class="subTypeButton" [value]="'dryer'" [checked]="!this.outOfWashers && this.outOfDryers"
+                          [disabled]="!this.outOfDryers" color="warn">Dryer
+        </mat-radio-button>
+      </mat-radio-group>
+    </form>
+    <p class="sub-detail">Subscribe to receive an email when the room has a vacant machine. We will only send the
+      notification once.</p>
 
-    <mat-dialog-content layout="row">
-      <mat-form-field flex>
-        <input matInput #input id="emailField" placeholder="Leave your email" [(ngModel)]="data.subscription.email"
+    <mat-dialog-content layout="row" style="display: inline; ">
+      <mat-form-field style="max-height: 10px !important;" flex>
+        <input matInput #input id="emailField" placeholder="Email" [(ngModel)]="data.subscription.email"
                formControlName="email" required>
         <mat-error *ngFor="let validation of add_sub_validation_messages.email">
           <mat-error class="error-message" id='email-error'
@@ -23,16 +29,15 @@
           </mat-error>
         </mat-error>
       </mat-form-field>
-    </mat-dialog-content>
-    <mat-dialog-actions layout="row">
+      <mat-dialog-actions layout="row" style="display: inline; height: 50px !important;">
 
-      <!-- [mat-dialog-close]="data.user" causes the data.user object to be returned when the dialog is closed. -->
-      <button mat-raised-button id="confirmAddSubButton" [mat-dialog-close]="data.subscription" type="button" color="warn"
-              [disabled]="!addSubForm.valid || data.subscription.type === '' ">Subscribe
-      </button>
-      <!-- [mat-dialog-close]="null" causes null to be returned when the dialog is closed. -->
-      <button mat-raised-button id="exitWithoutAddingButton" [mat-dialog-close]="null" type="button">Cancel</button>
-    </mat-dialog-actions>
+        <button mat-raised-button id="confirmAddSubButton" [mat-dialog-close]="data.subscription" type="button"
+                color="warn"
+                [disabled]="!addSubForm.valid || data.subscription.type === '' ">Subscribe
+        </button><br>
+        <button mat-icon-button id="exitWithoutAddingButton" [mat-dialog-close]="null" type="button"><mat-icon style="margin: auto !important">close</mat-icon></button>
+      </mat-dialog-actions>
+    </mat-dialog-content>
   </form>
-</div>
+</mat-card>
 
