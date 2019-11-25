@@ -14,7 +14,6 @@ import {Subscription} from './subscription';
 import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 
 
-
 @Component({
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.css']
@@ -90,7 +89,12 @@ export class HomeComponent implements OnInit {
     const newSub: Subscription = {email: '', type: '', id: room_id};
     const dialogRef = this.subscription.open(SubscriptionDialog, {
       width: '500px',
-      data: {subscription: newSub, noWasher: outOfWashers, noDryer: outOfDryers, roomName: this.translateRoomId(this.roomId)},
+      data: {
+        subscription: newSub,
+        noWasher: outOfWashers,
+        noDryer: outOfDryers,
+        roomName: this.translateRoomId(this.roomId)
+      },
     });
 
 
@@ -126,12 +130,12 @@ export class HomeComponent implements OnInit {
       position: theMachine.position,
       remainingTime: theMachine.remainingTime,
       vacantTime: theMachine.vacantTime,
-      isSubscribed : theMachine.isSubscribed
+      isSubscribed: theMachine.isSubscribed
     };
     const newSub: Subscription = {email: '', type: 'machine', id: thisMachine.id};
     const dialogRef = this.dialog.open(HomeDialog, {
       width: '330px',
-      data: {machine: thisMachine, newMachineSub: newSub },
+      data: {machine: thisMachine, newMachineSub: newSub},
       autoFocus: false
     });
 
@@ -152,7 +156,7 @@ export class HomeComponent implements OnInit {
     // if (this.cookieService.check('room_id')) {
     //   return this.cookieService.get('room_id') !== '';
     // }
-    return this.cookieService.get('room_name') == name;
+    return this.cookieService.get('room_name') === name;
   }
 
   setSelector(state: number) {
