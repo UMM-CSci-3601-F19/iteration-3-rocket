@@ -52,8 +52,13 @@
     </div>
     <mat-card *ngIf="this.roomId != ''"
               style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
-      <mat-card-title id="roomTitle"
-                      style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">{{this.roomName}}
+      <mat-card-title id="roomTitle" style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">
+        <button *ngIf="!defaultSet(roomName)" mat-button id="defaultRoomButton" (click)="updateCookies(roomId,roomName)">
+          <mat-icon>star_border</mat-icon>
+        </button>
+        <button *ngIf="defaultSet(roomName)" mat-button id="unsetDefaultRoomButton" (click)="updateCookies(roomId,roomName)">
+          <mat-icon>star</mat-icon>
+        </button>{{this.roomName}}
 
       </mat-card-title>
 
@@ -67,15 +72,15 @@
         <a class="roomStatus">
           <mat-icon class="unavailable">highlight_off</mat-icon>
           {{this.roomBroken}} broken</a>
-        <button *ngIf="!defaultSet()" mat-button id="defaultRoomButton" (click)="updateCookies(roomId,roomName)">Make
-          Default
-        </button>
-        <button *ngIf="defaultSet()" mat-button id="unsetDefaultRoomButton" (click)="updateCookies('','')">Unset
-          Default
-        </button>
-        <span id="defaultRoomIndicator"
-              *ngIf="defaultSet()">room is currently set to:   <b>{{this.cookieService.get("room_name")}}</b></span>
-        <span *ngIf="!defaultSet()">Default room is currently unset!</span>
+<!--        <button *ngIf="!defaultSet()" mat-button id="defaultRoomButton" (click)="updateCookies(roomId,roomName)">Make-->
+<!--          Default-->
+<!--        </button>-->
+<!--        <button *ngIf="defaultSet()" mat-button id="unsetDefaultRoomButton" (click)="updateCookies('','')">Unset-->
+<!--          Default-->
+<!--        </button>-->
+<!--        <span id="defaultRoomIndicator"-->
+<!--              *ngIf="defaultSet()">room is currently set to:   <b>{{this.cookieService.get("room_name")}}</b></span>-->
+<!--        <span *ngIf="!defaultSet()">Default room is currently unset!</span>-->
       </mat-card-content>
     </mat-card>
 

@@ -148,11 +148,11 @@ export class HomeComponent implements OnInit {
     this.cookieService.set('room_name', name);
   }
 
-  public defaultSet(): boolean {
-    if (this.cookieService.check('room_id')) {
-      return this.cookieService.get('room_id') !== '';
-    }
-    return this.cookieService.check('room_id');
+  public defaultSet(name: string): boolean {
+    // if (this.cookieService.check('room_id')) {
+    //   return this.cookieService.get('room_id') !== '';
+    // }
+    return this.cookieService.get('room_name') == name;
   }
 
   setSelector(state: number) {
