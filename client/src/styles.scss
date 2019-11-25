@@ -30,17 +30,61 @@
 
   $is-dark: map-get($theme, is-dark);
   // Define any styles affected by the theme.
+  // colors
+  .drawer-list-item-active {
+    background-color: mat-color($background, hover) !important;
+    color: mat-color($primary) !important;
+    .mat-list-icon {
+      color: mat-color($primary) !important;
+    }
+  }
+
+  .sidenav-list {
+    .mat-list-icon {
+      color: mat-color($foreground, icon);
+      margin-right: 16px;
+    }
+  }
+
+  mat-sidenav-content, .roomHeading, .topMenu {
+    background-color: mat-color($primary, 40);
+  }
+
+  .roomSelector, .room, #all-rooms {
+    background-color: mat-color($primary, 40) !important;
+    color: $dark-primary-text !important;
+  }
+
+  //.indicator, #home-rooms-card {
+  //  color: $light-primary-text;
+  //}
+
+  .vacant {
+    color: darkgreen;
+  }
+
+  .inUse {
+    color: goldenrod;
+  }
+
+  .unavailable {
+    color: grey;
+  }
+  .cardType {
+    font-style: italic;
+    color: #999;
+  }
 
   // dark theming
   @if $is-dark {
 
     .mat-toolbar.mat-primary {
-      background: mat-color($background, app-bar);
+      background: mat-color($dark-primary) !important;
       color: mat-color($foreground, text);
     }
 
     mat-sidenav-content, .roomHeading {
-      background-color: mat-color($background, app-bar);
+      background-color: mat-color($dark-primary) !important;
     }
 
     .roomSelector, .room, #all-rooms {
@@ -64,51 +108,6 @@
     .unavailable {
       color: #aaaaaa !important;
     }
-  }
-
-  // colors
-  .drawer-list-item-active {
-    background-color: mat-color($background, hover) !important;
-    color: mat-color($primary) !important;
-    .mat-list-icon {
-      color: mat-color($primary) !important;
-    }
-  }
-
-  .sidenav-list {
-    .mat-list-icon {
-      color: mat-color($foreground, icon);
-      margin-right: 16px;
-    }
-  }
-
-  mat-sidenav-content, .roomHeading {
-    background-color: mat-color($primary, 40);
-  }
-
-  .topMenu, .roomSelector, .room, #all-rooms {
-    background-color: mat-color($primary, 900) !important;
-    color: mat-color($accent) !important;
-  }
-
-  .indicator, #home-rooms-card {
-    color: $light-primary-text;
-  }
-
-  .vacant {
-    color: darkgreen;
-  }
-
-  .inUse {
-    color: goldenrod;
-  }
-
-  .unavailable {
-    color: grey;
-  }
-  .cardType {
-    font-style: italic;
-    color: #999;
   }
 }
 // Sets up the theming for built in material components with the light theme
@@ -144,7 +143,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   padding-left: 5px;
   padding-right: 5px;
   padding-bottom: 25px;
-  width: 100%;
 }
 
 #roomSelector, #allRooms {
