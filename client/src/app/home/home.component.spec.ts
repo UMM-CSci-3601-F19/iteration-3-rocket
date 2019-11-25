@@ -492,7 +492,7 @@ describe('Home page', () => {
 
   it('displays a text of the room\'s map', () => {
     fixture.detectChanges();
-    expect(gl.textContent).toContain('Laundry room map');
+    expect(gl.textContent).toContain('Laundry Room Map');
   });
 
   it('displays a text of broken machines', () => {
@@ -713,7 +713,6 @@ describe('Home page', () => {
         calledClose = true;
       }
     };
-
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
