@@ -1,5 +1,5 @@
 import {HomePage} from './home.po';
-import {browser, by, element, protractor} from 'protractor';
+import {browser, protractor} from 'protractor';
 import {Key} from 'selenium-webdriver';
 
 // This line (combined with the function that follows) is here for us
@@ -158,7 +158,7 @@ describe('home', () => {
       expect(page.getTextFromField('roomTitle')).toEqual('Gay Hall');
       page.click('defaultRoomButton');
       page.navigateTo();
-      expect(page.elementExistsWithId('defaultIndicator'));
+      expect(page.elementExistsWithId('default-mark'));
       expect(page.getTextFromField('roomTitle')).toEqual('Gay Hall default');
     });
 
