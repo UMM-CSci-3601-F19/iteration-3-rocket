@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class MailingController {
 
-  private final String EMAIL_FROM = "service@morris_laundry_facility.umn.edu";
+  private final String EMAIL_FROM = "laundry@facility.morris.com";
 
   public final MongoCollection<Document> subscriptionCollection;
   private final MongoCollection<Document> machineCollection;
@@ -27,6 +27,7 @@ public class MailingController {
   }
 
   public void checkSubscriptions() throws IOException {
+    System.out.println("[update] INFO mailing.MailingController - Checking machine and room subscriptions");
     Document filterDoc = new Document();
     filterDoc.append("type", "machine");
     FindIterable<Document> subscriptionsForMachines = subscriptionCollection.find().filter(filterDoc);
@@ -65,10 +66,11 @@ public class MailingController {
         sendRoomNotification(s.getString("email"), roomName, machineName, type);
       }
     }
+    System.out.println("[update] INFO mailing.MailingController - Checked machine and room subscriptions");
   }
 
   private void sendMachineNotification(String email, String roomName, String machineName, String type) throws IOException {
-    String subject = "Your subscribed " + type + " is available now!";
+    String subject = "Status change of the " + type + "you subscribed";
     Content content = new Content("text/html", "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"><html data-editor-version=\"2\" class=\"sg-campaigns\" xmlns=\"http://www.w3.org/1999/xhtml\"><head>\n" +
       "      <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n" +
       "      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1\">\n" +
@@ -264,12 +266,11 @@ public class MailingController {
       "</body></html>");
 
     Mail mail = new Mail(new Email(EMAIL_FROM), subject, new Email(email), content);
-    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email);
-    send(mail);
+    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
   }
 
   private void sendRoomNotification(String email, String roomName, String machineName, String type) throws IOException {
-    String subject = "We found an available " + type + " in your subscribed room!";
+    String subject = "Status change of " + type + "s in " + roomName;
     Content content = new Content("text/html", "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"><html data-editor-version=\"2\" class=\"sg-campaigns\" xmlns=\"http://www.w3.org/1999/xhtml\"><head>\n" +
       "      <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n" +
       "      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1\">\n" +
@@ -465,7 +466,7 @@ public class MailingController {
       "</body></html>");
 
     Mail mail = new Mail(new Email(EMAIL_FROM), subject, new Email(email), content);
-    System.out.print("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
+    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
   }
 
   private int send(Mail mail) throws IOException {

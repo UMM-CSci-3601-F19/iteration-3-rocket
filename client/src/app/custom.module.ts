@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatRadioModule} from '@angular/material/radio';
 
 import {FlexLayoutModule, } from '@angular/flex-layout';
 
@@ -33,6 +34,7 @@ const ANGULAR_MODULES: any[] = [
 ];
 
 const MATERIAL_MODULES: any[] = [
+  MatRadioModule,
   MatGridListModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,

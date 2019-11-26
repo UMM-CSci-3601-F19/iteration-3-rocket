@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe(newSub => {
       if (newSub != null) {
-        console.log(newSub);
+        // console.log(newSub);
         this.homeService.addNewSubscription(newSub).subscribe(
           () => {
             this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
@@ -142,8 +142,8 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.machines.filter(m => m.id === thisMachine.id)[0].isSubscribed = thisMachine.isSubscribed;
       this.filteredMachines.filter(m => m.id === thisMachine.id)[0].isSubscribed = thisMachine.isSubscribed;
-      console.log(thisMachine.isSubscribed);
-      console.log('The dialog was closed');
+      // console.log(thisMachine.isSubscribed);
+      // console.log('The dialog was closed');
     });
   }
 
@@ -241,7 +241,6 @@ export class HomeComponent implements OnInit {
     }
     this.buildChart();
   }
-
 
   updateDayBySelector(num: number) {
     this.inputDay = +num;
