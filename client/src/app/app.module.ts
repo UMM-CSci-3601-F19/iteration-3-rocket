@@ -21,7 +21,7 @@ import {MatProgressBarModule} from '@angular/material';
 import {MatOptionModule} from '@angular/material/core';
 import {MatRadioModule} from '@angular/material/radio';
 
-import {CookieService} from "ngx-cookie-service";
+import {CookieService} from 'ngx-cookie-service';
 
 // import {MDCRipple} from '@material/ripple';
 
