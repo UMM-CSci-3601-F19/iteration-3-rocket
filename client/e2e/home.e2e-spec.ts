@@ -131,13 +131,13 @@ describe('home', () => {
   it('should change time left in panel title', () => {
     page.navigateTo();
     const a = page.getUniqueMachine('69dacaa7-ee11-11e9-8256-56000218142a');
-    browser.sleep(60000);
+    browser.sleep(70000);
     page.navigateTo();
     const b = page.getUniqueMachine('69dacaa7-ee11-11e9-8256-56000218142a');
     expect(a).not.toEqual(b);
   }, 100000);
 
-  describe('Cookie default page',() => {
+  describe('Cookie default page', () => {
 
     it('should have a make default button when you select a specific room', () => {
       page.navigateTo();
@@ -178,7 +178,7 @@ describe('home', () => {
     });
   });
 
-  describe('Validation of subscription of rooms',() => {
+  describe('Validation of subscription of rooms', () => {
 
     it('should have a subscribe button when you select a specific room', () => {
       page.navigateTo();
@@ -193,14 +193,14 @@ describe('home', () => {
       expect(page.getTextFromField('subscribeButton')).toEqual('Subscribe notifications_none');
     });
 
-    it('should have a enabled subscribe button when you select gay hall',() => {
+    it('should have a enabled subscribe button when you select gay hall', () => {
       page.navigateTo();
       page.click('gayId');
       expect(page.button('subscribeButton').isEnabled()).toBeTruthy();
       expect(page.getTextFromField('subscribeButton')).toEqual('Subscribe notifications_none');
     });
 
-    it('should have a active notification icon represent the subscribed room',() => {
+    it('should have a active notification icon represent the subscribed room', () => {
       page.navigateTo();
       page.click('gayId');
       page.click('subscribeButton');
@@ -211,7 +211,7 @@ describe('home', () => {
       expect(page.getTextFromField('subscribeButton')).toEqual('Subscribed notifications_active');
     });
 
-    it('should have no changes if nothing saved in subscription dialog',() => {
+    it('should have no changes if nothing saved in subscription dialog', () => {
       page.navigateTo();
       page.click('gayId');
       page.click('subscribeButton');
@@ -264,7 +264,7 @@ describe('home', () => {
     });
   });
 
-  describe('Machine information dialog',() => {
+  describe('Machine information dialog', () => {
 
     beforeEach(() => {
       page.navigateTo();
@@ -274,15 +274,15 @@ describe('home', () => {
     // afterEach(() => {
     //   page.click('closeDialog2');
     // });
-    it('should have a none notification icon represent the in-used but unsubscribed machine',() => {
+    it('should have a none notification icon represent the in-used but unsubscribed machine', () => {
       expect(page.getTextFromField('machineSubIcon-dorky-gamboge-dog')).toEqual('notifications_none');
     });
 
-    it('should have a more-vert icon represent the vacant machine',() => {
+    it('should have a more-vert icon represent the vacant machine', () => {
       expect(page.getTextFromField('machineSubIcon-bumpy-cerulean-molly')).toEqual('more_vert');
     });
 
-    it('should have a active notification icon represent the in-used and subscribed machine',() => {
+    it('should have a active notification icon represent the in-used and subscribed machine', () => {
       page.click('dorky-gamboge-dog');
       page.field('emailField').clear();
       page.field('emailField').sendKeys('123@a.b');
@@ -292,7 +292,7 @@ describe('home', () => {
       expect(page.getTextFromField('machineSubIcon-dorky-gamboge-dog')).toEqual('notifications_active');
     });
 
-    it('should have the same icon if we do not save subscription in dialog',() => {
+    it('should have the same icon if we do not save subscription in dialog', () => {
       page.click('dorky-gamboge-dog');
       page.field('emailField').clear();
       page.field('emailField').sendKeys('123@a.b');
@@ -321,6 +321,7 @@ describe('home', () => {
     it('should allow user to subscribe for an in-used machine', () => {
       page.click('dorky-gamboge-dog');
       expect(page.getTextFromClassName('sub-title')).toContain('Notify me when it is available');
+      // tslint:disable-next-line:max-line-length
       expect(page.getTextFromClassName('sub-detail')).toContain('Subscribe to receive an email when the dryer is vacant. We will only send the notification once.');
     });
 
@@ -359,7 +360,7 @@ describe('home', () => {
     });
   });
 
-  describe('Subscribe valid room',() => {
+  describe('Subscribe valid room', () => {
 
     beforeEach(() => {
       page.navigateTo();
@@ -375,14 +376,13 @@ describe('home', () => {
       expect(page.getTextWithID('sub-title')).toEqual('New Subscription');
     });
 
-    xit('should have correct checked field for the opened dialog when click an enabled subscribe button in the apartment', async() => {
       /*
        * In this test, we want to test that we have the correct checked/default
        * value we pre-set based on the condition. We manually test the value to
        * be correct but we can not figure out how to do it in code, even with
        * discussion with Professor K.K., so we skipped this test.
        */
-
+    xit('should have correct checked field for the opened dialog when click an enabled subscribe button in the apartment', async() => {
       // expect(page.boxChecked('sub-dryer').checked).toBe(true);
       // expect(page.boxChecked('sub-type').isSelected()).toBe(true);
       // const subDryer = element(by.css('mat-radio-button[id=sub-dryer]'));
@@ -393,14 +393,13 @@ describe('home', () => {
       // expect(await subDryerAttri).toBeTruthy();
     });
 
-    xit('should have a disabled check box for washer in the apartment', () => {
       /*
        * In this test, we want to test that we have the correct disabled value
        * we pre-set based on the condition. We manually test the value to be
        * correct but we can not figure out how to do it in code, even with
        * discussion with Professor K.K., so we skipped this test.
        */
-
+    xit('should have a disabled check box for washer in the apartment', () => {
       // expect(page.buttonClickable('sub-washer')).toBe(false);
       // const subWasher = element(by.css('mat-radio-button[id=sub-washer]'));
       // expect(subWasher.getAttribute('class')).toContain('disabled');
@@ -419,7 +418,7 @@ describe('home', () => {
         page.click('exitWithoutAddingButton');
       });
 
-      xit('Should show the validation error message about email being required', () => {
+      it('Should show the validation error message about email being required', () => {
         expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
         page.field('emailField').clear();
         expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
@@ -429,7 +428,7 @@ describe('home', () => {
         expect(page.getTextFromField('email-error')).toEqual('Email is required');
       });
 
-      xit('Should show the validation error message about email format', () => {
+      it('Should show the validation error message about email format', () => {
         expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
         page.field('emailField').clear();
         page.field('emailField').sendKeys('donjones.com');
