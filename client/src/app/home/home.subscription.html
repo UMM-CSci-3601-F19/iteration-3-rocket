@@ -1,16 +1,16 @@
 <mat-card class="add-sub"
           style="padding: 0 !important; margin: 0 !important; width: 98.75% !important; height: 98.75% !important; box-shadow: none !important">
   <form [formGroup]="addSubForm">
-    <h2 mat-dialog-title>New Subscription</h2>
+    <h2 id="sub-title" mat-dialog-title>New Subscription</h2>
     <p class="sub-title">
       Notify me when one type of the machines in {{this.name}} is available
     </p>
     <form [formGroup]="options" style="display: inline">
       <mat-radio-group #input id="typeField" [(ngModel)]="data.subscription.type" formControlName="type" required>
-        <mat-radio-button class="subTypeButton" [value]="'washer'" [checked]="this.outOfWashers && !this.outOfDryers"
+        <mat-radio-button [id]="'sub-washer'" class="subTypeButton" [value]="'washer'" [checked]="this.outOfWashers && !this.outOfDryers"
                           [disabled]="!this.outOfWashers" color="warn">Washer
         </mat-radio-button>
-        <mat-radio-button class="subTypeButton" [value]="'dryer'" [checked]="!this.outOfWashers && this.outOfDryers"
+        <mat-radio-button [id]="'sub-dryer'" class="subTypeButton" [value]="'dryer'" [checked]="!this.outOfWashers && this.outOfDryers"
                           [disabled]="!this.outOfDryers" color="warn">Dryer
         </mat-radio-button>
       </mat-radio-group>
