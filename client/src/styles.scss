@@ -28,11 +28,11 @@
 
   // Define any styles affected by the theme.
   mat-sidenav-content {
-    background-color: #f8f0ed;
+    background-color: #EBE1E0;
   }
 
   .roomHeading.mat-card {
-    background: #f8f0ed;
+    background: #EBE1E0;
     //color: $light-primary-text !important;
   }
 
@@ -363,7 +363,7 @@ mat-dialog-container .reportButton {
 
 #confirmAddSubButton, #disabledConfirmAddSubButton {
   z-index: 5;
-  padding: 0 15px;
+  padding: 0 12px;
   margin-left: auto;
   position: absolute;
   margin-right: -3px;
