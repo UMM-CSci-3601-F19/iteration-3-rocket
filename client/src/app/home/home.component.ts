@@ -142,8 +142,8 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.machines.filter(m => m.id === thisMachine.id)[0].isSubscribed = thisMachine.isSubscribed;
       this.filteredMachines.filter(m => m.id === thisMachine.id)[0].isSubscribed = thisMachine.isSubscribed;
-      console.log(thisMachine.isSubscribed);
-      console.log('The dialog was closed');
+      // console.log(thisMachine.isSubscribed);
+      // console.log('The dialog was closed');
     });
   }
 
@@ -241,7 +241,6 @@ export class HomeComponent implements OnInit {
     }
     this.buildChart();
   }
-
 
   updateDayBySelector(num: number) {
     this.inputDay = +num;
@@ -674,6 +673,7 @@ export class HomeDialog {
 
   addNewSubscription() {
     if (this.data.newMachineSub != null) {
+      console.log(this.data.newMachineSub);
       this.data.machine.isSubscribed = true;
       this.homeService.addNewSubscription(this.data.newMachineSub).subscribe(
         () => {
