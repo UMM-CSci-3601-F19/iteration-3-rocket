@@ -17,8 +17,9 @@ import {SubscriptionDialog} from './home/home.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatProgressBarModule, MatRadioModule} from '@angular/material';
+import {MatProgressBarModule} from '@angular/material';
 import {MatOptionModule} from '@angular/material/core';
+import {MatRadioModule} from '@angular/material/radio';
 
 import {CookieService} from "ngx-cookie-service";
 
