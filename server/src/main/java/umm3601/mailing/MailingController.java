@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class MailingController {
 
-  private final String EMAIL_FROM = "laundry@service.morrisfacility.com";
+  private final String EMAIL_FROM = "laundry@facility.morris.com";
 
   public final MongoCollection<Document> subscriptionCollection;
   private final MongoCollection<Document> machineCollection;
