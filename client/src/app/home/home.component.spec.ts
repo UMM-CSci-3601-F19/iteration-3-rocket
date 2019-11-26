@@ -1222,4 +1222,4 @@ describe('Home page', () => {
   //       expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
   //     });
   //   });*/
-});
+// });
