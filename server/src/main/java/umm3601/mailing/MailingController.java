@@ -27,6 +27,7 @@ public class MailingController {
   }
 
   public void checkSubscriptions() throws IOException {
+    System.out.println("[update] INFO mailing.MailingController - Checking machine and room subscriptions");
     Document filterDoc = new Document();
     filterDoc.append("type", "machine");
     FindIterable<Document> subscriptionsForMachines = subscriptionCollection.find().filter(filterDoc);
@@ -65,6 +66,7 @@ public class MailingController {
         sendRoomNotification(s.getString("email"), roomName, machineName, type);
       }
     }
+    System.out.println("[update] INFO mailing.MailingController - Checked machine and room subscriptions");
   }
 
   private void sendMachineNotification(String email, String roomName, String machineName, String type) throws IOException {
@@ -264,8 +266,7 @@ public class MailingController {
       "</body></html>");
 
     Mail mail = new Mail(new Email(EMAIL_FROM), subject, new Email(email), content);
-    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email);
-    send(mail);
+    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
   }
 
   private void sendRoomNotification(String email, String roomName, String machineName, String type) throws IOException {
@@ -465,7 +466,7 @@ public class MailingController {
       "</body></html>");
 
     Mail mail = new Mail(new Email(EMAIL_FROM), subject, new Email(email), content);
-    System.out.print("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
+    System.out.println("[subscribe] INFO mailing.MailingController - Sent notification to " + email + " status " + send(mail));
   }
 
   private int send(Mail mail) throws IOException {
