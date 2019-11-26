@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe(newSub => {
       if (newSub != null) {
-        console.log(newSub);
+        // console.log(newSub);
         this.homeService.addNewSubscription(newSub).subscribe(
           () => {
             this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
@@ -673,7 +673,6 @@ export class HomeDialog {
 
   addNewSubscription() {
     if (this.data.newMachineSub != null) {
-      console.log(this.data.newMachineSub);
       this.data.machine.isSubscribed = true;
       this.homeService.addNewSubscription(this.data.newMachineSub).subscribe(
         () => {
