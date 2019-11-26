@@ -26,7 +26,7 @@ Please run the e2e test with the folloing instructions:
 
 There are 2 skipped e2e tests, we provide some reasons as comments before the code of both tests.
 
-To run other tests, please set the "autoRefresh" true and set the "seedLocalSourse" false.
+**To run other tests, please set the "autoRefresh" true and set the "seedLocalSourse" false.**
 
 There are 5 skipped client tests, we provide some reasons as comments before the code of these tests.
 
@@ -34,10 +34,8 @@ We did not remove the modules of users' functionalities in the client and the se
 
 We use SendGrid as tool to send our subscription email. It requires a paired key to connect to SendGrid's server. We use "a-fake-key" at line 473 in MaillingController.java for testing purpose. The steps for using actual key are as following:
 
-Sign in/sign up into SendFrid;
-Generate a key with all mail and mail setting restrictions;
-Copy the key generated;
-After delpoy your project onto Digital Ocean, manuly paste and replace "a-fake-key" with the key you copied;
+Sign in/sign up into SendFrid -> Generate a key with all mail and mail setting restrictions -> Copy the key generated ->
+After delpoy your project onto Digital Ocean, manuly paste and replace "a-fake-key" with the key you copied ->
 Run you droplet.
 
 <!-- TOC depthFrom:1 depthTo:5 withLinks:1 updateOnSave:1 orderedList:0 -->
