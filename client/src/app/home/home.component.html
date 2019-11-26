@@ -49,14 +49,13 @@
       </mat-expansion-panel>
     </div>
     <mat-card *ngIf="this.roomId != ''"
-              style="margin-top: -50px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
+              style="margin-top: -50px; max-height: min-content !important;" class="roomHeading">
 
       <mat-card-title id="roomTitle"
-                      style="font-weight: 100; font-size: 30px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">
-
+                      style="font-weight: 200; font-size: 30px; margin-top: 5px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">
 
         {{this.roomName}}
-        <mat-accordion id="defaultIndicator" *ngIf="defaultSet(roomName)" style="font-size: 45%; font-weight: initial">default</mat-accordion>
+        <mat-accordion id="defaultIndicator" *ngIf="defaultSet(roomName)" style="font-size: 50%; font-weight: initial" id="default-mark">default</mat-accordion>
       </mat-card-title>
 
       <mat-card-content style="height: 15px; margin-left: 2px">
@@ -75,7 +74,7 @@
     <mat-card *ngIf="this.roomId === ''"
               style="margin-top: -10px; margin-bottom: 10px; max-height: min-content !important;" class="roomHeading">
       <mat-card-title
-        style="font-weight: 100; font-size: 35px; margin-bottom: 10px; margin-left: 8px; line-height: 1.15">Greetings!
+        style="font-weight: 300; font-size: 35px; margin-top: 5px; margin-left: 8px; line-height: 1.15">Greetings!
       </mat-card-title>
       <mat-card-content style="height: 20px; margin-left: 10px; font-size: 18px;">
         Welcome to Morris Laundry Facilities!
@@ -85,16 +84,15 @@
     <div id="default-selector" *ngIf="this.roomId !== ''">
       <button *ngIf="!defaultSet(roomName)" mat-button id="defaultRoomButton" class="defaultRoomButton"
               (click)="updateCookies(roomId,roomName)">
-        <mat-icon style="margin-top: 8px">check_box_outline_blank</mat-icon>
+        <mat-icon style="margin-top: 7px">check_box_outline_blank</mat-icon>
         <a class="default-selector-text">Remember current room on your next visit</a>
       </button>
       <button *ngIf="defaultSet(roomName)" mat-button id="unsetDefaultRoomButton" class="defaultRoomButton"
               (click)="updateCookies('','All Rooms')">
-        <mat-icon style="margin-top: 8px">check_box</mat-icon>
+        <mat-icon color="warn" style="margin-top: 7px">check_box</mat-icon>
         <a class="default-selector-text">Remember current room on your next visit</a>
       </button>
     </div>
-
 
     <mat-grid-list cols="{{this.getGraphCols()}}" rowHeight="280px">
 
