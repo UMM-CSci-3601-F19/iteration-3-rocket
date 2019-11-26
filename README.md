@@ -43,6 +43,8 @@ At server/src/main/java/umm3601/mailing/MailingController.java:473
 final String key = "a_fake_key";
 ```
 
+The droplet for our private repo (modified subscription functions) is: http://206.189.163.212:4567/
+
 <!-- TOC depthFrom:1 depthTo:5 withLinks:1 updateOnSave:1 orderedList:0 -->
 ## Table of Contents
 - [Important notes](#important-notes-about-our-iteration-1-project)
