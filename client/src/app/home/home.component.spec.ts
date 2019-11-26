@@ -1,5 +1,5 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
-import {HomeComponent} from './home.component';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HomeComponent, SubscriptionDialog} from './home.component';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {CustomModule} from '../custom.module';
@@ -12,10 +12,7 @@ import {CookieService} from 'ngx-cookie-service';
 
 import {Subscription} from './subscription';
 import {FormBuilder, NgForm} from '@angular/forms';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {SubscriptionDialog} from './home.component';
-import {AddUserComponent} from '../users/add-user.component';
-import {rename} from 'fs';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 describe('Home page', () => {
 
@@ -727,6 +724,15 @@ describe('Home page', () => {
   });
 });
 
+/*
+ * We tried to test the add subscription dialog
+ * but the subscription dialog cannot read from
+ * the MAT_DIALOG_DATA_STUB correctly.
+ * Because there is no working example provided
+ * we skipped the two dialog specs, which causes
+ * that the coverage is slightly lower than the
+ * user component spec.
+ */
 xdescribe('Add subscription dialog', () => {
 
   let subscriptionDialog: SubscriptionDialog;
@@ -1206,41 +1212,46 @@ xdescribe('Add subscription dialog', () => {
     subscriptionDialog = fixture1.componentInstance;
   });
 
-  it('should subscribe to an available machine', () => {
-    component.openSubscription(component.roomId);
+  it('should subscribe to an available room', () => {
+    component.openSubscription('gay');
     expect(component.isSubscribed === true);
   });
-  //
-  //   it('should subscribe to an available machine', () => {
-  //     component.openSubscription('gay');
-  //     expect(component.isSubscribed === true);
-  //   });
-  //
-  //   /*it('should not allow to subscribe with an invalid form of email'), async(() => {
-  //     // tslint:disable-next-line:no-shadowed-variable
-  //     const fixture = TestBed.createComponent(SubscriptionDialog);
-  //     const debug = fixture.debugElement;
-  //     const input = debug.query(By.css('[name=email]'));
-  //
-  //     fixture.detectChanges();
-  //     fixture.whenStable().then(() => {
-  //       input.nativeElement.value = 'bad@email.com';
-  //       dispatchEvent(input.nativeElement);
-  //       fixture.detectChanges();
-  //
-  //       const form: NgForm = debug.children[0].injector.get(NgForm);
-  //       const control = form.control.get('email');
-  //       expect(control.hasError('notPeeskillet')).toBe(true);
-  //       expect(form.control.valid).toEqual(false);
-  //       expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(true);
-  //
-  //       input.nativeElement.value = 'peeskillet@stackoverflow.com';
-  //       dispatchEvent(input.nativeElement);
-  //       fixture.detectChanges();
-  //
-  //       expect(control.hasError('notPeeskillet')).toBe(false);
-  //       expect(form.control.valid).toEqual(true);
-  //       expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
-  //     });
-  //   });*/
+
+  it('should not allow to subscribe with an invalid form of email', async(() => {
+    // tslint:disable-next-line:no-shadowed-variable
+    const fixture = TestBed.createComponent(SubscriptionDialog);
+    const debug = fixture.debugElement;
+    const input = debug.query(By.css('[name=email]'));
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      input.nativeElement.value = 'bad@email.com';
+      dispatchEvent(input.nativeElement);
+      fixture.detectChanges();
+
+      const form: NgForm = debug.children[0].injector.get(NgForm);
+      const control = form.control.get('email');
+      expect(control.hasError('notPeeskillet')).toBe(true);
+      expect(form.control.valid).toEqual(false);
+      expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(true);
+
+      input.nativeElement.value = 'peeskillet@stackoverflow.com';
+      dispatchEvent(input.nativeElement);
+      fixture.detectChanges();
+
+      expect(control.hasError('notPeeskillet')).toBe(false);
+      expect(form.control.valid).toEqual(true);
+      expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
+    });
+
+    it ('should call home service to add new subscription correctly', () => {});
+  }));
+});
+
+xdescribe('Machine info. Dialog', () => {
+   it ('should generate custom links corresponding to the machine being reported', () => {});
+
+   it ('should allow subscribe to an available machine', () => {});
+
+   it ('should call home service to add new subscription correctly', () => {});
 });
