@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe(newSub => {
       if (newSub != null) {
-        console.log(newSub);
+        // console.log(newSub);
         this.homeService.addNewSubscription(newSub).subscribe(
           () => {
             this.rooms.filter(m => m.id === this.roomId)[0].isSubscribed = true;
@@ -142,8 +142,8 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.machines.filter(m => m.id === thisMachine.id)[0].isSubscribed = thisMachine.isSubscribed;
       this.filteredMachines.filter(m => m.id === thisMachine.id)[0].isSubscribed = thisMachine.isSubscribed;
-      console.log(thisMachine.isSubscribed);
-      console.log('The dialog was closed');
+      // console.log(thisMachine.isSubscribed);
+      // console.log('The dialog was closed');
     });
   }
 
@@ -241,7 +241,6 @@ export class HomeComponent implements OnInit {
     }
     this.buildChart();
   }
-
 
   updateDayBySelector(num: number) {
     this.inputDay = +num;
@@ -348,7 +347,7 @@ export class HomeComponent implements OnInit {
             labels: xlabel,
             datasets: [{
               data: this.modifyArray(this.getWeekDayByRoom(this.inputRoom, this.inputDay), 2),
-              backgroundColor: 'rgb(176,94,193)'
+              backgroundColor: '#a24d5e'
             }]
           },
           options: {
@@ -664,7 +663,8 @@ export class HomeDialog {
 
   add_sub_validation_messages = {
     'email': [
-      {type: 'email', message: 'Email must be formatted properly'}
+      {type: 'required', message: 'Email is required'},
+      {type: 'email', message: 'Email must be formatted properly'},
     ]
   };
 
@@ -723,7 +723,11 @@ export class HomeDialog {
     // add user form validations
     this.addSubForm = this.fb.group({
       // We don't need a special validator just for our app here, but there is a default one for email.
-      email: new FormControl('email', Validators.email)
+      email: new FormControl('email', Validators.compose([
+        Validators.required,
+        Validators.email
+      ])),
+
     });
 
     // console.log(this.addSubForm);
@@ -775,7 +779,8 @@ export class SubscriptionDialog {
 
   add_sub_validation_messages = {
     'email': [
-      {type: 'email', message: 'Email must be formatted properly'}
+      {type: 'required', message: 'Email is required'},
+      {type: 'email', message: 'Email must be formatted properly'},
     ]
   };
 
@@ -784,7 +789,11 @@ export class SubscriptionDialog {
     // add user form validations
     this.addSubForm = this.fb.group({
       // We don't need a special validator just for our app here, but there is a default one for email.
-      email: new FormControl('email', Validators.email)
+      email: new FormControl('email', Validators.compose([
+        Validators.required,
+        Validators.email
+      ])),
+
     });
 
     // console.log(this.addSubForm);

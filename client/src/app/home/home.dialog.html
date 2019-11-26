@@ -12,7 +12,7 @@
         <mat-icon class="vacant" style="position: absolute; top: -5px; left: -8px; font-size: 390%; margin: 0">
           local_laundry_service
         </mat-icon>
-        <a class="machineIdentity" style="display: block">
+        <a [id]="data.machine.name + '-dialog-info'" class="machineIdentity" style="display: block">
           <a class="machineName"
              style="margin-left: 65px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a>
           <a style="display: block; margin-left: 65px; font-size: 100%">{{data.machine.room_id}}</a>
@@ -35,7 +35,7 @@
         <mat-icon class="inUse" style="position: absolute; top: -5px; left: -8px; font-size: 390%; margin: 0">
           local_laundry_service
         </mat-icon>
-        <a class="machineIdentity" style="display: block">
+        <a [id]="data.machine.name + '-dialog-info'" class="machineIdentity" style="display: block">
           <a class="machineName"
              style="margin-left: 65px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a>
           <a style="display: block; margin-left: 65px; font-size: 100%">{{data.machine.room_id}}</a>
@@ -60,7 +60,7 @@
         <mat-icon class="unavailable" style="position: absolute; top: -5px; left: -8px; font-size: 390%; margin: 0">
           local_laundry_service
         </mat-icon>
-        <a class="machineIdentity" style="display: block">
+        <a [id]="data.machine.name + '-dialog-info'" class="machineIdentity" style="display: block">
           <a class="machineName"
              style="margin-left: 65px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a>
           <a style="display: block; margin-left: 65px; font-size: 100%">{{data.machine.room_id}}</a>
@@ -83,7 +83,7 @@
         <mat-icon class="vacant" style="position: absolute; top: -5px; left: -8px; font-size: 390%; margin: 0">
           fireplace
         </mat-icon>
-        <a class="machineIdentity" style="display: block">
+        <a [id]="data.machine.name + '-dialog-info'" class="machineIdentity" style="display: block">
           <a class="machineName"
              style="margin-left: 65px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a>
           <a style="display: block; margin-left: 65px; font-size: 100%">{{data.machine.room_id}}</a>
@@ -106,7 +106,7 @@
         <mat-icon class="inUse" style="position: absolute; top: -5px; left: -8px; font-size: 390%; margin: 0">
           fireplace
         </mat-icon>
-        <a class="machineIdentity" style="display: block">
+        <a [id]="data.machine.name + '-dialog-info'" class="machineIdentity" style="display: block">
           <a class="machineName"
              style="margin-left: 65px; font-size: 120%; text-transform: capitalize; font-weight: 500">{{data.machine.name}}</a>
           <a style="display: block; margin-left: 65px; font-size: 100%">{{data.machine.room_id}}</a>
@@ -126,7 +126,7 @@
   </mat-dialog-content>
 
   <mat-dialog-content *ngIf="data.machine.status==='broken'&& data.machine.type==='dryer'">
-    <mat-card style="box-shadow: none; margin-top: 0; padding: 0; margin-bottom: 0">
+    <mat-card [id]="data.machine.name + '-dialog'" style="box-shadow: none; margin-top: 0; padding: 0; margin-bottom: 0">
       <div class="machineInfo">
         <mat-icon class="unavailable" style="position: absolute; top: -5px; left: -8px; font-size: 390%; margin: 0">
           fireplace
@@ -150,13 +150,13 @@
 
   <mat-dialog-content layout="row">
 
-    <mat-accordion *ngIf="data.machine.running && data.machine.status === 'normal'">
+    <mat-accordion id="canSub" *ngIf="data.machine.running && data.machine.status === 'normal'">
       <div class="sub-title">Notify me when it is available</div>
       <a class="sub-detail">Subscribe to receive an email when the dryer is vacant. We will only send the notification
         once.</a>
     </mat-accordion>
 
-    <mat-accordion *ngIf="!data.machine.running || data.machine.status !== 'normal'">
+    <mat-accordion id="cannotSub" *ngIf="!data.machine.running || data.machine.status !== 'normal'">
       <div class="sub-title">Cannot subscribe to this {{data.machine.type}}</div>
       <div class="sub-detail">Subscription is only allowed to a running machine.</div>
       <br>

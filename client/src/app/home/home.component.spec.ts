@@ -1,5 +1,5 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
-import {HomeComponent} from './home.component';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HomeComponent, SubscriptionDialog} from './home.component';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {CustomModule} from '../custom.module';
@@ -11,10 +11,8 @@ import {Observable} from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
 
 import {Subscription} from './subscription';
-import {NgForm} from '@angular/forms';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {SubscriptionDialog} from './home.component';
-import {AddUserComponent} from '../users/add-user.component';
+import {FormBuilder, NgForm} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 describe('Home page', () => {
 
@@ -29,22 +27,24 @@ describe('Home page', () => {
   let gl: HTMLElement;
   let hl: HTMLElement;
 
+  let name: String;
+  let cookieID: String;
+
   let homeServiceStub: {
     getRooms: () => Observable<Room[]>;
     getMachines: () => Observable<Machine[]>;
     getAllHistory: () => Observable<History[]>;
     updateRunningStatus;
+    // addNewSubscription: (newSub: Subscription) => Observable<string>;
   };
 
-  let cookieServiceMock: {
-    getName: () => Observable<String[]>;
+  let cookieServiceStub: {
+    getName: (arg0: String) => String;
+    set: (arg0: String, arg1: String) => null;
   };
 
   // @ts-ignore
   beforeEach(() => {
-    cookieServiceMock = {
-      getName: () => Observable.of([''])
-    };
 
     homeServiceStub = {
       getMachines: () => Observable.of([
@@ -456,13 +456,20 @@ describe('Home page', () => {
       updateRunningStatus: () => null,
     };
 
+    cookieServiceStub = {
+      // tslint:disable-next-line:no-shadowed-variable
+      getName: (name) => 'gay',
+      // tslint:disable-next-line:no-shadowed-variable
+      set: (name, cookieID) => null,
+    };
+
     TestBed.configureTestingModule({
       imports: [CustomModule],
       declarations: [HomeComponent], // declare the test component
       providers: [
         {provide: HomeService, useValue: homeServiceStub},
-        {provide: CookieService, useValue: cookieServiceMock}
-        ]
+        {provide: CookieService, useValue: cookieServiceStub}
+      ]
     });
 
     fixture = TestBed.createComponent(HomeComponent);
@@ -478,6 +485,9 @@ describe('Home page', () => {
     fl = df.nativeElement;
     gl = dg.nativeElement;
     hl = dh.nativeElement;
+
+    name = 'room_id';
+    cookieID = 'gay';
   });
 
   it('displays a text of rooms', () => {
@@ -562,10 +572,10 @@ describe('Home page', () => {
       machines => {
         component.machines = machines;
       });
-      expect(component.generateCustomLink('the_apartments', 'dryer', 'the_id'))
-      // tslint:disable-next-line:max-line-length
-        .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Apartment Community Building (Cube)&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
-    });
+    expect(component.generateCustomLink('the_apartments', 'dryer', 'the_id'))
+    // tslint:disable-next-line:max-line-length
+      .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Apartment Community Building (Cube)&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
+  });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
@@ -640,7 +650,7 @@ describe('Home page', () => {
     expect(component.generateCustomLink('blakely', 'dryer', 'the_id'))
     // tslint:disable-next-line:max-line-length
       .toBe('https://docs.google.com/forms/d/e/1FAIpQLSdU04E9Kt5LVv6fVSzgcNQj1YzWtWu8bXGtn7jhEQIsqMyqIg/viewform?entry.1000002=Blakely&entry.1000005=Laundry room&entry.1000010=Resident&entry.1000006=Other&entry.1000007=issue with dryer the_id: ');
-    });
+  });
 
   it('should generate a custom link corresponding to the machine being reported', () => {
     const machines: Observable<Machine[]> = homeServiceStub.getMachines();
@@ -667,9 +677,13 @@ describe('Home page', () => {
     const current = component.inputDay;
     component.updateDayByButton(1);
     let expected = (current + 1) % 7;
-    if (expected === 0) { expected = 7; }
+    if (expected === 0) {
+      expected = 7;
+    }
     expect(component.inputDay).toBe(expected);
-    for (let i = 0; i < 7; ++i) { component.updateDayByButton(-1); }
+    for (let i = 0; i < 7; ++i) {
+      component.updateDayByButton(-1);
+    }
     expect(component.inputDay).toBe(expected);
   });
 
@@ -701,63 +715,543 @@ describe('Home page', () => {
     expect(component.filteredMachines.length).toEqual(1);
   });
 
-  describe('Add subscription dialog', () => {
+  // Cookie Service :(
+  it('should set a cookie', () => {
+    component.roomId = 'gay';
+    homeServiceStub.updateRunningStatus();
+    component.updateCookies(component.roomId, component.roomName);
+    expect(component.roomId).toBe(cookieServiceStub.getName('room_id'));
+  });
+});
 
-    let subscriptionDialog: SubscriptionDialog;
-    // tslint:disable-next-line:no-shadowed-variable
-    let fixture: ComponentFixture<SubscriptionDialog>;
+/*
+ * We tried to test the add subscription dialog
+ * but the subscription dialog cannot read from
+ * the MAT_DIALOG_DATA_STUB correctly.
+ * Because there is no working example provided
+ * we skipped the two dialog specs, which causes
+ * that the coverage is slightly lower than the
+ * user component spec.
+ */
+xdescribe('Add subscription dialog', () => {
 
-    let calledClose: boolean;
-    const mockMatDialogRef = {
-      close() {
-        calledClose = true;
-      }
+  let subscriptionDialog: SubscriptionDialog;
+  // tslint:disable-next-line:no-shadowed-variable
+  let fixture1: ComponentFixture<SubscriptionDialog>;
+
+  let component: HomeComponent;
+  let fixture: ComponentFixture<HomeComponent>;
+
+  let calledClose: boolean;
+
+  const mockMatDialogRef = {
+    close() {
+      calledClose = true;
+    }
+  };
+
+  // tslint:disable-next-line:prefer-const
+  let MAT_DIALOG_DATA_STUB: {
+    data: { subscription: Subscription, noWasher: boolean, noDryer: boolean, roomName: string },
+    fb: FormBuilder
+  };
+
+  let homeServiceStub: {
+    getRooms: () => Observable<Room[]>;
+    getMachines: () => Observable<Machine[]>;
+    getAllHistory: () => Observable<History[]>;
+    updateRunningStatus;
+  };
+
+  let cookieServiceStub: {
+    getName: (arg0: String) => String;
+    set: (arg0: String, arg1: String) => null;
+  };
+  // @ts-ignore
+  beforeEach(async(() => {
+
+    homeServiceStub = {
+      getMachines: () => Observable.of([
+        {
+          id: 'id_1',
+          name: '',
+          running: false,
+          status: 'normal',
+          room_id: 'gay',
+          type: 'washer',
+          position: {
+            x: 0,
+            y: 0,
+          },
+          remainingTime: -1,
+          vacantTime: 10,
+          isSubscribed: undefined
+        }, {
+          id: 'id_2',
+          name: '',
+          running: true,
+          status: 'normal',
+          room_id: 'room_b',
+          type: 'washer',
+          position: {
+            x: 0,
+            y: 0,
+          },
+          remainingTime: 10,
+          vacantTime: -1,
+          isSubscribed: undefined
+        },
+      ]),
+      getRooms: () => Observable.of([
+        {
+          id: 'gay',
+          name: 'A',
+
+          isSubscribed: false,
+
+          numberOfAllMachines: 1,
+          numberOfAvailableMachines: 1,
+        }, {
+          id: 'room_b',
+          name: 'B',
+
+          isSubscribed: false,
+
+          numberOfAllMachines: 1,
+          numberOfAvailableMachines: 0,
+        },
+      ]),
+      getAllHistory: () => Observable.of([
+        {
+          1: {
+            0: 10,
+            1: 5,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2,
+            6: 6,
+            7: 3,
+            8: 1,
+            9: 8,
+            10: 4,
+            11: 2,
+            12: 3,
+            13: 3,
+            14: 7,
+            15: 2,
+            16: 9,
+            17: 6,
+            18: 0,
+            19: 4,
+            20: 8,
+            21: 8,
+            22: 10,
+            23: 5,
+            24: 10,
+            25: 3,
+            26: 8,
+            27: 1,
+            28: 0,
+            29: 10,
+            30: 2,
+            31: 5,
+            32: 4,
+            33: 3,
+            34: 7,
+            35: 0,
+            36: 1,
+            37: 3,
+            38: 8,
+            39: 5,
+            40: 0,
+            41: 9,
+            42: 0,
+            43: 8,
+            44: 4,
+            45: 4,
+            46: 8,
+            47: 3
+          },
+          2: {
+            0: 10,
+            1: 5,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2,
+            6: 6,
+            7: 3,
+            8: 1,
+            9: 8,
+            10: 4,
+            11: 2,
+            12: 3,
+            13: 3,
+            14: 7,
+            15: 2,
+            16: 9,
+            17: 6,
+            18: 0,
+            19: 4,
+            20: 8,
+            21: 8,
+            22: 10,
+            23: 5,
+            24: 10,
+            25: 3,
+            26: 8,
+            27: 1,
+            28: 0,
+            29: 10,
+            30: 2,
+            31: 5,
+            32: 4,
+            33: 3,
+            34: 7,
+            35: 0,
+            36: 1,
+            37: 3,
+            38: 8,
+            39: 5,
+            40: 0,
+            41: 9,
+            42: 0,
+            43: 8,
+            44: 4,
+            45: 4,
+            46: 8,
+            47: 3
+          },
+          3: {
+            0: 10,
+            1: 5,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2,
+            6: 6,
+            7: 3,
+            8: 1,
+            9: 8,
+            10: 4,
+            11: 2,
+            12: 3,
+            13: 3,
+            14: 7,
+            15: 2,
+            16: 9,
+            17: 6,
+            18: 0,
+            19: 4,
+            20: 8,
+            21: 8,
+            22: 10,
+            23: 5,
+            24: 10,
+            25: 3,
+            26: 8,
+            27: 1,
+            28: 0,
+            29: 10,
+            30: 2,
+            31: 5,
+            32: 4,
+            33: 3,
+            34: 7,
+            35: 0,
+            36: 1,
+            37: 3,
+            38: 8,
+            39: 5,
+            40: 0,
+            41: 9,
+            42: 0,
+            43: 8,
+            44: 4,
+            45: 4,
+            46: 8,
+            47: 3
+          },
+          4: {
+            0: 10,
+            1: 5,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2,
+            6: 6,
+            7: 3,
+            8: 1,
+            9: 8,
+            10: 4,
+            11: 2,
+            12: 3,
+            13: 3,
+            14: 7,
+            15: 2,
+            16: 9,
+            17: 6,
+            18: 0,
+            19: 4,
+            20: 8,
+            21: 8,
+            22: 10,
+            23: 5,
+            24: 10,
+            25: 3,
+            26: 8,
+            27: 1,
+            28: 0,
+            29: 10,
+            30: 2,
+            31: 5,
+            32: 4,
+            33: 3,
+            34: 7,
+            35: 0,
+            36: 1,
+            37: 3,
+            38: 8,
+            39: 5,
+            40: 0,
+            41: 9,
+            42: 0,
+            43: 8,
+            44: 4,
+            45: 4,
+            46: 8,
+            47: 3
+          },
+          5: {
+            0: 10,
+            1: 5,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2,
+            6: 6,
+            7: 3,
+            8: 1,
+            9: 8,
+            10: 4,
+            11: 2,
+            12: 3,
+            13: 3,
+            14: 7,
+            15: 2,
+            16: 9,
+            17: 6,
+            18: 0,
+            19: 4,
+            20: 8,
+            21: 8,
+            22: 10,
+            23: 5,
+            24: 10,
+            25: 3,
+            26: 8,
+            27: 1,
+            28: 0,
+            29: 10,
+            30: 2,
+            31: 5,
+            32: 4,
+            33: 3,
+            34: 7,
+            35: 0,
+            36: 1,
+            37: 3,
+            38: 8,
+            39: 5,
+            40: 0,
+            41: 9,
+            42: 0,
+            43: 8,
+            44: 4,
+            45: 4,
+            46: 8,
+            47: 3
+          },
+          6: {
+            0: 10,
+            1: 5,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2,
+            6: 6,
+            7: 3,
+            8: 1,
+            9: 8,
+            10: 4,
+            11: 2,
+            12: 3,
+            13: 3,
+            14: 7,
+            15: 2,
+            16: 9,
+            17: 6,
+            18: 0,
+            19: 4,
+            20: 8,
+            21: 8,
+            22: 10,
+            23: 5,
+            24: 10,
+            25: 3,
+            26: 8,
+            27: 1,
+            28: 0,
+            29: 10,
+            30: 2,
+            31: 5,
+            32: 4,
+            33: 3,
+            34: 7,
+            35: 0,
+            36: 1,
+            37: 3,
+            38: 8,
+            39: 5,
+            40: 0,
+            41: 9,
+            42: 0,
+            43: 8,
+            44: 4,
+            45: 4,
+            46: 8,
+            47: 3
+          },
+          7: {
+            0: 10,
+            1: 5,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2,
+            6: 6,
+            7: 3,
+            8: 1,
+            9: 8,
+            10: 4,
+            11: 2,
+            12: 3,
+            13: 3,
+            14: 7,
+            15: 2,
+            16: 9,
+            17: 6,
+            18: 0,
+            19: 4,
+            20: 8,
+            21: 8,
+            22: 10,
+            23: 5,
+            24: 10,
+            25: 3,
+            26: 8,
+            27: 1,
+            28: 0,
+            29: 10,
+            30: 2,
+            31: 5,
+            32: 4,
+            33: 3,
+            34: 7,
+            35: 0,
+            36: 1,
+            37: 3,
+            38: 8,
+            39: 5,
+            40: 0,
+            41: 9,
+            42: 0,
+            43: 8,
+            44: 4,
+            45: 4,
+            46: 8,
+            47: 3
+          },
+          '_id': '5dbb7ca7d8ba936a8e8d9e3f',
+          'room_id': 'A'
+        },
+      ]),
+      updateRunningStatus: () => null,
     };
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [CustomModule],
-        declarations: [SubscriptionDialog],
-        providers: [
-          {provide: MatDialogRef, useValue: mockMatDialogRef},
-          {provide: MAT_DIALOG_DATA, useValue: null}]
-      }).compileComponents().catch(error => {
-        expect(error).toBeNull();
-      });
-    }));
+    cookieServiceStub = {
+      // tslint:disable-next-line:no-shadowed-variable
+      getName: (name) => 'gay',
+      // tslint:disable-next-line:no-shadowed-variable
+      set: (name, cookieID) => null,
+    };
 
-    beforeEach(() => {
-      calledClose = false;
-      fixture = TestBed.createComponent(SubscriptionDialog);
-      subscriptionDialog = fixture.componentInstance;
+    TestBed.configureTestingModule({
+      imports: [CustomModule],
+      declarations: [HomeComponent, SubscriptionDialog],
+      providers: [
+        {provide: MatDialogRef, useValue: mockMatDialogRef},
+        {provide: MAT_DIALOG_DATA, useValue: MAT_DIALOG_DATA_STUB},
+        {provide: HomeService, useValue: homeServiceStub},
+        {provide: CookieService, useValue: cookieServiceStub}
+      ]
+    }).compileComponents().catch(error => {
+      expect(error).toBeNull();
+    });
+  }));
+
+  beforeEach(() => {
+    calledClose = false;
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+    component.loadAllRooms();
+    component.loadAllMachines();
+    component.updateRoom('room_b', 'B');
+    fixture1 = TestBed.createComponent(SubscriptionDialog);
+    subscriptionDialog = fixture1.componentInstance;
+  });
+
+  it('should subscribe to an available room', () => {
+    component.openSubscription('gay');
+    expect(component.isSubscribed === true);
+  });
+
+  it('should not allow to subscribe with an invalid form of email', async(() => {
+    // tslint:disable-next-line:no-shadowed-variable
+    const fixture = TestBed.createComponent(SubscriptionDialog);
+    const debug = fixture.debugElement;
+    const input = debug.query(By.css('[name=email]'));
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      input.nativeElement.value = 'bad@email.com';
+      dispatchEvent(input.nativeElement);
+      fixture.detectChanges();
+
+      const form: NgForm = debug.children[0].injector.get(NgForm);
+      const control = form.control.get('email');
+      expect(control.hasError('notPeeskillet')).toBe(true);
+      expect(form.control.valid).toEqual(false);
+      expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(true);
+
+      input.nativeElement.value = 'peeskillet@stackoverflow.com';
+      dispatchEvent(input.nativeElement);
+      fixture.detectChanges();
+
+      expect(control.hasError('notPeeskillet')).toBe(false);
+      expect(form.control.valid).toEqual(true);
+      expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
     });
 
-    /*it('should not allow to subscribe with an invalid form of email'), async(() => {
-      // tslint:disable-next-line:no-shadowed-variable
-      const fixture = TestBed.createComponent(SubscriptionDialog);
-      const debug = fixture.debugElement;
-      const input = debug.query(By.css('[name=email]'));
+    it ('should call home service to add new subscription correctly', () => {});
+  }));
+});
 
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        input.nativeElement.value = 'bad@email.com';
-        dispatchEvent(input.nativeElement);
-        fixture.detectChanges();
+xdescribe('Machine info. Dialog', () => {
+   it ('should generate custom links corresponding to the machine being reported', () => {});
 
-        const form: NgForm = debug.children[0].injector.get(NgForm);
-        const control = form.control.get('email');
-        expect(control.hasError('notPeeskillet')).toBe(true);
-        expect(form.control.valid).toEqual(false);
-        expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(true);
+   it ('should allow subscribe to an available machine', () => {});
 
-        input.nativeElement.value = 'peeskillet@stackoverflow.com';
-        dispatchEvent(input.nativeElement);
-        fixture.detectChanges();
-
-        expect(control.hasError('notPeeskillet')).toBe(false);
-        expect(form.control.valid).toEqual(true);
-        expect(form.control.hasError('notPeeskillet', ['email'])).toEqual(false);
-      });
-    });*/
-  });
+   it ('should call home service to add new subscription correctly', () => {});
 });

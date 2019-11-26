@@ -31,12 +31,12 @@ describe('home', () => {
   });
 
   afterEach(() => {
-    browser.executeScript('window.sessionStorage.clear();');
+    browser.manage().deleteAllCookies();
   });
 
   it('should get and highlight Home panel title attribute', () => {
     page.navigateTo();
-    expect(page.getHomePanelTitle()).toEqual('Please select a laundry room here');
+    expect(page.getHomePanelTitle()).toEqual('Select a Laundry Room to View');
   });
 
   it('should get and highlight each hall title attribute', () => {
@@ -52,12 +52,12 @@ describe('home', () => {
 
   it('should get and highlight each hall availability attribute', () => {
     page.navigateTo();
-    expect(page.getGayHallAvailability()).toEqual('7 / 9 vacant');
-    expect(page.getIndependenceHallAvailability()).toEqual('8 / 15 vacant');
-    expect(page.getBlakelyHallAvailability()).toEqual('7 / 11 vacant');
-    expect(page.getSpoonerHallAvailability()).toEqual('5 / 6 vacant');
-    expect(page.getGreenPrairieHallAvailability()).toEqual('5 / 7 vacant');
-    expect(page.getPineHallAvailability()).toEqual('4 / 5 vacant');
+    expect(page.getGayHallAvailability()).toEqual('2 / 9 vacant');
+    expect(page.getIndependenceHallAvailability()).toEqual('5 / 15 vacant');
+    expect(page.getBlakelyHallAvailability()).toEqual('5 / 11 vacant');
+    expect(page.getSpoonerHallAvailability()).toEqual('0 / 6 vacant');
+    expect(page.getGreenPrairieHallAvailability()).toEqual('3 / 7 vacant');
+    expect(page.getPineHallAvailability()).toEqual('2 / 5 vacant');
     expect(page.getApartmentHallAvailability()).toEqual('1 / 5 vacant');
   });
 
@@ -70,21 +70,13 @@ describe('home', () => {
   it('should display a map when a room is selected', () => {
     page.navigateTo();
     page.clickGayHall();
-    expect(page.getEntrance()).toEqual('Entrance of Gay Hall');
-  });
-
-  it('should open a dialog for corresponding machine', () => {
-    page.navigateTo();
-    page.clickGayHall();
-    expect(page.elementExistsWithId('dorky-gamboge-dog'));
-    page.click('dorky-gamboge-dog');
-    expect(page.getDialogTitle()).toEqual('Machine Information');
+    expect(page.getEntrance()).toEqual('Entrance to Gay Hall');
   });
 
   it('should get and have correct title for gay\'s washers and dryers panel', () => {
     page.navigateTo();
     page.clickGayHall();
-    expect(page.getUniqueRoomTitle()).toEqual('Machines within Gay Hall');
+    expect(page.getUniqueRoomTitle()).toEqual('Machines at Gay Hall');
   });
 
   it('should get and have specific machines', () => {
@@ -145,51 +137,310 @@ describe('home', () => {
     expect(a).not.toEqual(b);
   }, 100000);
 
-  it('should have a subscribe button when you select a specific room', () => {
-    page.navigateTo();
-    page.clickGayHall();
-    expect(page.elementExistsWithId('subscribeButton'));
+  describe('Cookie default page',() => {
+
+    it('should have a make default button when you select a specific room', () => {
+      page.navigateTo();
+      page.clickGayHall();
+      expect(page.elementExistsWithId('defaultRoomButton'));
+    });
+
+    it('should have an unset default button when you set a room to be default', () => {
+      page.navigateTo();
+      page.clickGayHall();
+      page.click('defaultRoomButton');
+      expect(page.elementExistsWithId('unsetDefaultRoomButton'));
+    });
+
+    it('should set gay hall as default room', () => {
+      page.navigateTo();
+      page.click('gayId');
+      expect(page.getTextFromField('roomTitle')).toEqual('Gay Hall');
+      page.click('defaultRoomButton');
+      page.navigateTo();
+      expect(page.elementExistsWithId('default-mark'));
+      expect(page.getTextFromField('roomTitle')).toEqual('Gay Hall default');
+    });
+
+    it('should set independence hall as default if we set it to be default after set any other before', () => {
+      page.navigateTo();
+      page.click('gayId');
+      page.click('defaultRoomButton');
+      expect(page.getTextFromField('roomTitle')).toEqual('Gay Hall default');
+      page.click('all-rooms');
+      page.click('independenceId');
+      expect(page.getTextFromField('roomTitle')).toEqual('Independence Hall');
+      page.click('defaultRoomButton');
+      expect(page.getTextFromField('roomTitle')).toEqual('Independence Hall default');
+      page.click('all-rooms');
+      page.click('gayId');
+      expect(page.getTextFromField('roomTitle')).toEqual('Gay Hall');
+    });
   });
 
-  it('should have a make default button when you select a specific room', () => {
-    page.navigateTo();
-    page.clickGayHall();
-    expect(page.elementExistsWithId('defaultRoomButton'));
+  describe('Validation of subscription of rooms',() => {
+
+    it('should have a subscribe button when you select a specific room', () => {
+      page.navigateTo();
+      page.clickApartment();
+      expect(page.elementExistsWithId('subscribeButton'));
+    });
+
+    it('should have a disabled subscribe button when you select green prairie hall', () => {
+      page.navigateTo();
+      page.click('green_prairieId');
+      expect(page.button('subscribeButton').isEnabled()).toBeFalsy();
+      expect(page.getTextFromField('subscribeButton')).toEqual('Subscribe notifications_none');
+    });
+
+    it('should have a enabled subscribe button when you select gay hall',() => {
+      page.navigateTo();
+      page.click('gayId');
+      expect(page.button('subscribeButton').isEnabled()).toBeTruthy();
+      expect(page.getTextFromField('subscribeButton')).toEqual('Subscribe notifications_none');
+    });
+
+    it('should have a active notification icon represent the subscribed room',() => {
+      page.navigateTo();
+      page.click('gayId');
+      page.click('subscribeButton');
+      page.field('emailField').clear();
+      page.field('emailField').sendKeys('123@a.b');
+      page.click('confirmAddSubButton');
+      expect(page.button('subscribeButton').isEnabled()).toBe(false);
+      expect(page.getTextFromField('subscribeButton')).toEqual('Subscribed notifications_active');
+    });
+
+    it('should have no changes if nothing saved in subscription dialog',() => {
+      page.navigateTo();
+      page.click('gayId');
+      page.click('subscribeButton');
+      page.field('emailField').clear();
+      page.field('emailField').sendKeys('123@a.b');
+      expect(page.button('subscribeButton').isEnabled()).toBe(true);
+      expect(page.getTextFromField('subscribeButton')).toEqual('Subscribe notifications_none');
+    });
+
+    it('should have an enabled subscribe button when click gay hall', () => {
+      page.navigateTo();
+      page.click('gayId');
+      expect(page.button('subscribeButton').isEnabled()).toBe(true);
+    });
+
+    it('should have an enabled subscribe button when click the apartments', () => {
+      page.navigateTo();
+      page.click('the_apartmentsId');
+      expect(page.button('subscribeButton').isEnabled()).toBe(true);
+    });
+
+    it('should have an enabled subscribe button when click spooner hall', () => {
+      page.navigateTo();
+      page.click('spoonerId');
+      expect(page.button('subscribeButton').isEnabled()).toBe(true);
+    });
+
+    it('should have an enabled subscribe button when click pine hall', () => {
+      page.navigateTo();
+      page.click('pineId');
+      expect(page.button('subscribeButton').isEnabled()).toBe(true);
+    });
+
+    it('should have a disabled subscribe button when click independence hall', () => {
+      page.navigateTo();
+      page.click('independenceId');
+      expect(page.button('subscribeButton').isEnabled()).toBe(false);
+    });
+
+    it('should have a disabled subscribe button when click green prairie hall', () => {
+      page.navigateTo();
+      page.click('green_prairieId');
+      expect(page.button('subscribeButton').isEnabled()).toBe(false);
+    });
+
+    it('should have a disabled subscribe button when click blakely hall', () => {
+      page.navigateTo();
+      page.click('blakelyId');
+      expect(page.button('subscribeButton').isEnabled()).toBe(false);
+    });
   });
 
-  it('should have an unset default button when you set a room to be default', () => {
-    page.navigateTo();
-    page.clickGayHall();
-    page.click('defaultRoomButton');
-    expect(page.elementExistsWithId('unsetDefaultRoomButton'));
-    page.click('unsetDefaultRoomButton');
+  describe('Machine information dialog',() => {
+
+    beforeEach(() => {
+      page.navigateTo();
+      page.click('gayId');
+    });
+
+    // afterEach(() => {
+    //   page.click('closeDialog2');
+    // });
+    it('should have a none notification icon represent the in-used but unsubscribed machine',() => {
+      expect(page.getTextFromField('machineSubIcon-dorky-gamboge-dog')).toEqual('notifications_none');
+    });
+
+    it('should have a more-vert icon represent the vacant machine',() => {
+      expect(page.getTextFromField('machineSubIcon-bumpy-cerulean-molly')).toEqual('more_vert');
+    });
+
+    it('should have a active notification icon represent the in-used and subscribed machine',() => {
+      page.click('dorky-gamboge-dog');
+      page.field('emailField').clear();
+      page.field('emailField').sendKeys('123@a.b');
+      page.click('confirmAddSubButton');
+      expect(page.getTextFromField('machineIsSubscribed')).toEqual('check Subscribed');
+      page.click('closeDialog2');
+      expect(page.getTextFromField('machineSubIcon-dorky-gamboge-dog')).toEqual('notifications_active');
+    });
+
+    it('should have the same icon if we do not save subscription in dialog',() => {
+      page.click('dorky-gamboge-dog');
+      page.field('emailField').clear();
+      page.field('emailField').sendKeys('123@a.b');
+      page.click('closeDialog2');
+      expect(page.getTextFromField('machineSubIcon-dorky-gamboge-dog')).toEqual('notifications_none');
+    });
+
+    it('should open a dialog when clicked a machine in map', () => {
+      page.click('dorky-gamboge-dog');
+      expect(page.getTextFromField('dTitle')).toEqual('Machine Information');
+    });
+
+    it('should open a corresponding dialog shows detailed information of the machine be clicked', () => {
+      page.click('dorky-gamboge-dog');
+      expect(page.getTextFromField('dorky gamboge dog-dialog-info')).toContain('Dorky Gamboge Dog');
+      expect(page.getTextFromField('dorky gamboge dog-dialog-info')).toContain('Gay Hall');
+      expect(page.getTextFromField('dorky gamboge dog-dialog-info')).toContain('Dryer');
+    });
+
+    it('should not allow user to subscribe for a vacant machine', () => {
+      page.click('bumpy-cerulean-molly');
+      expect(page.getTextFromClassName('sub-title')).toContain('Cannot subscribe to this washer');
+      expect(page.getTextFromClassName('sub-detail')).toContain('Subscription is only allowed to a running machine.');
+    });
+
+    it('should allow user to subscribe for an in-used machine', () => {
+      page.click('dorky-gamboge-dog');
+      expect(page.getTextFromClassName('sub-title')).toContain('Notify me when it is available');
+      expect(page.getTextFromClassName('sub-detail')).toContain('Subscribe to receive an email when the dryer is vacant. We will only send the notification once.');
+    });
+
+    describe('Subscribe machine (Validation)', () => {
+
+      beforeEach(() => {
+        page.navigateTo();
+        page.click('gayId');
+        page.click('dorky-gamboge-dog');
+      });
+
+      // afterEach(() => {
+      //   page.click('exitWithoutAddingButton');
+      // });
+
+      it('Should show the validation error message about email being required', () => {
+        expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
+        page.field('emailField').clear();
+        expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
+        // clicking somewhere else will make the error appear
+        browser.actions().sendKeys(Key.TAB).perform();
+        browser.actions().sendKeys(Key.TAB).perform();
+        browser.actions().sendKeys(Key.TAB).perform();
+        expect(page.getTextFromField('email-error')).toEqual('Email is required');
+      });
+
+      it('Should show the validation error message about email format', () => {
+        expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
+        page.field('emailField').clear();
+        page.field('emailField').sendKeys('donjones.com');
+        expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
+        // clicking somewhere else will make the error appear
+        browser.actions().sendKeys(Key.TAB).perform();
+        expect(page.getTextFromField('email-error')).toEqual('Email must be formatted properly');
+      });
+    });
   });
 
-  it('should set gay hall as default room', () => {
-    page.navigateTo();
-    page.clickGayHall();
-    page.click('defaultRoomButton');
-    page.navigateTo();
-    expect(page.getRoomTitle()).toEqual('Gay Hall');
-    page.click('unsetDefaultRoomButton');
+  describe('Subscribe valid room',() => {
+
+    beforeEach(() => {
+      page.navigateTo();
+      page.clickApartment();
+      page.click('subscribeButton');
+    });
+
+    it('should open a dialog when click an enabled subscribe button in the apartment', () => {
+      expect(page.elementExistsWithId('sub-title'));
+    });
+
+    it('should have correct title for the opened dialog when click an enabled subscribe button in the apartment', () => {
+      expect(page.getTextWithID('sub-title')).toEqual('New Subscription');
+    });
+
+    xit('should have correct checked field for the opened dialog when click an enabled subscribe button in the apartment', async() => {
+      /*
+       * In this test, we want to test that we have the correct checked/default
+       * value we pre-set based on the condition. We manually test the value to
+       * be correct but we can not figure out how to do it in code, even with
+       * discussion with Professor K.K., so we skipped this test.
+       */
+
+      // expect(page.boxChecked('sub-dryer').checked).toBe(true);
+      // expect(page.boxChecked('sub-type').isSelected()).toBe(true);
+      // const subDryer = element(by.css('mat-radio-button[id=sub-dryer]'));
+      // expect(subDryer.getAttribute('class')).toContain('checked');
+      // expect(subDryer.attributes.length).toContain('disabled');
+      // const subDryerAttri = subDryer.getAttribute('mat-radio-checked');
+      // expect(subDryerAttri).not.toBe(null);
+      // expect(await subDryerAttri).toBeTruthy();
+    });
+
+    xit('should have a disabled check box for washer in the apartment', () => {
+      /*
+       * In this test, we want to test that we have the correct disabled value
+       * we pre-set based on the condition. We manually test the value to be
+       * correct but we can not figure out how to do it in code, even with
+       * discussion with Professor K.K., so we skipped this test.
+       */
+
+      // expect(page.buttonClickable('sub-washer')).toBe(false);
+      // const subWasher = element(by.css('mat-radio-button[id=sub-washer]'));
+      // expect(subWasher.getAttribute('class')).toContain('disabled');
+      // const subWasherAttri = subWasher.getAttribute('[disabled]');
+      // expect(subWasherAttri).not.toBe(null);
+      // expect(element(by.css('mat-radio-button[id=sub-washer]')).getAttribute('disabled')).toBeTruthy();
+      // expect(element(by.id('sub-washer')).getAttribute('disabled')).toBe('disabled');
+      // expect(page.field('sub-washer').isEnabled()).toBe(false);
+      // expect(page.getTextFromField('sub-washer-true')).toBe('washer');
+      // expect(page.getTextFromField('sub-dryer-false')).toBe('dryer');
+    });
+
+    describe('Subscribe (Validation)', () => {
+
+      afterEach(() => {
+        page.click('exitWithoutAddingButton');
+      });
+
+      xit('Should show the validation error message about email being required', () => {
+        expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
+        page.field('emailField').clear();
+        expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
+        // clicking somewhere else will make the error appear
+        browser.actions().sendKeys(Key.TAB).perform();
+        browser.actions().sendKeys(Key.TAB).perform();
+        expect(page.getTextFromField('email-error')).toEqual('Email is required');
+      });
+
+      xit('Should show the validation error message about email format', () => {
+        expect(page.field('emailField').isPresent()).toBeTruthy('There should be an email field');
+        page.field('emailField').clear();
+        page.field('emailField').sendKeys('donjones.com');
+        expect(page.button('confirmAddSubButton').isEnabled()).toBe(false);
+        // clicking somewhere else will make the error appear
+        browser.actions().sendKeys(Key.TAB).perform();
+        expect(page.getTextFromField('email-error')).toEqual('Email must be formatted properly');
+      });
+
+    });
   });
 
-  it('should set gay hall as default room, and get correct message', () => {
-    page.navigateTo();
-    page.clickGayHall();
-    page.click('defaultRoomButton');
-    page.click('all-rooms');
-    page.clickPineHall();
-    expect(page.getTextWithID('defaultRoomIndicator')).toEqual('room is currently set to: Gay Hall');
-    page.click('all-rooms');
-    page.clickGayHall();
-    page.click('unsetDefaultRoomButton');
-  })
-
-  // it('should not have a subscribe button when you select all room', () => {
-  //   page.navigateTo();
-  //   page.clickAllRooms()
-  //   expect(('subscribeButton'));
-  // })
 });
 

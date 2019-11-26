@@ -2,23 +2,92 @@
 @import '../node_modules/@angular/material/theming';
 
 
+// UMM Theme by Paul Friederichsen
+// https://gist.github.com/floogulinc/be72252a34b43a0b04aef77670c5cb1e
+
+$mat-umn-maroon: (
+  50 : #efe0e3,
+  100 : #d7b3ba,
+  200 : #bd808c,
+  300 : #a24d5e,
+  400 : #8e263c,
+  500 : #7a0019,
+  600 : #720016,
+  700 : #670012,
+  800 : #5d000e,
+  900 : #4a0008,
+  A100 : #ff7e82,
+  A200 : #ff4b51,
+  A400 : #ff1820,
+  A700 : #fd0009,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
+
+$mat-umn-gold: (
+  50 : #fff9e7,
+  100 : #fff0c2,
+  200 : #ffe699,
+  300 : #ffdb70,
+  400 : #ffd452,
+  500 : #ffcc33,
+  600 : #ffc72e,
+  700 : #ffc027,
+  800 : #ffb920,
+  900 : #ffad14,
+  A100 : #ffffff,
+  A200 : #fffdfb,
+  A400 : #ffeac8,
+  A700 : #ffe1ae,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $dark-primary-text,
+    700: $dark-primary-text,
+    800: $dark-primary-text,
+    900: $dark-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $dark-primary-text,
+  )
+);
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 
-$light-primary: mat-palette($mat-blue-grey, 200); // 500 is the base hue of a Material color
+$light-primary: mat-palette($mat-umn-maroon, 400); // 500 is the base hue of a Material color
 
 // The 200 here makes the indigo color lighter
 // Material Design dark themes should use a desaturated versions of primary and accent colors
 // See: https://material.io/design/color/dark-theme.html
-$dark-primary: mat-palette($mat-blue-grey, 200);
+$dark-primary: mat-palette($mat-umn-maroon, 200);
 
-$light-accent: mat-palette($mat-blue-grey, A300);
-$dark-accent: mat-palette($mat-blue-grey, A200);
+$light-accent: mat-palette($mat-umn-gold, 500);
+$dark-accent: mat-palette($mat-umn-gold, 900);
 
 // The warn palette is optional (defaults to red).
-$light-warn: mat-palette($mat-purple, 300); // Without a hue given, it defaults to 500
-$dark-warn: mat-palette($mat-purple, 300);
+$light-warn: mat-palette($mat-umn-maroon, 300); // Without a hue given, it defaults to 500
+$dark-warn: mat-palette($mat-umn-maroon, 300);
 
 // Create the theme object for a light theme (a Sass map containing all of the palettes).
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);

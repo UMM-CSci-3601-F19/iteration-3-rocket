@@ -150,12 +150,35 @@ export class HomePage {
     return title;
   }
 
+
+
   clickGayHall(){
     this.click('gayId');
   }
 
   clickPineHall(){
     this.click('pineId');
+  }
+
+  clickApartment(){
+    this.click('the_apartmentsId');
+  }
+
+  clickRoomPanel(){
+    this.click('home-rooms-card');
+  }
+
+  clickAllRooms(){
+    this.click('allRooms');
+  }
+
+
+  buttonClickable(Id: string){
+    return element(by.id(Id)).isEnabled();
+  }
+
+  boxChecked(Id: string){
+    return element(by.id(Id));
   }
 
   getTextWithID(Id: string){
@@ -193,13 +216,6 @@ export class HomePage {
     return element.all(by.className('broken'));
   }
 
-  clickRoomPanel(){
-    this.click('home-rooms-card');
-  }
-
-  clickAllRooms(){
-    this.click('allRooms');
-  }
 
   elementExistsWithId(idOfElement: string): promise.Promise<boolean> {
     if (element(by.id(idOfElement)).isPresent()) {
@@ -232,6 +248,11 @@ export class HomePage {
   getTextFromField(idOfField: string) {
     this.highlightElement(by.id(idOfField));
     return element(by.id(idOfField)).getText();
+  }
+
+  getTextFromClassName(cssOfElement: string) {
+    this.highlightElement(by.className(cssOfElement));
+    return element(by.className(cssOfElement)).getText();
   }
 
 }
