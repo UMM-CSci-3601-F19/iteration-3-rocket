@@ -32,11 +32,16 @@ There are 5 skipped client tests, we provide some reasons as comments before the
 
 We did not remove the modules of users' functionalities in the client and the server because they will be helpful as a template for future iterations.
 
-We use SendGrid as tool to send our subscription email. It requires a paired key to connect to SendGrid's server. We use "a-fake-key" at line 473 in MaillingController.java for testing purpose. The steps for using actual key are as following:
+We use SendGrid as tool to send our subscription email. It requires a paired key to connect to SendGrid's server. We use "a-fake-key" at line 473 in MailingController.java for testing purpose. The steps for using actual key are as following:
 
 Sign in/sign up into SendFrid -> Generate a key with all mail and mail setting restrictions -> Copy the key generated ->
 After delpoy your project onto Digital Ocean, manuly paste and replace "a-fake-key" with the key you copied ->
 Run you droplet.
+
+At server/src/main/java/umm3601/mailing/MailingController.java:473
+```
+final String key = "a_fake_key";
+```
 
 <!-- TOC depthFrom:1 depthTo:5 withLinks:1 updateOnSave:1 orderedList:0 -->
 ## Table of Contents
