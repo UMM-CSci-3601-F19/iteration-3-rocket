@@ -5,9 +5,9 @@
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-F19/iteration-3-rocket.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-F19/iteration-3-rocket)
 
 ## Important notes about our iteration 3 project
-To run the E2E tests, because the E2E tests is based on a fixed data and the auto updating should be turn off, please set the "autoRefresh" false at line 26 of client/src/app/home/home.component.ts, and set the "seedLocalSourse" true at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
+To run the E2E tests, because the E2E tests is based on a fixed data and the auto updating should be turn off, please set the "autoRefresh" false at line 24 of client/src/app/home/home.component.ts, and set the "seedLocalSourse" true at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
 
-At client/src/app/home/home.component.ts:26
+At client/src/app/home/home.component.ts:24
 ```{java}
 private autoRefresh = false;                
 ```
@@ -15,11 +15,30 @@ At server/src/main/java/umm3601/laundry/LaundryController.java:31
 ```{java}
 private boolean seedLocalSourse = true;     
 ```
+Please run the e2e test with the folloing instructions:
+
+```
+./gradlew clearMongoDB
+./gradlew seedMongoDB
+./gradlew run
+./gradlew runE2ETests
+```
+
+There are 2 skipped e2e tests, we provide some reasons as comments before the code of both tests.
+
 To run other tests, please set the "autoRefresh" true and set the "seedLocalSourse" false.
 
-The MongoDB must be seed to reset the data before running the e2e test.
+There are 5 skipped client tests, we provide some reasons as comments before the code of these tests.
 
 We did not remove the modules of users' functionalities in the client and the server because they will be helpful as a template for future iterations.
+
+We use SendGrid as tool to send our subscription email. It requires a paired key to connect to SendGrid's server. We use "a-fake-key" at line 473 in MaillingController.java for testing purpose. The steps for using actual key are as following:
+
+Sign in/sign up into SendFrid;
+Generate a key with all mail and mail setting restrictions;
+Copy the key generated;
+After delpoy your project onto Digital Ocean, manuly paste and replace "a-fake-key" with the key you copied;
+Run you droplet.
 
 <!-- TOC depthFrom:1 depthTo:5 withLinks:1 updateOnSave:1 orderedList:0 -->
 ## Table of Contents
