@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-F19/iteration-3-rocket.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-F19/iteration-3-rocket)
 
 ## Important notes about our iteration 3 project
-To run the E2E tests, because the E2E tests is based on a fixed data and the auto updating should be turn off, please set the "autoRefresh" false at line 24 of client/src/app/home/home.component.ts, and set the "seedLocalSourse" true at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
+**To run the E2E tests**, because the E2E tests is based on a fixed data and the auto updating should be turn off, **please set the "autoRefresh" false** at line 24 of client/src/app/home/home.component.ts, and **set the "seedLocalSourse" true** at line 31 of server/src/main/java/umm3601/laundry/LaundryController.java to use the local test data. 
 
 At client/src/app/home/home.component.ts:24
 ```{java}
@@ -26,7 +26,7 @@ Please run the e2e test with the folloing instructions:
 
 There are 2 skipped e2e tests, we provide some reasons as comments before the code of both tests.
 
-**To run other tests, please set the "autoRefresh" true and set the "seedLocalSourse" false.**
+**To run other tests**, please **set the "autoRefresh" true** and **set the "seedLocalSourse" false.**
 
 There are 5 skipped client tests, we provide some reasons as comments before the code of these tests.
 
